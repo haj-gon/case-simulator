@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Gateway: AI Strategy & Leadership Lab</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Gamified Theme Config -->
+  <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  fontFamily: {
+                      sans: ['Nunito', 'sans-serif'],
+                      mono: ['JetBrains Mono', 'monospace'],
+                  },
+                  colors: {
+                      game: {
+                          dark: '#0f172a',
+                          light: '#f1f5f9',
+                          blue: '#3b82f6',
+                          purple: '#8b5cf6',
+                          green: '#10b981',
+                          red: '#ef4444',
+                          yellow: '#f59e0b',
+                          teal: '#0d9488'
+                      }
+                  },
+                  boxShadow: {
+                      'game-sm': '2px 2px 0px rgba(15, 23, 42, 1)',
+                      'game': '4px 4px 0px rgba(15, 23, 42, 1)',
+                      'game-lg': '8px 8px 0px rgba(15, 23, 42, 1)',
+                  },
+                  borderWidth: {
+                      '3': '3px',
+                      '4': '4px',
+                  }
+              }
+          }
+      }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #0f172a;
+      --blue: #3b82f6;
+      --blue-hover: #2563eb;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --teal: #0d9488;
+      
+      /* Gamified Shadows */
+      --shadow-sm: 2px 2px 0px rgba(15, 23, 42, 1);
+      --shadow: 4px 4px 0px rgba(15, 23, 42, 1);
+      --shadow-lg: 8px 8px 0px rgba(15, 23, 42, 1);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    
+    /* Gamified Scrollbar */
+    ::-webkit-scrollbar { width: 12px; height: 12px; }
+    ::-webkit-scrollbar-track { background: #cbd5e1; border-left: 3px solid #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #3b82f6; border: 3px solid #0f172a; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+
+    body {
+      margin: 0;
+      font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background-color: #cbd5e1;
+      background-image: 
+          radial-gradient(#3b82f6 2px, transparent 2px),
+          radial-gradient(#3b82f6 2px, transparent 2px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      background-attachment: fixed;
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes pulseSoft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes scorePop { 0% { transform: scale(1); } 50% { transform: scale(1.15); color: var(--blue); } 100% { transform: scale(1); } }
+    
+    .stagger-1 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+    .stagger-2 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+
+    /* Modern Gamified Landing Page Styles */
+    .landing-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; position: relative; z-index: 1; }
+    
+    .landing-card { 
+      background: white; 
+      max-width: 900px; 
+      width: 100%; 
+      border-radius: var(--radius); 
+      box-shadow: var(--shadow-lg); 
+      overflow: hidden; 
+      animation: fadeUp 0.8s ease-out; 
+      border: 4px solid var(--ink);
+    }
+    
+    .landing-header { 
+      background: var(--blue); 
+      color: white; 
+      padding: 48px 40px; 
+      text-align: center; 
+      position: relative; 
+      border-bottom: 4px solid var(--ink);
+    }
+    
+    .landing-header h1 { margin: 0 0 16px; font-size: 2.8rem; font-weight: 900; letter-spacing: -0.02em; text-shadow: 2px 2px 0px var(--ink); }
+    .landing-header p { margin: 0; font-size: 1.15rem; color: #f1f5f9; max-width: 600px; margin: 0 auto; font-weight: 800; }
+    .landing-body { padding: 48px 40px; background: #f8fafc; }
+    
+    .objectives-box { 
+      background: white; 
+      border: 4px solid var(--ink); 
+      padding: 24px; 
+      border-radius: 16px; 
+      margin-bottom: 40px; 
+      box-shadow: var(--shadow);
+    }
+    .objectives-box h3 { margin-top: 0; color: var(--ink); display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 1.3rem;}
+    
+    .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 40px; }
+    .phase-step { background: white; padding: 24px; border-radius: 12px; border: 3px solid var(--ink); position: relative; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s;}
+    .phase-step:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    .step-badge { display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    .phase-step:nth-child(1) .step-badge { background: var(--amber); color: var(--ink); }
+    .phase-step:nth-child(2) .step-badge { background: var(--blue); color: white; }
+    .phase-step:nth-child(3) .step-badge { background: var(--green); color: white; }
+    .phase-step:nth-child(4) .step-badge { background: var(--purple); color: white; }
+
+    .phase-step h4 { margin: 0 0 8px 0; font-size: 1.2rem; color: var(--ink); font-weight: 900; }
+    .phase-step p { margin: 0; font-size: 0.95rem; color: var(--muted); font-weight: 700; }
+
+    .player-entry { display: flex; flex-direction: column; gap: 16px; background: white; padding: 32px; border-radius: 16px; text-align: center; border: 4px solid var(--ink); box-shadow: var(--shadow); }
+    
+    .start-btn { background: var(--blue); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
+    .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
+
+    /* Main App Container */
+    .app-container { max-width: 1500px; margin: 0 auto; padding: 32px 24px; display: none; flex-direction: column; gap: 32px; position: relative; z-index: 1; }
+    
+    .hero { background: var(--ink); color: white; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden; justify-content: space-between; border: 4px solid var(--ink);}
+    .hero-content-wrap { display: flex; align-items: center; gap: 24px; }
+    .hero-icon { background: var(--blue); border: 3px solid white; box-shadow: var(--shadow-sm); padding: 20px; border-radius: 50%; flex-shrink: 0; animation: pulseSoft 4s infinite; }
+    .hero h1 { margin: 0 0 12px; font-size: 2.2rem; font-weight: 900; letter-spacing: -0.02em; }
+    .hero p { margin: 0; font-size: 1.1rem; color: #cbd5e1; max-width: 800px; font-weight: 700;}
+
+    .kpi-stack { display: flex; flex-direction: column; gap: 16px; }
+    .kpi-card { background: white; border-radius: var(--radius); padding: 16px 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; border: 3px solid var(--line); position: relative; width: 100%; transition: transform 0.2s;}
+    .kpi-card:hover { transform: translateX(4px); box-shadow: var(--shadow-sm); }
+    .kpi-icon { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; border: 3px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    .kpi-info h4 { margin: 0 0 4px; font-size: 0.85rem; text-transform: uppercase; font-weight: 900; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .kpi-info .value { font-size: 2rem; font-weight: 900; color: var(--ink); line-height: 1; transition: color 0.3s ease; font-family: 'JetBrains Mono', monospace; }
+    .value.animate-pop { animation: scorePop 0.4s ease-out; }
+
+    .bg-blue { background: var(--blue); }
+    .bg-green { background: var(--green); }
+    .bg-amber { background: var(--amber); }
+    .bg-purple { background: var(--red); } /* Used for Regulatory */
+
+    /* Modals */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+    .modal-overlay.active { display: flex; opacity: 1; }
+    .modal-content { background: white; border-radius: 20px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 32px; box-shadow: var(--shadow-lg); border: 4px solid var(--ink); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
+    .modal-overlay.active .modal-content { transform: scale(1); }
+    .close-modal { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: 2px solid var(--ink); border-radius: 8px; cursor: pointer; color: var(--ink); padding: 6px; box-shadow: 2px 2px 0px var(--ink); transition: all 0.1s;}
+    .close-modal:active { transform: translateY(2px); box-shadow: none; }
+    
+    .btn-outline { background: white; border: 3px solid var(--ink); color: var(--ink); padding: 10px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 900; cursor: pointer; transition: all 0.1s; display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); font-family: 'Nunito', sans-serif; }
+    .btn-outline:active { background: #f1f5f9; transform: translateY(2px); box-shadow: none; }
+
+    /* Main Grid */
+    .main-workspace { display: grid; grid-template-columns: 340px 1fr; gap: 32px; align-items: start; }
+    .sidebar { position: sticky; top: 32px; display: flex; flex-direction: column; gap: 24px; }
+    
+    .panel { background: var(--panel); border: 4px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 32px; }
+    .panel-title { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 1.4rem; font-weight: 900; color: var(--ink); }
+
+    /* Scenarios Grid & Levels */
+    .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+    .scenario-card { border: 3px solid var(--ink); border-radius: 16px; padding: 24px; background: white; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform 0.1s, box-shadow 0.1s; }
+    .scenario-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--ink); }
+    
+    .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .scenario-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 900; color: var(--ink); background: var(--amber); padding: 6px 12px; border-radius: 8px; align-self: flex-start; text-transform: uppercase; letter-spacing: 0.05em; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    
+    /* Advisor Buttons Gamified */
+    .advisor-btn { background: var(--purple); color: white; border: 3px solid var(--ink); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.1s; box-shadow: 2px 2px 0px var(--ink); text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Nunito', sans-serif;}
+    .advisor-btn:active { transform: translateY(2px); box-shadow: 0px 0px 0px var(--ink); }
+    .advisor-btn i { animation: pulseSoft 2s infinite; stroke-width: 3;}
+
+    .scenario-card h3 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.3; font-weight: 900; color: var(--ink); }
+    .scenario-card p { font-size: 1rem; font-weight: 700; color: var(--muted); margin: 0 0 20px; line-height: 1.5; }
+
+    /* Advisor Panels Gamified */
+    .advisor-panel { display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; opacity: 0; transform: translateY(-10px); }
+    .advisor-panel.active { display: grid; animation: magicReveal 0.3s ease-out forwards; }
+    @keyframes magicReveal { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
+    
+    .adv-card { padding: 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 800; border: 3px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); background: white; color: var(--ink); }
+    .adv-strat { border-top: 6px solid var(--blue); }
+    .adv-strat strong { color: var(--blue); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; border-bottom: 3px solid var(--ink); padding-bottom: 8px;}
+    .adv-esg { border-top: 6px solid var(--green); }
+    .adv-esg strong { color: var(--green); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; border-bottom: 3px solid var(--ink); padding-bottom: 8px;}
+
+    /* Option Previews */
+    .option-list { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+    .option-btn { padding: 16px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.1s; display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif;}
+    .option-btn:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); }
+    .option-btn.active { background: var(--blue); border-color: var(--ink); box-shadow: 0px 0px 0px var(--ink); transform: translateY(2px); }
+    .option-text strong { display: block; font-size: 1.05rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; }
+    .option-btn.active .option-text strong { color: white; }
+    .option-text span { font-size: 0.9rem; font-weight: 700; color: var(--muted); display: block; line-height: 1.4; }
+    .option-btn.active .option-text span { color: rgba(255,255,255,0.9); }
+    
+    .impact-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .impact-badge { font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; font-weight: 900; padding: 4px 8px; border-radius: 8px; display: inline-flex; align-items: center; gap: 4px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    .badge-pos { background: var(--green); color: white; }
+    .badge-neg { background: var(--red); color: white; }
+    .badge-neu { background: white; color: var(--ink); }
+    
+    /* Ensure active option badges stand out properly */
+    .option-btn.active .badge-pos { background: white; color: var(--green); box-shadow: none; }
+    .option-btn.active .badge-neg { background: var(--ink); color: white; box-shadow: none; }
+    .option-btn.active .badge-neu { box-shadow: none; }
+
+    /* Tabs Navigation */
+    .tabs-container { margin-top: 32px; background: white; border: 4px solid var(--ink); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
+    .tabs-header { display: flex; background: #cbd5e1; border-bottom: 4px solid var(--ink); overflow-x: auto; gap: 0; }
+    .tab-btn { flex: 1; padding: 16px 12px; background: transparent; border: none; border-right: 4px solid var(--ink); color: var(--ink); font-weight: 900; font-size: 1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; font-family: 'Nunito', sans-serif;}
+    .tab-btn:last-child { border-right: none; }
+    .tab-btn:hover:not(.locked):not(.active) { background: #e2e8f0; }
+    .tab-btn.active { color: white; background: var(--blue); }
+    .tab-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; background: #e2e8f0; color: #94a3b8; }
+    .tab-content { display: none; padding: 32px; background: white; }
+    .tab-content.active { display: block; animation: fadeUp 0.4s ease-out forwards; }
+
+    button { cursor: pointer; font-weight: 900; transition: all 0.1s; font-family: 'Nunito', sans-serif; }
+    .btn-success { background: var(--green); color: white; border: 3px solid var(--ink); padding: 16px 32px; font-size: 1.1rem; border-radius: 12px; box-shadow: var(--shadow); width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;}
+    .btn-success:active { transform: translateY(4px); box-shadow: none; }
+    .btn-primary { background: var(--blue); color: white; border: 3px solid var(--ink); padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
+    .btn-primary:active { transform: translateY(4px); box-shadow: none; }
+
+    /* Visual Dashboard Enhancements (Charts + Scatter) */
+    .scatter-container { position: relative; width: 100%; height: 450px; background: #f8fafc; border: 4px solid var(--ink); border-radius: 16px; overflow: hidden; box-shadow: inset 0 4px 8px rgba(0,0,0,0.1); }
+    .quad-top-right { position: absolute; top:0; left:50%; right:0; bottom:50%; background: rgba(16, 185, 129, 0.08); } 
+    .quad-bottom-right { position: absolute; top:50%; left:50%; right:0; bottom:0; background: rgba(239, 68, 68, 0.08); } 
+    .quad-top-left { position: absolute; top:0; left:0; right:50%; bottom:50%; background: rgba(59, 130, 246, 0.08); } 
+    .quad-bottom-left { position: absolute; top:50%; left:0; right:50%; bottom:0; background: rgba(107, 114, 128, 0.08); } 
+    
+    .axis-y { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: var(--ink); z-index: 5; margin-left: -2px;}
+    .axis-x { position: absolute; left: 0; right: 0; top: 50%; height: 4px; background: var(--ink); z-index: 5; margin-top: -2px;}
+    .ax-label { position: absolute; font-size: 0.85rem; font-weight: 900; color: var(--ink); z-index: 6; text-transform: uppercase; letter-spacing: 0.05em; background: white; padding: 2px 8px; border: 2px solid var(--ink); border-radius: 6px;}
+    .ax-right { right: 10px; top: calc(50% + 10px); }
+    .ax-left { left: 10px; top: calc(50% + 10px); }
+    .ax-top { top: 10px; left: calc(50% + 10px); }
+    .ax-bottom { bottom: 10px; left: calc(50% + 10px); }
+    
+    .quad-label { position: absolute; font-size: 1rem; font-weight: 900; opacity: 0.8; z-index: 4; text-transform: uppercase; }
+    .ql-tr { top: 24px; right: 24px; color: var(--green); text-align: right; }
+    .ql-br { bottom: 24px; right: 24px; color: var(--red); text-align: right; }
+    .ql-tl { top: 24px; left: 24px; color: var(--blue); }
+    .ql-bl { bottom: 24px; left: 24px; color: var(--muted); }
+
+    .scatter-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); transform: translate(-50%, -50%); opacity: 0.85; z-index: 10; transition: all 0.2s; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
+    .scatter-dot:hover { width: 20px; height: 20px; background: var(--amber); opacity: 1; z-index: 20; cursor: crosshair; }
+
+    /* --- Town Hall Chat Styles --- */
+    .chat-container { display: flex; flex-direction: column; gap: 24px; background: #cbd5e1; border: 4px solid var(--line); border-radius: 16px; padding: 32px; min-height: 400px; max-height: 600px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);}
+    .chat-msg { display: flex; gap: 16px; opacity: 0; transform: translateY(15px); animation: fadeUp 0.4s ease-out forwards; max-width: 85%; }
+    .chat-msg.right { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-avatar { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; border: 3px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); flex-shrink: 0; background: white; }
+    .chat-bubble { background: white; padding: 20px; border-radius: 16px; border: 3px solid var(--line); box-shadow: var(--shadow); position: relative; font-size: 1.05rem; line-height: 1.6; font-weight: 700; color: var(--ink); }
+    .chat-msg.right .chat-bubble { background: #eff6ff; }
+    
+    .chat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .chat-msg.right .chat-header { justify-content: flex-end; flex-direction: row-reverse; }
+    .chat-name { font-weight: 900; color: var(--ink); font-size: 1.15rem; }
+    
+    /* Specific Group Colors for Badges */
+    .chat-role { font-size: 0.75rem; text-transform: uppercase; font-weight: 900; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 8px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    
+    .msg-aws .chat-role { background: var(--amber); color: var(--ink); }
+    .msg-ngo .chat-role { background: var(--green); color: white; }
+    .msg-util .chat-role { background: var(--red); color: white; }
+    .msg-biz .chat-role { background: var(--blue); color: white; }
+    .msg-staff .chat-role { background: var(--purple); color: white; }
+    .msg-council .chat-role { background: var(--ink); color: white; }
+    .msg-dissent .chat-role { background: white; color: var(--ink); }
+
+    .chat-controls { display: flex; justify-content: center; margin-top: 32px; border-top: 4px solid var(--line); padding-top: 32px; }
+
+    @media (max-width: 1024px) { .main-workspace { grid-template-columns: 1fr; } .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } }
+    @media (max-width: 768px) { .sidebar { grid-template-columns: 1fr; } .hero-content-wrap { flex-direction: column; text-align: center; } .landing-header h1 { font-size: 2rem; } .hero { flex-direction: column; align-items: stretch; } .chat-msg { max-width: 100%; } }
+  </style>
+</head>
+<body>
+
+<div id="scoreModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="close-modal" id="closeScoreModal"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
+    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="bar-chart" style="color: var(--blue); width: 32px; height: 32px;"></i> Corporate KPIs</h2>
+    
+    <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; font-weight: 900;"><i data-lucide="info" style="width: 20px; height: 20px; color: var(--blue);"></i> Leading the Expansion</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700; color: var(--muted);">As the AWS AI Division Leader, you must rapidly scale infrastructure while managing complex local resistance. Your decisions balance the pressure for financial returns with corporate ESG (Environmental, Social, and Governance) commitments.</p>
+    </div>
+
+    <div style="background: #eff6ff; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--blue); box-shadow: 4px 4px 0px var(--blue);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--blue); font-weight: 900;"><i data-lucide="zap" style="width: 20px; height: 20px; stroke-width: 3;"></i> Deployment Speed & ROI</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures how fast you can build the data center and the operational margins it produces. Standardized builds and utilizing existing fossil-fuel grids maximize this score. Bespoke redesigns and expensive renewables lower it.</p>
+    </div>
+
+    <div style="background: #fffbeb; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--amber); box-shadow: 4px 4px 0px var(--amber);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--amber); font-weight: 900;"><i data-lucide="shield-check" style="width: 20px; height: 20px; stroke-width: 3;"></i> Stakeholder Trust</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Represents your "Social License to Operate." Transparency, robust Community Benefit Agreements (CBAs), and active listening improve your brand reputation. Strict NDAs and bypassing community concerns trigger backlash.</p>
+    </div>
+
+    <div style="background: #ecfdf5; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--green); box-shadow: 4px 4px 0px var(--green);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--green); font-weight: 900;"><i data-lucide="leaf" style="width: 20px; height: 20px; stroke-width: 3;"></i> Env. Stewardship</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Reflects your alignment with integral ecology and corporate ESG goals. Mandating clean energy, implementing closed-loop water systems, and protecting local landscapes drive this score higher. Exploiting local resources drives it down.</p>
+    </div>
+
+    <div style="background: #fef2f2; padding: 20px; border-radius: 12px; border: 3px solid var(--red); box-shadow: 4px 4px 0px var(--red);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--red); font-weight: 900;"><i data-lucide="scale" style="width: 20px; height: 20px; stroke-width: 3;"></i> Regulatory Compliance</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures protection against litigation, FOIA delays, and zoning appeals. Collaborating with town planners and accepting regulatory limits increases stability. Pushing legal boundaries risks costly project injunctions.</p>
+    </div>
+  </div>
+</div>
+
+<div id="landingPage" class="landing-container">
+  <div class="landing-card">
+    <div class="landing-header">
+      <i data-lucide="server" style="width: 80px; height: 80px; margin-bottom: 24px; stroke-width: 1.5;"></i>
+      <h1>Project Gateway: Strategic Leadership</h1>
+      <p>AI Infrastructure Expansion Decision Lab</p>
+    </div>
+    
+    <div class="landing-body">
+      <div class="objectives-box">
+        <h3><i data-lucide="cpu" style="color: var(--blue); stroke-width: 3;"></i> Disruption, AI, and Care for Our Common Home</h3>
+        <p style="margin-bottom: 12px; font-weight: 700; color: var(--muted);">A low hum emerges from a vast, windowless facility, devouring energy and water with a voracious appetite. Like vampires of folklore, these mechanical behemoths only enter a town if explicitly invited inside. As the leader of AWS’s AI expansion, you are driving explosive global technological growth. You must rapidly scale your hyperscale data centers—now averaging 224 acres per site—to win the generative AI race.</p>
+        <p style="margin-bottom: 0; font-weight: 800; color: var(--ink);">However, this proliferation places unprecedented strain on local resources. Recalling the principles of <em>Laudato Si’</em>, you face the moral and strategic dilemma of integral ecology. How do you balance the relentless corporate pressure for speed and ROI against profound environmental stewardship and the demands of local communities? Will your leadership model extraction, or a sustainable partnership?</p>
+      </div>
+
+      <h3 style="margin-top: 0; text-align: center; margin-bottom: 24px; font-size: 1.6rem; font-weight: 900;">Executive Simulation Sequence</h3>
+      <div class="phase-grid">
+        <div class="phase-step">
+          <span class="step-badge">Step 1</span>
+          <h4>The Strategic Direction</h4>
+          <p>Navigate 8 critical corporate dilemmas regarding design, NDAs, energy sourcing, and community relations.</p>
+        </div>
+        <div class="phase-step">
+          <span class="step-badge">Step 2</span>
+          <h4>Impact Analysis</h4>
+          <p>Review the exact numerical impact of your strategy on Corporate ROI and ESG metrics.</p>
+        </div>
+        <div class="phase-step">
+          <span class="step-badge">Step 3</span>
+          <h4>Market Stress Test</h4>
+          <p>Run a 1,000-day simulation to test the regulatory durability and public resilience of your project.</p>
+        </div>
+        <div class="phase-step">
+          <span class="step-badge">Step 4</span>
+          <h4>Stakeholder Summit</h4>
+          <p>Enter the live mock negotiation where you must defend your strategy to the community.</p>
+        </div>
+      </div>
+
+      <div class="player-entry">
+        <button id="startBtn" class="start-btn"><i data-lucide="briefcase" style="width:24px; height:24px; display:inline-block; vertical-align:text-bottom; margin-right:8px; stroke-width: 3;"></i> Initiate Strategy Session</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="appContainer" class="app-container">
+  <header class="hero stagger-1">
+    <div class="hero-content-wrap">
+      <div class="hero-icon">
+        <i data-lucide="server" style="width: 48px; height: 48px; stroke-width: 2;"></i>
+      </div>
+      <div>
+        <h1>The Board Vote: AWS and Warrenton’s Future</h1>
+        <p>A/B test your infrastructure strategy to balance rapid deployment and profit margins against ESG goals and public trust.</p>
+      </div>
+    </div>
+    <button class="btn-outline" id="openScoreModalBtn">
+      <i data-lucide="help-circle" style="width: 20px; height: 20px; stroke-width: 3;"></i> View KPI Definitions
+    </button>
+  </header>
+
+  <main class="main-workspace stagger-2">
+    <aside class="sidebar">
+      <div class="panel" style="background: white;">
+        <h2 class="panel-title" style="border-bottom: none; margin-bottom: 24px;"><i data-lucide="pie-chart" style="stroke-width: 3; color: var(--blue);"></i> Corporate Scorecard</h2>
+        
+        <div class="kpi-stack">
+          <div class="kpi-card">
+            <div class="kpi-icon bg-blue"><i data-lucide="zap" style="stroke-width: 3;"></i></div>
+            <div class="kpi-info">
+              <h4>Deployment Speed & ROI</h4>
+              <div class="value" id="finScore">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon bg-amber"><i data-lucide="shield-check" style="stroke-width: 3;"></i></div>
+            <div class="kpi-info">
+              <h4>Stakeholder Trust</h4>
+              <div class="value" id="socScore">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon bg-green"><i data-lucide="leaf" style="stroke-width: 3;"></i></div>
+            <div class="kpi-info">
+              <h4>Env. Stewardship</h4>
+              <div class="value" id="natScore">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon bg-purple"><i data-lucide="scale" style="stroke-width: 3;"></i></div>
+            <div class="kpi-info">
+              <h4>Regulatory Compliance</h4>
+              <div class="value" id="legalScore">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="content-area">
+      
+      <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+        <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="compass" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Strategy Docket</h2>
+        <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 strategic domains. <strong>Every choice represents a valid, holistic trade-off between maximizing shareholder value through rapid scale and honoring the principles of integral ecology within the host community.</strong> Consult your advisors for competing perspectives.</p>
+        <div class="scenario-grid" id="scenarioGrid"></div>
+      </div>
+
+      <div class="tabs-container">
+        <div class="tabs-header">
+          <button class="tab-btn active" data-tab="overview" id="tabBtnOverview"><i data-lucide="activity" style="stroke-width: 3;"></i> 1. Impact</button>
+          <button class="tab-btn locked" data-tab="dataset" id="tabBtnDataset"><i data-lucide="cloud-lightning" style="stroke-width: 3;"></i> 2. Stress Test</button>
+          <button class="tab-btn locked" data-tab="dashboard" id="tabBtnDashboard"><i data-lucide="scatter-chart" style="stroke-width: 3;"></i> 3. Results</button>
+          <button class="tab-btn locked" data-tab="townhall" id="tabBtnTownhall"><i data-lucide="mic" style="stroke-width: 3;"></i> 4. Stakeholder Summit</button>
+        </div>
+
+        <div class="tab-content active" id="overview">
+          <div style="display: grid; grid-template-columns: 1fr; gap: 32px;">
+            <div style="text-align: center; border-bottom: 3px dashed var(--ink); padding-bottom: 40px; padding-top: 16px;">
+              <p style="margin: 0 0 20px 0; color: var(--ink); font-weight: 900; font-size: 1.4rem;">Ready to finalize the Infrastructure Strategy?</p>
+              <button id="phaseActionBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--blue);"><i data-lucide="lock" style="stroke-width: 3;"></i> Lock Strategy & View Impact</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="dataset">
+          <div style="background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; margin-bottom: 32px; box-shadow: var(--shadow);">
+            <strong style="display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 900;"><i data-lucide="cpu" style="width: 28px; height: 28px; color: var(--amber);"></i> Market Volatility Stress Test</strong>
+            <p style="margin: 12px 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--muted);">This engine runs 1,000 simulated days using your finalized strategy. It injects random FOIA lawsuits, supply chain delays, PR crises, and regulatory appeals to see if your project survives.</p>
+          </div>
+          
+          <div style="display: flex; gap: 16px; margin-bottom: 32px;">
+            <button class="btn-primary" id="generateBtn" style="flex: 2; padding: 20px; font-size: 1.2rem; background: var(--amber); color: var(--ink); border-color: var(--ink);"><i data-lucide="refresh-cw" style="stroke-width: 3;"></i> Run 1,000 Simulated Days</button>
+          </div>
+          
+          <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 40px; display:none;" id="proceedMatrixWrapper">
+            <button id="goToMatrixBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--blue);"><i data-lucide="arrow-right" style="stroke-width: 3;"></i> View Durability Results</button>
+          </div>
+        </div>
+
+        <div class="tab-content" id="dashboard">
+          <div id="scatterEvalBox" style="margin-bottom: 32px; padding: 24px; border-radius: 16px; border: 4px solid var(--ink); background: white; box-shadow: var(--shadow);">
+             <h4 id="scatterEvalTitle" style="margin: 0 0 12px 0; font-size: 1.4rem; font-weight: 900; display: flex; align-items: center; gap: 12px;">Analyzing Corporate Integrity...</h4>
+             <p id="scatterEvalDesc" style="margin: 0; font-size: 1.1rem; line-height: 1.5; font-weight: 700; color: var(--muted);"></p>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+            <div>
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900;"><i data-lucide="scatter-chart" style="color: var(--blue); stroke-width: 3;"></i> The Corporate Matrix</h3>
+              <p style="margin: 8px 0 0 0; color: var(--ink); font-size: 1rem; font-weight: 800;">Distribution of 1,000 days: ROI/Speed vs. Stakeholder/Regulatory Trust.</p>
+            </div>
+          </div>
+
+          <div class="scatter-container" id="scatterPlot">
+            <div class="quad-top-right"></div>
+            <div class="quad-bottom-right"></div>
+            <div class="quad-top-left"></div>
+            <div class="quad-bottom-left"></div>
+            
+            <div class="axis-y"></div>
+            <div class="axis-x"></div>
+            <div class="ax-label ax-top">+ Brand Trust & Compliance</div>
+            <div class="ax-label ax-bottom">- Lawsuits & PR Crises</div>
+            <div class="ax-label ax-right">High ROI & Speed +</div>
+            <div class="ax-label ax-left">- Delayed Deployment / High Cost</div>
+
+            <div class="quad-label ql-tr">Sustainable Market Leadership<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Fast deployment, high ESG alignment</span></div>
+            <div class="quad-label ql-br">Reputational Crisis<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">High ROI, but active boycotts & lawsuits</span></div>
+            <div class="quad-label ql-tl">Over-Compromised Margin<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Beloved by town, but highly unprofitable</span></div>
+            <div class="quad-label ql-bl">Strategic Failure<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">No ROI and blocked by regulators</span></div>
+            
+            <div id="scatterDots"></div>
+          </div>
+          
+          <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 32px;">
+            <p style="font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 8px;">Prepare to Face the Public.</p>
+            <p style="color: var(--muted); font-weight: 800; margin-bottom: 24px; font-size: 1.1rem;">The strategic outcome is clear. Now you must present your plan to the community leaders whose home you are entering.</p>
+            <button id="goToTownHallBtn" class="btn-success" style="background:var(--purple); margin: 0 auto; max-width: 400px; font-size: 1.2rem;"><i data-lucide="users" style="stroke-width: 3;"></i> Enter Stakeholder Summit</button>
+          </div>
+        </div>
+
+        <div class="tab-content" id="townhall">
+          <div style="margin-bottom: 32px; background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; box-shadow: var(--shadow);">
+            <h3 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 12px; font-size: 1.8rem; font-weight: 900;"><i data-lucide="users" style="color: var(--purple); width: 32px; height: 32px; stroke-width: 3;"></i> Live Town Hall Forum</h3>
+            <p style="color: var(--muted); font-size: 1.1rem; margin: 0; font-weight: 800;">Observe the local reactions as your team presents the expansion plan. Understand the deep, valid concerns of these stakeholders before you begin the live classroom negotiation.</p>
+          </div>
+
+          <div class="chat-container" id="chatContainer">
+            </div>
+
+          <div class="chat-controls">
+            <button id="nextMsgBtn" class="btn-primary" style="display:flex; align-items:center; gap:8px; font-size: 1.2rem; padding: 16px 32px; background: var(--blue);"><i data-lucide="message-circle" style="stroke-width: 3;"></i> Next Speaker</button>
+            <button id="finishChatBtn" class="btn-success" style="display:none; max-width: 400px; font-size: 1.2rem; padding: 16px 32px; background: var(--green);"><i data-lucide="briefcase" style="stroke-width: 3;"></i> Reveal Corporate Instructions</button>
+          </div>
+
+          <div id="roleplayGuidance" style="display: none; margin-top: 40px; padding: 32px; border: 4px solid var(--purple); border-radius: 16px; background: white; box-shadow: var(--shadow-lg); animation: fadeUp 0.5s ease-out forwards;">
+            <h3 style="margin-top: 0; color: var(--purple); display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 900;"><i data-lucide="clipboard-list" style="stroke-width: 3; width: 28px; height: 28px;"></i> Executive Roleplay Instructions</h3>
+            <p style="font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 24px;">The simulated chat mirrors the intense public resistance data centers face regarding environmental racism, opacity, and resource drain. You must now negotiate your Special Use Permit (SUP).</p>
+            
+            <ul style="font-size: 1.05rem; font-weight: 700; color: var(--muted); padding-left: 24px; line-height: 1.8; margin-bottom: 32px;">
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 1: Executive Huddle (10 mins)</strong> - Divide into assigned stakeholder groups. As the AWS Leadership Team, you must identify which margins you can compress to win public approval.
+                <ul style="list-style-type: circle; margin-top: 8px; margin-bottom: 16px; color: var(--muted); font-size: 0.95rem;">
+                  <li><em>AWS / Data Services (You):</em> Fight for standard industrial designs and immediate grid access. Try to offer direct fee-in-lieu payments to bypass complex school funding. Emphasize your role in global decarbonization modeling.</li>
+                  <li><em>Town Council Majority:</em> Demanding a massive revenue win but need political cover. They want a robust Community Benefit Agreement.</li>
+                  <li><em>Citizens / Preservation Advocates:</em> Demanding algorithmic restraint and zero fossil-fuel emissions to prevent fence-line pollution. They will threaten FOIA litigation if NDAs remain.</li>
+                  <li><em>Town Planners / Utilities:</em> Focused strictly on preventing regional grid strain, enforcing zoning aesthetics, and preventing aquifer depletion.</li>
+                </ul>
+              </li>
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 2: Opening Statements (10 mins)</strong> - Each group gets 2 minutes. As AWS, set the tone: Are you aggressive disrupters or collaborative partners?</li>
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 3: Open Negotiation (25 mins)</strong> - Debate the core conditions: NDAs, Gas Turbines/Emissions, Architectural Caps, and Water Usage.</li>
+              <li><strong class="text-game-dark">Step 4: The Final Vote (10 mins)</strong> - The Town Council votes. Will your project be approved, or have you failed to secure your social license to operate?</li>
+            </ul>
+            
+            <div style="text-align: center; font-size: 1.4rem; font-weight: 900; color: var(--ink); border-top: 4px dashed var(--purple); padding-top: 24px;">
+              Close your laptops. The boardroom is now open!
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+
+  function mulberry32(a) {
+    return function() {
+      let t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+  }
+
+  // Modals
+  document.getElementById('openScoreModalBtn')?.addEventListener('click', () => {
+    document.getElementById('scoreModal')?.classList.add('active');
+  });
+  document.getElementById('closeScoreModal')?.addEventListener('click', () => {
+    document.getElementById('scoreModal')?.classList.remove('active');
+  });
+  document.getElementById('scoreModal')?.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
+  });
+
+  // State
+  let selectedOptions = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0, s7: 0, s8: 0 }; 
+  let currentPhase = 1;
+  let generatedRows = [];
+  let chatIndex = 0;
+
+  document.getElementById('startBtn')?.addEventListener('click', () => {
+    document.getElementById('landingPage').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'flex';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  });
+
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!btn.classList.contains('locked')) {
+        switchTab(btn.dataset.tab);
+      }
+    });
+  });
+
+  function toggleAdvisor(scenarioId) {
+    const panel = document.getElementById(`advisor-${scenarioId}`);
+    if (panel.classList.contains('active')) {
+      panel.classList.remove('active');
+    } else {
+      panel.classList.add('active');
+    }
+  }
+
+  // --- Revised Balanced Scenarios with Advisor Perspectives ---
+  const scenarios = [
+    {
+      id: "s1", tag: "Site Selection", icon: "map-pin",
+      title: "The Zoning & Annexation Push",
+      desc: "Warrenton's gateway site offers ideal fiber access, but faces pushback over historic preservation. How aggressively do you leverage old industrial zoning vs. adapting to community resistance?",
+      advisors: {
+        strat: "Time-to-market is the only metric that matters in the AI race. Push your vested rights hard. The legal friction costs are a fraction of the lost revenue from delayed compute deployment.",
+        esg: "Forcing a build against the community's will destroys our social license to operate. A phased deployment mitigates extreme backlash while keeping us in the game for the long haul."
+      },
+      options: [
+        { name: "Assert Vested Rights", summary: "Aggressively push the legal limits of 1970s industrial zoning. This guarantees rapid $550M deployment and maximizes initial ROI, but it immediately alienates local preservation groups and risks severe reputational damage.", effects: { fiscal: 20, trust: -15, gateway: -10, legal: -10 } },
+        { name: "Negotiate Phased Deployment", summary: "Agree to build only half the proposed square footage initially, scaling up over 5 years. This builds good faith and manages community shock, but temporarily throttles your AI compute capacity and delays full operational margins.", effects: { fiscal: 5, trust: 15, gateway: 10, legal: 5 } },
+        { name: "Relocate to Distant Brownfield", summary: "Abandon the prime gateway location for a distant, pre-industrialized zone. This embodies absolute environmental stewardship and wins massive public praise, but involves extreme fiber routing costs and severely delays project launch.", effects: { fiscal: -20, trust: 25, gateway: 20, legal: 15 } }
+      ]
+    },
+    {
+      id: "s2", tag: "Information Control", icon: "eye-off",
+      title: "Transparency & NDA Strategy",
+      desc: "Critics are demanding to see 3,000+ withheld emails via FOIA. How much of your proprietary expansion strategy are you willing to expose to maintain your 'Social License'?",
+      advisors: {
+        strat: "Information asymmetry is a massive competitive advantage. Strict NDAs prevent rivals from undercutting our power agreements. Hold the line; the public's curiosity doesn't override corporate IP.",
+        esg: "The era of the 'black box' data center is dead. Continually stonewalling FOIA requests breeds toxic conspiracy theories. Releasing targeted ESG summaries builds critical trust without compromising core IP."
+      },
+      options: [
+        { name: "Enforce Strict NDAs", summary: "Refuse to release details to protect vital corporate IP and prevent competitor sabotage. This ensures operational speed and protects vendor contracts, but fuels toxic conspiracy theories of 'backdoor deals' among town residents.", effects: { fiscal: 15, trust: -30, gateway: 0, legal: -15 } },
+        { name: "Publish Targeted ESG Summaries", summary: "Release generalized environmental impact reports while keeping server blueprints hidden. This strategic compromise somewhat placates reasonable planners, but transparency advocates will still view it as corporate greenwashing.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 5 } },
+        { name: "Open Book Transparency", summary: "Declassify project negotiations and invite citizens to review power/water modeling. This fosters incredible community trust and democratic legitimacy, but entirely exposes your deployment playbook to rival tech giants.", effects: { fiscal: -15, trust: 30, gateway: 0, legal: 15 } }
+      ]
+    },
+    {
+      id: "s3", tag: "Design & Build", icon: "box",
+      title: "Facility Architectural Standards",
+      desc: "Your mandate is to build fast and cheap. The town wants a bespoke building with 37-foot height caps, brick facades, and massive landscaping buffers.",
+      advisors: {
+        strat: "Bespoke architecture breaks our global supply chain model. Stick to the standard shell. Every dollar spent on decorative brick is a dollar stolen from advanced GPU investment.",
+        esg: "Aesthetic hostility breeds regulatory hostility. Investing in comprehensive green buffers and facade treatments is a cheap insurance policy against future anti-data-center zoning bans."
+      },
+      options: [
+        { name: "Standard Hyperscale Shell", summary: "Deploy your global standard warehouse design. This enables maximum speed-to-market and lowest construction overhead, but creates a towering, noisy eyesore that violates the town's sense of historic aesthetic.", effects: { fiscal: 25, trust: -25, gateway: -30, legal: -5 } },
+        { name: "Invest in Hybrid Green Buffers", summary: "Maintain your standard building dimensions but invest millions in advanced living green walls and noise-canceling berms. This mitigates acoustic and visual pollution without requiring a total mechanical redesign inside the plant.", effects: { fiscal: -5, trust: 10, gateway: 15, legal: 5 } },
+        { name: "Adopt Bespoke Historic Compliance", summary: "Fully capitulate to the town: lower the roofline, use genuine brick, and redesign cooling stacks. This beautifully preserves the historic gateway, but drastically increases capital expenditures and completely breaks your deployment schedule.", effects: { fiscal: -25, trust: 20, gateway: 30, legal: 10 } }
+      ]
+    },
+    {
+      id: "s4", tag: "Power & Ethics", icon: "zap",
+      title: "Energy Procurement Strategy",
+      desc: "Your AI workloads require massive power immediately. Do you tie into the existing, fossil-heavy grid, or take responsibility for the environmental justice impacts of your energy draw?",
+      advisors: {
+        strat: "We need gigawatts yesterday. Plug into whatever grid capacity is available. Let the utility companies and state regulators solve the macro energy transition—our job is compute.",
+        esg: "Training models on expanded coal power is a PR nightmare waiting to happen. Co-funding substation upgrades or committing to renewables ensures long-term viability and aligns with integral ecology."
+      },
+      options: [
+        { name: "Utilize Default Grid (Fossil-Heavy)", summary: "Plug into the existing local utility, securing immediate power to train vital AI models. While this ensures operational continuity, it may force local coal plants to stay open longer, exposing fence-line communities to toxic emissions.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -10 } },
+        { name: "Co-Fund Substation Upgrades", summary: "Use corporate funds to upgrade the local utility infrastructure so your massive draw doesn't destabilize residential power grids. This prevents local brownouts but requires complex legal agreements and impacts your bottom line.", effects: { fiscal: -5, trust: 15, gateway: 5, legal: 10 } },
+        { name: "Mandate 100% Renewable Matching", summary: "Delay full operations until you can sign power purchase agreements (PPAs) that offset your footprint with regional wind/solar. This champions integral ecology and ESG goals, but severely hinders your ability to scale AI compute immediately.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 5 } }
+      ]
+    },
+    {
+      id: "s5", tag: "Corporate Giving", icon: "landmark",
+      title: "Community Benefit Structuring",
+      desc: "Local governments are demanding to share in your financial windfall. How do you structure your payments to the town?",
+      advisors: {
+        strat: "Direct fee-in-lieu is clean, predictable, and buys immediate political cover from the Mayor's office. Avoid complex, multi-year obligations that entangle us with local school boards.",
+        esg: "Bypassing schools is political suicide for our brand. A comprehensive CBA integrates us into the community fabric, turning local residents into advocates rather than adversaries."
+      },
+      options: [
+        { name: "Offer Direct Fee-in-Lieu", summary: "Write a large, direct check to the Town Council in exchange for bypassing standard local taxes. This ensures your costs are fixed and gives the Mayor immediate capital, but enrages citizens because it bypasses the public school system.", effects: { fiscal: 25, trust: -25, gateway: 0, legal: -15 } },
+        { name: "Accept Standard Tax Schedule", summary: "Submit to standard industrial real estate and equipment taxes. This is predictable, legally safe, and automatically filters money to local schools, though it lacks the PR impact of a headline-grabbing corporate grant.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 20 } },
+        { name: "Negotiate Comprehensive CBA", summary: "Fund a complex Community Benefit Agreement, building local STEM centers and a $60M affordable housing trust. This drives unparalleled social flourishing and public goodwill, but commits your division to massive, ongoing civic liabilities.", effects: { fiscal: -15, trust: 35, gateway: 5, legal: 5 } }
+      ]
+    },
+    {
+      id: "s6", tag: "Resource Impact", icon: "droplet",
+      title: "Water Conservation Protocols",
+      desc: "Data centers can act like a 'giant soda straw' on local aquifers. Planners want limits on your highly efficient evaporative cooling systems.",
+      advisors: {
+        strat: "Evaporative cooling is the industry standard for a reason: it maximizes hardware efficiency at the lowest cost. Do not experiment with expensive, unproven immersion tech at this scale.",
+        esg: "Water is the next great climate conflict. Proactive seasonal throttling shows we are responsible stewards of the local aquifer, preserving our operational license during drought years."
+      },
+      options: [
+        { name: "Deploy Standard Evaporative Cooling", summary: "Use your most cost-effective and energy-efficient cooling technology. This keeps operating margins high and servers cool, but continuously drains millions of gallons from the local watershed, infuriating environmentalists.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -5 } },
+        { name: "Implement Dynamic Seasonal Throttling", summary: "Agree to throttle AI compute workloads and switch cooling methods during summer droughts. This protects the local water table during vulnerable months, but reduces your system reliability and upsets corporate clients.", effects: { fiscal: -5, trust: 15, gateway: 15, legal: 5 } },
+        { name: "Mandate Closed-Loop Immersion", summary: "Redesign the facility for advanced closed-loop immersion cooling. This boasts near-zero water waste and perfectly honors environmental stewardship, but it is incredibly expensive, unproven at this scale, and risks major hardware failures.", effects: { fiscal: -25, trust: 25, gateway: 30, legal: 0 } }
+      ]
+    },
+    {
+      id: "s7", tag: "Long-Term Liability", icon: "trash-2",
+      title: "End-of-Life Decommissioning",
+      desc: "Citizens fear the facility will become an abandoned, blighted concrete shell if AI technology changes rapidly in 15 years.",
+      advisors: {
+        strat: "Capital shouldn't be trapped in a municipal bond for 15 years. Assume standard real estate risk. If tech shifts, we sell the shell and move on.",
+        esg: "Pledging a full upfront bond guarantees we don't leave a stranded asset. It completely neutralizes the most potent environmental argument against us: that we are a boom-and-bust parasite."
+      },
+      options: [
+        { name: "Assume Standard Real Estate Risk", summary: "Refuse to post any special bonds, treating the site like any other commercial warehouse. This keeps your upfront capital completely free for further expansion, but leaves the town feeling deeply vulnerable to corporate abandonment.", effects: { fiscal: 15, trust: -25, gateway: -10, legal: -15 } },
+        { name: "Establish Partial Escrow Fund", summary: "Agree to incrementally fund an escrow account over a decade to cover basic demolition costs. This demonstrates moderate corporate responsibility without requiring a massive, punitive upfront cash deposit.", effects: { fiscal: 0, trust: 10, gateway: 5, legal: 10 } },
+        { name: "Provide Full Upfront Bond", summary: "Lock away millions in a full decommissioning bond before breaking ground. This completely guarantees the land will be restored to nature, perfectly honoring integral ecology, but heavily restricts your division's immediate cash flow.", effects: { fiscal: -15, trust: 25, gateway: 15, legal: 20 } }
+      ]
+    },
+    {
+      id: "s8", tag: "Market Expansion", icon: "git-commit",
+      title: "Regional Scaling Strategy",
+      desc: "As the AI leader, you want this facility to be the first of many. The town, fearful of endless sprawl, wants to limit future development.",
+      advisors: {
+        strat: "Never cap your own growth. Demand unlimited pathways. If this region proves viable, we need to blanket it with infrastructure to maintain absolute market dominance.",
+        esg: "Endless sprawl triggers statewide legislative moratoriums. Committing to a single flagship site or a regional cap protects the brand, satisfies the locals, and secures this specific high-value asset."
+      },
+      options: [
+        { name: "Demand Unlimited SUP Pathways", summary: "Lobby heavily to keep the town open for endless future data center applications. This ensures you can indefinitely expand your regional footprint to meet AI demand, but sparks a ferocious 'anti-sprawl' political resistance.", effects: { fiscal: 25, trust: -35, gateway: -20, legal: -15 } },
+        { name: "Agree to Regional Megawatt Caps", summary: "Voluntarily agree that AWS will not exceed a specific megawatt footprint in the county. This compromise allows for measured growth while guaranteeing residents the town won't become an endless industrial park.", effects: { fiscal: 5, trust: 15, gateway: 10, legal: 10 } },
+        { name: "Commit to a Single Flagship Site", summary: "Sign a binding agreement that this will be AWS's only data center in Warrenton. This permanently protects the town's rural identity and secures local admiration, but severely kneecaps your ability to scale regional infrastructure.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 15 } }
+      ]
+    }
+  ];
+
+  const scenarioGrid = document.getElementById('scenarioGrid');
+
+  function getBadgeClass(val) {
+    if(val > 0) return 'badge-pos';
+    if(val < 0) return 'badge-neg';
+    return 'badge-neu';
+  }
+
+  function renderScenarios() {
+    if (!scenarioGrid) return;
+    scenarioGrid.innerHTML = '';
+
+    scenarios.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'scenario-card';
+      
+      card.innerHTML = `
+        <div class="card-header-top">
+          <div class="scenario-tag"><i data-lucide="${s.icon}" style="width:16px; height:16px; stroke-width: 3;"></i> ${s.tag}</div>
+          <button class="advisor-btn" onclick="toggleAdvisor('${s.id}')">
+            <i data-lucide="sparkles" style="width:16px; height:16px;"></i> Consult Advisors
+          </button>
+        </div>
+        <h3>${s.title}</h3>
+        <p>${s.desc}</p>
+        
+        <div class="advisor-panel" id="advisor-${s.id}">
+          <div class="adv-card adv-strat">
+            <strong><i data-lucide="trending-up" style="width:18px;height:18px;"></i> Strategy Consultant</strong>
+            ${s.advisors.strat}
+          </div>
+          <div class="adv-card adv-esg">
+            <strong><i data-lucide="scale" style="width:18px;height:18px;"></i> ESG & Ethics Board</strong>
+            ${s.advisors.esg}
+          </div>
+        </div>
+
+        <div class="option-list"></div>
+      `;
+      
+      const list = card.querySelector('.option-list');
+      s.options.forEach((op, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn' + (selectedOptions[s.id] === idx ? ' active' : '');
+        
+        let impactHtml = '';
+        if (currentPhase === 2) {
+            const fB = `<span class="impact-badge ${getBadgeClass(op.effects.fiscal)}"><i data-lucide="zap" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.fiscal > 0 ? '+':''}${op.effects.fiscal}</span>`;
+            const tB = `<span class="impact-badge ${getBadgeClass(op.effects.trust)}"><i data-lucide="shield-check" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.trust > 0 ? '+':''}${op.effects.trust}</span>`;
+            const gB = `<span class="impact-badge ${getBadgeClass(op.effects.gateway)}"><i data-lucide="leaf" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.gateway > 0 ? '+':''}${op.effects.gateway}</span>`;
+            const lB = `<span class="impact-badge ${getBadgeClass(op.effects.legal)}"><i data-lucide="scale" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.legal > 0 ? '+':''}${op.effects.legal}</span>`;
+            impactHtml = `<div class="impact-preview">${fB}${tB}${gB}${lB}</div>`;
+        }
+
+        btn.innerHTML = `
+          <div class="option-text">
+            <strong>${op.name}</strong>
+            <span>${op.summary}</span>
+          </div>
+          ${impactHtml}
+        `;
+        btn.addEventListener('click', () => {
+          selectedOptions[s.id] = idx;
+          renderScenarios();
+          updateAll();
+        });
+        list.appendChild(btn);
+      });
+      scenarioGrid.appendChild(card);
+    });
+    
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function getAggregate() {
+    const total = { fiscal: 0, trust: 0, gateway: 0, legal: 0 };
+    scenarios.forEach(s => {
+      const choice = s.options[selectedOptions[s.id] || 0];
+      Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
+    });
+    return total;
+  }
+
+  function animateValue(id, end, suffix = '') {
+    const obj = document.getElementById(id);
+    if (!obj) return;
+    const startText = obj.textContent.replace(/[^0-9-]/g, ''); 
+    const start = parseInt(startText) || 0;
+    const duration = 500;
+    let startTimestamp = null;
+    
+    obj.classList.remove('animate-pop');
+    void obj.offsetWidth; 
+    obj.classList.add('animate-pop');
+
+    let finalColor = end > 0 ? 'var(--green)' : end < 0 ? 'var(--red)' : 'var(--ink)';
+    obj.style.color = finalColor;
+    setTimeout(() => { obj.style.color = 'var(--ink)'; }, 600);
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const current = Math.floor(progress * (end - start) + start);
+      obj.textContent = (current > 0 ? '+' : '') + current + suffix;
+      if (progress < 1) window.requestAnimationFrame(step);
+      else obj.textContent = (end > 0 ? '+' : '') + end + suffix;
+    };
+    window.requestAnimationFrame(step);
+  }
+
+  function updateAll() {
+    const total = getAggregate();
+    animateValue('finScore', total.fiscal);
+    animateValue('socScore', total.trust);
+    animateValue('natScore', total.gateway);
+    animateValue('legalScore', total.legal);
+  }
+
+  document.getElementById('phaseActionBtn')?.addEventListener('click', () => {
+    if (currentPhase === 1) {
+      currentPhase = 2;
+      const btn = document.getElementById('phaseActionBtn');
+      btn.innerHTML = '<i data-lucide="check-check" style="stroke-width: 3;"></i> Proceed to Market Stress Test';
+      
+      renderScenarios();
+      alert("Impact Metrics unlocked! You can now see the exact trade-offs on your Corporate Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } else if (currentPhase === 2) {
+      document.getElementById('tabBtnDataset').classList.remove('locked');
+      switchTab('dataset');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  document.getElementById('goToMatrixBtn')?.addEventListener('click', () => {
+      document.getElementById('tabBtnDashboard').classList.remove('locked');
+      switchTab('dashboard');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('goToTownHallBtn')?.addEventListener('click', () => {
+      document.getElementById('tabBtnTownhall').classList.remove('locked');
+      switchTab('townhall');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // --- Monte Carlo Generator Logic ---
+  function generateDataset() {
+    const size = 1000; 
+    const agg = getAggregate();
+    const rand = mulberry32(size + 11);
+    const randNormal = () => (rand() + rand() + rand() + rand() + rand() + rand() - 3) / 3;
+
+    generatedRows = [];
+
+    for (let i = 1; i <= size; i++) {
+      const volatility = randNormal() * 20; 
+      const dailyFiscal = Math.round(agg.fiscal + (randNormal() * 15));
+      const regulatoryStability = Math.round((agg.legal + agg.trust) / 2 + (volatility * (agg.legal < 0 ? -1.5 : 0.5)));
+
+      generatedRows.push({ day: i, fiscal: dailyFiscal, stability: regulatoryStability });
+    }
+    
+    renderDashboard(); 
+    
+    const btn = document.getElementById('generateBtn');
+    if(btn) {
+        btn.innerHTML = '<i data-lucide="check" style="stroke-width: 3;"></i> 1,000 Days Simulated!';
+        btn.style.background = 'var(--green)';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        setTimeout(() => { document.getElementById('proceedMatrixWrapper').style.display = 'block'; }, 1000);
+    }
+  }
+
+  function renderDashboard() {
+    let data = generatedRows;
+    if (data.length === 0) return;
+
+    let avgF = 0, avgS = 0;
+    data.forEach(r => { avgF += r.fiscal; avgS += r.stability; });
+    avgF /= data.length; avgS /= data.length;
+
+    const evalTitle = document.getElementById('scatterEvalTitle');
+    const evalDesc = document.getElementById('scatterEvalDesc');
+    const evalBox = document.getElementById('scatterEvalBox');
+
+    if (avgF >= 0 && avgS >= 0) {
+      evalTitle.innerHTML = '<i data-lucide="check-circle" style="color:var(--green); stroke-width:3;"></i> Sustainable Market Leadership';
+      evalDesc.innerHTML = `Your strategy successfully deployed infrastructure rapidly while maintaining enough ESG alignment and procedural legitimacy to avoid debilitating FOIA lawsuits and brand damage.`;
+      evalBox.style.borderColor = 'var(--green)';
+      evalBox.style.background = '#ecfdf5';
+    } else if (avgF >= 0 && avgS < 0) {
+      evalTitle.innerHTML = '<i data-lucide="alert-triangle" style="color:var(--amber); stroke-width:3;"></i> Reputational Crisis';
+      evalDesc.innerHTML = `You secured fast ROI (Avg Speed/Margin <strong style="color:var(--green)">+${avgF.toFixed(1)}</strong>), but by ignoring ESG goals and transparency, you triggered a massive PR crisis, local boycotts, and a regulatory injunction that may halt construction.`;
+      evalBox.style.borderColor = 'var(--amber)';
+      evalBox.style.background = '#fffbeb';
+    } else if (avgF < 0 && avgS >= 0) {
+      evalTitle.innerHTML = '<i data-lucide="info" style="color:var(--blue); stroke-width:3;"></i> Over-Compromised Margin';
+      evalDesc.innerHTML = `The town loves you and your ESG score is stellar (Stability: <strong>+${avgS.toFixed(1)}</strong>). However, the massive burdens, delays, and redesigns you accepted threaten the project's financial viability, angering your shareholders.`;
+      evalBox.style.borderColor = 'var(--blue)';
+      evalBox.style.background = '#eff6ff';
+    } else {
+      evalTitle.innerHTML = '<i data-lucide="x-circle" style="color:var(--red); stroke-width:3;"></i> Strategic Failure';
+      evalDesc.innerHTML = `You compromised operational speed while still triggering regulatory battles and citizen outrage. You have severely damaged AWS's ability to expand in this region.`;
+      evalBox.style.borderColor = 'var(--red)';
+      evalBox.style.background = '#fef2f2';
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    const scatterDots = document.getElementById('scatterDots');
+    if (scatterDots) {
+      scatterDots.innerHTML = '';
+      const sampleSize = 350;
+      const step = Math.max(1, Math.floor(data.length / sampleSize));
+      
+      for(let i=0; i<data.length; i+=step) {
+        let r = data[i];
+        if(!r) break;
+
+        let xPos = ((r.fiscal + 100) / 200) * 100;
+        xPos = Math.max(2, Math.min(98, xPos)); 
+        
+        let yPos = 100 - (((r.stability + 100) / 200) * 100);
+        yPos = Math.max(2, Math.min(98, yPos));
+
+        const dot = document.createElement('div');
+        dot.className = 'scatter-dot';
+        dot.style.left = `${xPos}%`;
+        dot.style.top = `${yPos}%`;
+        dot.title = `Day ${r.day} | ROI Impact: ${r.fiscal} | Trust/Regulatory Stability: ${r.stability}`;
+        
+        scatterDots.appendChild(dot);
+      }
+    }
+  }
+
+  document.getElementById('generateBtn')?.addEventListener('click', generateDataset);
+
+  // --- Town Hall Chat Logic ---
+  const chatScript = [
+    { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "Good evening. AWS is thrilled to bring $550 million to Warrenton. If we can execute this build quickly, we will mint a new middle class here! We provide the compute power needed to optimize global climate decarbonization. We want to be partners in that growth." },
+    { type: 'msg-ngo', name: 'Citizens for Fauquier', role: 'Preservation Advocate', img: 'https://i.pravatar.cc/150?img=44', text: "Global decarbonization? What about the unpermitted gas turbines used in other AI sites? We will not let you bring environmental racism and toxic emissions to our fence-line communities just so you can maximize shareholder value!" },
+    { type: 'msg-staff', name: 'Town Planner', role: 'Zoning Administrator', img: 'https://i.pravatar.cc/150?img=32', text: "To clarify for the record, the Planning Commission still needs assurances on the 'giant soda straw' depletion of our local aquifer if you use standard evaporative cooling." },
+    { type: 'msg-biz', name: 'Local Business Owner', role: 'Tax Base Advocate', img: 'https://i.pravatar.cc/150?img=11', text: "Listen, our town desperately needs this revenue. In Oregon, tech employee gatherings alone pay local rent. And look at New Albany—they successfully used data center CBAs to fund STEM centers. We need AWS here, but they need to pay their fair share." },
+    { type: 'msg-util', name: 'Utility Rep', role: 'Regional Infrastructure', img: 'https://i.pravatar.cc/150?img=41', text: "If AWS doesn't agree to fund regional grid upgrades or offset their load, we will have to keep the regional coal plant open. Residential utility bills will rise for everyone to subsidize their AI energy demand." },
+    { type: 'msg-council', name: 'Mayor', role: 'Town Council Majority', img: 'https://i.pravatar.cc/150?img=68', text: "We hear everyone tonight. AWS, you have to agree to strict visual caps, and we need a concrete Community Benefits Agreement to fund local schools, or we simply can't pass this politically without being voted out." },
+    { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "We respect the town's vision, but imposing unviable infrastructure costs or severe architectural delays threatens the project entirely. We have a timeline to meet global AI demand. If Warrenton isn't open for business, another county will be." },
+    { type: 'msg-dissent', name: 'Council Dissenter', role: 'Town Council Minority', img: 'https://i.pravatar.cc/150?img=12', text: "I say let them leave! It's an extractive boom-and-bust cycle. You're demanding access to our water and land while hiding your blueprints behind NDAs. That is not 'integral ecology'—it's corporate bullying." }
+  ];
+
+  const chatContainer = document.getElementById('chatContainer');
+  const nextMsgBtn = document.getElementById('nextMsgBtn');
+  const finishChatBtn = document.getElementById('finishChatBtn');
+
+  nextMsgBtn?.addEventListener('click', () => {
+    if (chatIndex < chatScript.length) {
+      const msg = chatScript[chatIndex];
+      const msgEl = document.createElement('div');
+      msgEl.className = `chat-msg ${msg.type} ${msg.isRight ? 'right' : ''}`;
+      msgEl.innerHTML = `
+        <img src="${msg.img}" class="chat-avatar" alt="Avatar">
+        <div class="chat-bubble">
+          <div class="chat-header">
+            <span class="chat-name">${msg.name}</span>
+            <span class="chat-role">${msg.role}</span>
+          </div>
+          ${msg.text}
+        </div>
+      `;
+      chatContainer.appendChild(msgEl);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      chatIndex++;
+
+      if (chatIndex >= chatScript.length) {
+        nextMsgBtn.style.display = 'none';
+        finishChatBtn.style.display = 'flex';
+      }
+    }
+  });
+
+  finishChatBtn?.addEventListener('click', () => {
+     document.getElementById('roleplayGuidance').style.display = 'block';
+     finishChatBtn.style.display = 'none';
+     if (typeof lucide !== 'undefined') lucide.createIcons();
+     // Scroll down gently to reveal the instructions
+     setTimeout(() => {
+       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+     }, 100);
+  });
+
+  // Init routines
+  renderScenarios();
+  updateAll();
+</script>
+</body>
+</html>

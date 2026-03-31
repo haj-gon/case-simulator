@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gateway Under Pressure: Warrenton Data Center Decision Lab</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Gamified Theme Config -->
+  <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  fontFamily: {
+                      sans: ['Nunito', 'sans-serif'],
+                      mono: ['JetBrains Mono', 'monospace'],
+                  },
+                  colors: {
+                      game: {
+                          dark: '#0f172a',
+                          light: '#f1f5f9',
+                          blue: '#3b82f6',
+                          purple: '#8b5cf6',
+                          green: '#10b981',
+                          red: '#ef4444',
+                          yellow: '#f59e0b',
+                          teal: '#0d9488'
+                      }
+                  },
+                  boxShadow: {
+                      'game-sm': '2px 2px 0px rgba(15, 23, 42, 1)',
+                      'game': '4px 4px 0px rgba(15, 23, 42, 1)',
+                      'game-lg': '8px 8px 0px rgba(15, 23, 42, 1)',
+                  },
+                  borderWidth: {
+                      '3': '3px',
+                      '4': '4px',
+                  }
+              }
+          }
+      }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #0f172a;
+      --blue: #3b82f6;
+      --blue-hover: #2563eb;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --teal: #0d9488;
+      
+      /* Gamified Shadows */
+      --shadow-sm: 2px 2px 0px rgba(15, 23, 42, 1);
+      --shadow: 4px 4px 0px rgba(15, 23, 42, 1);
+      --shadow-lg: 8px 8px 0px rgba(15, 23, 42, 1);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    
+    /* Gamified Scrollbar */
+    ::-webkit-scrollbar { width: 12px; height: 12px; }
+    ::-webkit-scrollbar-track { background: #cbd5e1; border-left: 3px solid #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #3b82f6; border: 3px solid #0f172a; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+
+    body {
+      margin: 0;
+      font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background-color: #cbd5e1;
+      background-image: 
+          radial-gradient(#3b82f6 2px, transparent 2px),
+          radial-gradient(#3b82f6 2px, transparent 2px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      background-attachment: fixed;
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes pulseSoft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes scorePop { 0% { transform: scale(1); } 50% { transform: scale(1.15); color: var(--blue); } 100% { transform: scale(1); } }
+    
+    .stagger-1 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+    .stagger-2 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+
+    /* Modern Gamified Landing Page Styles */
+    .landing-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; position: relative; z-index: 1; }
+    
+    .landing-card { 
+      background: white; 
+      max-width: 900px; 
+      width: 100%; 
+      border-radius: var(--radius); 
+      box-shadow: var(--shadow-lg); 
+      overflow: hidden; 
+      animation: fadeUp 0.8s ease-out; 
+      border: 4px solid var(--ink);
+    }
+    
+    .landing-header { 
+      background: var(--blue); 
+      color: white; 
+      padding: 48px 40px; 
+      text-align: center; 
+      position: relative; 
+      border-bottom: 4px solid var(--ink);
+    }
+    
+    .landing-header h1 { margin: 0 0 16px; font-size: 2.8rem; font-weight: 900; letter-spacing: -0.02em; text-shadow: 2px 2px 0px var(--ink); }
+    .landing-header p { margin: 0; font-size: 1.15rem; color: #f1f5f9; max-width: 600px; margin: 0 auto; font-weight: 800; }
+    .landing-body { padding: 48px 40px; background: #f8fafc; }
+    
+    .objectives-box { 
+      background: white; 
+      border: 4px solid var(--ink); 
+      padding: 24px; 
+      border-radius: 16px; 
+      margin-bottom: 40px; 
+      box-shadow: var(--shadow);
+    }
+    .objectives-box h3 { margin-top: 0; color: var(--ink); display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 1.3rem;}
+    
+    .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 40px; }
+    .phase-step { background: white; padding: 24px; border-radius: 12px; border: 3px solid var(--ink); position: relative; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s;}
+    .phase-step:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    .step-badge { display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    .phase-step:nth-child(1) .step-badge { background: var(--amber); color: var(--ink); }
+    .phase-step:nth-child(2) .step-badge { background: var(--blue); color: white; }
+    .phase-step:nth-child(3) .step-badge { background: var(--green); color: white; }
+    .phase-step:nth-child(4) .step-badge { background: var(--purple); color: white; }
+
+    .phase-step h4 { margin: 0 0 8px 0; font-size: 1.2rem; color: var(--ink); font-weight: 900; }
+    .phase-step p { margin: 0; font-size: 0.95rem; color: var(--muted); font-weight: 700; }
+
+    .player-entry { display: flex; flex-direction: column; gap: 16px; background: white; padding: 32px; border-radius: 16px; text-align: center; border: 4px solid var(--ink); box-shadow: var(--shadow); }
+    
+    .start-btn { background: var(--green); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
+    .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
+
+    /* Main App Container */
+    .app-container { max-width: 1500px; margin: 0 auto; padding: 32px 24px; display: none; flex-direction: column; gap: 32px; position: relative; z-index: 1; }
+    
+    .hero { background: var(--ink); color: white; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden; justify-content: space-between; border: 4px solid var(--ink);}
+    .hero-content-wrap { display: flex; align-items: center; gap: 24px; }
+    .hero-icon { background: var(--blue); border: 3px solid white; box-shadow: var(--shadow-sm); padding: 20px; border-radius: 50%; flex-shrink: 0; animation: pulseSoft 4s infinite; }
+    .hero h1 { margin: 0 0 12px; font-size: 2.2rem; font-weight: 900; letter-spacing: -0.02em; }
+    .hero p { margin: 0; font-size: 1.1rem; color: #cbd5e1; max-width: 800px; font-weight: 700;}
+
+    .kpi-stack { display: flex; flex-direction: column; gap: 16px; }
+    .kpi-card { background: white; border-radius: var(--radius); padding: 16px 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; border: 3px solid var(--line); position: relative; width: 100%; }
+    .kpi-icon { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; border: 3px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    .kpi-info h4 { margin: 0 0 4px; font-size: 0.85rem; text-transform: uppercase; font-weight: 900; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .kpi-info .value { font-size: 2rem; font-weight: 900; color: var(--ink); line-height: 1; transition: color 0.3s ease; font-family: 'JetBrains Mono', monospace; }
+    .value.animate-pop { animation: scorePop 0.4s ease-out; }
+
+    .bg-blue { background: var(--blue); }
+    .bg-green { background: var(--green); }
+    .bg-amber { background: var(--amber); }
+    .bg-purple { background: var(--red); } /* Changed to red for legal durability map */
+
+    /* Modals */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+    .modal-overlay.active { display: flex; opacity: 1; }
+    .modal-content { background: white; border-radius: 20px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 32px; box-shadow: var(--shadow-lg); border: 4px solid var(--ink); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
+    .modal-overlay.active .modal-content { transform: scale(1); }
+    .close-modal { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: 2px solid var(--ink); border-radius: 8px; cursor: pointer; color: var(--ink); padding: 6px; box-shadow: 2px 2px 0px var(--ink); transition: all 0.1s;}
+    .close-modal:active { transform: translateY(2px); box-shadow: none; }
+    
+    .btn-outline { background: white; border: 3px solid var(--ink); color: var(--ink); padding: 10px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 900; cursor: pointer; transition: all 0.1s; display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); font-family: 'Nunito', sans-serif; }
+    .btn-outline:active { background: #f1f5f9; transform: translateY(2px); box-shadow: none; }
+
+    /* Main Grid */
+    .main-workspace { display: grid; grid-template-columns: 340px 1fr; gap: 32px; align-items: start; }
+    .sidebar { position: sticky; top: 32px; display: flex; flex-direction: column; gap: 24px; }
+    
+    .panel { background: var(--panel); border: 4px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 32px; }
+    .panel-title { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 1.4rem; font-weight: 900; color: var(--ink); }
+
+    /* Scenarios Grid & Levels */
+    .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+    .scenario-card { border: 3px solid var(--ink); border-radius: 16px; padding: 24px; background: white; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform 0.1s, box-shadow 0.1s; }
+    .scenario-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--ink); }
+    .scenario-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 900; color: var(--ink); background: var(--amber); padding: 6px 12px; border-radius: 8px; margin-bottom: 16px; align-self: flex-start; text-transform: uppercase; letter-spacing: 0.05em; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    .scenario-card h3 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.3; font-weight: 900; color: var(--ink); }
+    .scenario-card p { font-size: 1rem; font-weight: 700; color: var(--muted); margin: 0 0 20px; line-height: 1.5; }
+
+    /* Option Previews */
+    .option-list { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+    .option-btn { padding: 16px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.1s; display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif;}
+    .option-btn:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); }
+    .option-btn.active { background: var(--green); border-color: var(--ink); box-shadow: 0px 0px 0px var(--ink); transform: translateY(2px); }
+    .option-text strong { display: block; font-size: 1.05rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; }
+    .option-btn.active .option-text strong { color: white; }
+    .option-text span { font-size: 0.9rem; font-weight: 700; color: var(--muted); display: block; line-height: 1.4; }
+    .option-btn.active .option-text span { color: rgba(255,255,255,0.9); }
+    
+    .impact-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .impact-badge { font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; font-weight: 900; padding: 4px 8px; border-radius: 8px; display: inline-flex; align-items: center; gap: 4px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    .badge-pos { background: var(--green); color: white; }
+    .badge-neg { background: var(--red); color: white; }
+    .badge-neu { background: white; color: var(--ink); }
+    
+    /* Ensure active option badges stand out properly */
+    .option-btn.active .badge-pos { background: white; color: var(--green); box-shadow: none; }
+    .option-btn.active .badge-neg { background: var(--ink); color: white; box-shadow: none; }
+    .option-btn.active .badge-neu { box-shadow: none; }
+
+    /* Tabs Navigation */
+    .tabs-container { margin-top: 32px; background: white; border: 4px solid var(--ink); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
+    .tabs-header { display: flex; background: #cbd5e1; border-bottom: 4px solid var(--ink); overflow-x: auto; gap: 0; }
+    .tab-btn { flex: 1; padding: 16px 12px; background: transparent; border: none; border-right: 4px solid var(--ink); color: var(--ink); font-weight: 900; font-size: 1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; font-family: 'Nunito', sans-serif;}
+    .tab-btn:last-child { border-right: none; }
+    .tab-btn:hover:not(.locked):not(.active) { background: #e2e8f0; }
+    .tab-btn.active { color: white; background: var(--blue); }
+    .tab-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; background: #e2e8f0; color: #94a3b8; }
+    .tab-content { display: none; padding: 32px; background: white; }
+    .tab-content.active { display: block; animation: fadeUp 0.4s ease-out forwards; }
+
+    button { cursor: pointer; font-weight: 900; transition: all 0.1s; font-family: 'Nunito', sans-serif; }
+    .btn-success { background: var(--green); color: white; border: 3px solid var(--ink); padding: 16px 32px; font-size: 1.1rem; border-radius: 12px; box-shadow: var(--shadow); width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;}
+    .btn-success:active { transform: translateY(4px); box-shadow: none; }
+    .btn-primary { background: var(--blue); color: white; border: 3px solid var(--ink); padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
+    .btn-primary:active { transform: translateY(4px); box-shadow: none; }
+
+    /* Visual Dashboard Enhancements (Charts + Scatter) */
+    .scatter-container { position: relative; width: 100%; height: 450px; background: #f8fafc; border: 4px solid var(--ink); border-radius: 16px; overflow: hidden; box-shadow: inset 0 4px 8px rgba(0,0,0,0.1); }
+    .quad-top-right { position: absolute; top:0; left:50%; right:0; bottom:50%; background: rgba(16, 185, 129, 0.08); } 
+    .quad-bottom-right { position: absolute; top:50%; left:50%; right:0; bottom:0; background: rgba(239, 68, 68, 0.08); } 
+    .quad-top-left { position: absolute; top:0; left:0; right:50%; bottom:50%; background: rgba(59, 130, 246, 0.08); } 
+    .quad-bottom-left { position: absolute; top:50%; left:0; right:50%; bottom:0; background: rgba(107, 114, 128, 0.08); } 
+    
+    .axis-y { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: var(--ink); z-index: 5; margin-left: -2px;}
+    .axis-x { position: absolute; left: 0; right: 0; top: 50%; height: 4px; background: var(--ink); z-index: 5; margin-top: -2px;}
+    .ax-label { position: absolute; font-size: 0.85rem; font-weight: 900; color: var(--ink); z-index: 6; text-transform: uppercase; letter-spacing: 0.05em; background: white; padding: 2px 8px; border: 2px solid var(--ink); border-radius: 6px;}
+    .ax-right { right: 10px; top: calc(50% + 10px); }
+    .ax-left { left: 10px; top: calc(50% + 10px); }
+    .ax-top { top: 10px; left: calc(50% + 10px); }
+    .ax-bottom { bottom: 10px; left: calc(50% + 10px); }
+    
+    .quad-label { position: absolute; font-size: 1rem; font-weight: 900; opacity: 0.8; z-index: 4; text-transform: uppercase; }
+    .ql-tr { top: 24px; right: 24px; color: var(--green); text-align: right; }
+    .ql-br { bottom: 24px; right: 24px; color: var(--red); text-align: right; }
+    .ql-tl { top: 24px; left: 24px; color: var(--blue); }
+    .ql-bl { bottom: 24px; left: 24px; color: var(--muted); }
+
+    .scatter-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); transform: translate(-50%, -50%); opacity: 0.85; z-index: 10; transition: all 0.2s; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
+    .scatter-dot:hover { width: 20px; height: 20px; background: var(--amber); opacity: 1; z-index: 20; cursor: crosshair; }
+
+    /* --- Town Hall Chat Styles --- */
+    .chat-container { display: flex; flex-direction: column; gap: 24px; background: #cbd5e1; border: 4px solid var(--line); border-radius: 16px; padding: 32px; min-height: 400px; max-height: 600px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);}
+    .chat-msg { display: flex; gap: 16px; opacity: 0; transform: translateY(15px); animation: fadeUp 0.4s ease-out forwards; max-width: 85%; }
+    .chat-msg.right { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-avatar { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; border: 3px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); flex-shrink: 0; background: white; }
+    .chat-bubble { background: white; padding: 20px; border-radius: 16px; border: 3px solid var(--line); box-shadow: var(--shadow); position: relative; font-size: 1.05rem; line-height: 1.6; font-weight: 700; color: var(--ink); }
+    .chat-msg.right .chat-bubble { background: #eff6ff; }
+    
+    .chat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .chat-msg.right .chat-header { justify-content: flex-end; flex-direction: row-reverse; }
+    .chat-name { font-weight: 900; color: var(--ink); font-size: 1.15rem; }
+    
+    /* Specific Group Colors for Badges */
+    .chat-role { font-size: 0.75rem; text-transform: uppercase; font-weight: 900; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 8px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    
+    .msg-aws .chat-role { background: var(--amber); color: var(--ink); }
+    .msg-ngo .chat-role { background: var(--green); color: white; }
+    .msg-util .chat-role { background: var(--red); color: white; }
+    .msg-biz .chat-role { background: var(--blue); color: white; }
+    .msg-staff .chat-role { background: var(--purple); color: white; }
+    .msg-council .chat-role { background: var(--ink); color: white; }
+    .msg-dissent .chat-role { background: white; color: var(--ink); }
+
+    .chat-controls { display: flex; justify-content: center; margin-top: 32px; border-top: 4px solid var(--line); padding-top: 32px; }
+
+    @media (max-width: 1024px) { .main-workspace { grid-template-columns: 1fr; } .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } }
+    @media (max-width: 768px) { .sidebar { grid-template-columns: 1fr; } .hero-content-wrap { flex-direction: column; text-align: center; } .landing-header h1 { font-size: 2rem; } .hero { flex-direction: column; align-items: stretch; } .chat-msg { max-width: 100%; } }
+  </style>
+</head>
+<body>
+
+<div id="scoreModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="close-modal" id="closeScoreModal"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
+    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="book-open" style="color: var(--blue); width: 32px; height: 32px;"></i> Decision KPIs</h2>
+    
+    <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; font-weight: 900;"><i data-lucide="info" style="width: 20px; height: 20px; color: var(--blue);"></i> Evaluating the Project</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700; color: var(--muted);">As the Town Council, your job is to analyze this hyperscale project based on four distinct axes reflecting the community's primary concerns and the public record. Every decision is a valid trade-off between growth and preservation.</p>
+    </div>
+
+    <div style="background: #eff6ff; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--blue); box-shadow: 4px 4px 0px var(--blue);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--blue); font-weight: 900;"><i data-lucide="dollar-sign" style="width: 20px; height: 20px; stroke-width: 3;"></i> Fiscal Stability</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Tracks the estimated $550M corporate investment, massive tax windfalls, secondary job spillovers, and potential funding for Community Benefit Agreements. High scores indicate a well-funded municipal budget; low scores indicate deficit risk or opportunity costs.</p>
+    </div>
+
+    <div style="background: #fffbeb; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--amber); box-shadow: 4px 4px 0px var(--amber);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--amber); font-weight: 900;"><i data-lucide="users" style="width: 20px; height: 20px; stroke-width: 3;"></i> Public Trust / Legitimacy</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures institutional confidence. Transparency, responsive processes, and active community engagement improve this score. NDAs, perceived backdoor deals, and closed records degrade it.</p>
+    </div>
+
+    <div style="background: #ecfdf5; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--green); box-shadow: 4px 4px 0px var(--green);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--green); font-weight: 900;"><i data-lucide="map" style="width: 20px; height: 20px; stroke-width: 3;"></i> Gateway Compatibility</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Reflects the physical impact on Warrenton's scenic character and the mitigation of environmental racism. Evaluates constraints on emissions, noise, massing limits, and water utilization against the global need for decarbonization infrastructure.</p>
+    </div>
+
+    <div style="background: #fef2f2; padding: 20px; border-radius: 12px; border: 3px solid var(--red); box-shadow: 4px 4px 0px var(--red);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--red); font-weight: 900;"><i data-lucide="scale" style="width: 20px; height: 20px; stroke-width: 3;"></i> Legal Durability</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures the Town's exposure to appeals, FOIA litigation, and vested-rights battles. Actions that overstep zoning authority or deny procedural rights drastically lower this score.</p>
+    </div>
+  </div>
+</div>
+
+<div id="landingPage" class="landing-container">
+  <div class="landing-card">
+    <div class="landing-header">
+      <i data-lucide="landmark" style="width: 80px; height: 80px; margin-bottom: 24px; stroke-width: 1.5;"></i>
+      <h1>Gateway Under Pressure</h1>
+      <p>Data Center Decision Lab</p>
+    </div>
+    
+    <div class="landing-body">
+      <div class="objectives-box">
+        <h3><i data-lucide="leaf" style="color: var(--green); stroke-width: 3;"></i> Disruption, AI, and Care for Our Common Home</h3>
+        <p style="margin-bottom: 12px; font-weight: 700; color: var(--muted);">A low hum emerges from a vast, windowless facility, devouring energy and water with a voracious appetite. Like vampires of folklore, these mechanical behemoths only enter a town if explicitly invited inside. Enticed by explosive economic growth, local governments across the U.S. are opening their doors to hyperscale AI data centers. Yet, this rapid proliferation places unprecedented strain on local resources. The average data center now covers 224 acres—a 144% increase since 2022.</p>
+        <p style="margin-bottom: 0; font-weight: 800; color: var(--ink);">As Pope Francis warned in <em>Laudato Si’</em>, we must "care for our common home" against unchecked technological growth. Through the lens of integral ecology, you must navigate the tension between global AI advancement, local economic windfalls, and profound environmental stewardship. Will you allow AI to act as a catalyst for human flourishing, or a detriment to our shared environment?</p>
+      </div>
+
+      <h3 style="margin-top: 0; text-align: center; margin-bottom: 24px; font-size: 1.6rem; font-weight: 900;">Simulation Sequence</h3>
+      <div class="phase-grid">
+        <div class="phase-step">
+          <span class="step-badge">Step 1</span>
+          <h4>The Council Vote</h4>
+          <p>Navigate 8 critical policy dilemmas regarding zoning, NDAs, CBAs vs fees-in-lieu, noise, and water.</p>
+        </div>
+        <div class="phase-step">
+          <span class="step-badge">Step 2</span>
+          <h4>Impact Analysis</h4>
+          <p>Review the exact numerical impact of your policies on Fiscal Stability and Public Trust.</p>
+        </div>
+        <div class="phase-step">
+          <span class="step-badge">Step 3</span>
+          <h4>Stress Test</h4>
+          <p>Run a 1,000-day simulation to test the legal durability and social resilience of your decision.</p>
+        </div>
+        <div class="phase-step">
+          <span class="step-badge">Step 4</span>
+          <h4>Town Hall Debate</h4>
+          <p>Enter the live mock negotiation with AWS, advocacy groups, planners, and dissenters.</p>
+        </div>
+      </div>
+
+      <div class="player-entry">
+        <button id="startBtn" class="start-btn"><i data-lucide="gavel" style="width:24px; height:24px; display:inline-block; vertical-align:text-bottom; margin-right:8px; stroke-width: 3;"></i> Call Meeting to Order</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="appContainer" class="app-container">
+  <header class="hero stagger-1">
+    <div class="hero-content-wrap">
+      <div class="hero-icon">
+        <i data-lucide="landmark" style="width: 48px; height: 48px; stroke-width: 2;"></i>
+      </div>
+      <div>
+        <h1>The Council Vote: AI and Warrenton’s Future</h1>
+        <p>A/B test the conditions to balance global technological progress and tax revenue against gateway compatibility and legal durability.</p>
+      </div>
+    </div>
+    <button class="btn-outline" id="openScoreModalBtn">
+      <i data-lucide="help-circle" style="width: 20px; height: 20px; stroke-width: 3;"></i> View KPI Definitions
+    </button>
+  </header>
+
+  <main class="main-workspace stagger-2">
+    <aside class="sidebar">
+      <div class="panel" style="background: white;">
+        <h2 class="panel-title" style="border-bottom: none; margin-bottom: 24px;"><i data-lucide="bar-chart-2" style="stroke-width: 3; color: var(--blue);"></i> Town Scorecard</h2>
+        
+        <div class="kpi-stack">
+          <div class="kpi-card">
+            <div class="kpi-icon bg-blue"><i data-lucide="dollar-sign" style="stroke-width: 3;"></i></div>
+            <div class="kpi-info">
+              <h4>Fiscal Stability</h4>
+              <div class="value" id="finScore">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon bg-amber"><i data-lucide="users" style="stroke-width: 3;"></i></div>
+            <div class="kpi-info">
+              <h4>Public Trust</h4>
+              <div class="value" id="socScore">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon bg-green"><i data-lucide="map" style="stroke-width: 3;"></i></div>
+            <div class="kpi-info">
+              <h4>Gateway Compatibility</h4>
+              <div class="value" id="natScore">0</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon bg-purple"><i data-lucide="scale" style="stroke-width: 3;"></i></div>
+            <div class="kpi-info">
+              <h4>Legal Durability</h4>
+              <div class="value" id="legalScore">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="content-area">
+      
+      <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+        <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="file-text" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Policy Docket</h2>
+        <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 policy domains based on the actual public record. <strong>Every choice represents a valid, balanced trade-off between economic revitalization and preserving local character.</strong></p>
+        <div class="scenario-grid" id="scenarioGrid"></div>
+      </div>
+
+      <div class="tabs-container">
+        <div class="tabs-header">
+          <button class="tab-btn active" data-tab="overview" id="tabBtnOverview"><i data-lucide="activity" style="stroke-width: 3;"></i> 1. Impact</button>
+          <button class="tab-btn locked" data-tab="dataset" id="tabBtnDataset"><i data-lucide="cloud-lightning" style="stroke-width: 3;"></i> 2. Stress Test</button>
+          <button class="tab-btn locked" data-tab="dashboard" id="tabBtnDashboard"><i data-lucide="scatter-chart" style="stroke-width: 3;"></i> 3. Results</button>
+          <button class="tab-btn locked" data-tab="townhall" id="tabBtnTownhall"><i data-lucide="mic" style="stroke-width: 3;"></i> 4. Town Hall</button>
+        </div>
+
+        <div class="tab-content active" id="overview">
+          <div style="display: grid; grid-template-columns: 1fr; gap: 32px;">
+            <div style="text-align: center; border-bottom: 3px dashed var(--ink); padding-bottom: 40px; padding-top: 16px;">
+              <p style="margin: 0 0 20px 0; color: var(--ink); font-weight: 900; font-size: 1.4rem;">Ready to finalize the Special Use Permit?</p>
+              <button id="phaseActionBtn" class="btn-success" style="max-width: 400px; margin: 0 auto;"><i data-lucide="lock" style="stroke-width: 3;"></i> Lock Council Votes & View Impact</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="dataset">
+          <div style="background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; margin-bottom: 32px; box-shadow: var(--shadow);">
+            <strong style="display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 900;"><i data-lucide="cpu" style="width: 28px; height: 28px; color: var(--blue);"></i> Durability Stress Test Engine</strong>
+            <p style="margin: 12px 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--muted);">This engine runs 1,000 simulated days using your finalized policies. It injects random FOIA requests, infrastructure appeals, and citizen lawsuits to see if Warrenton's decision survives legally and politically.</p>
+          </div>
+          
+          <div style="display: flex; gap: 16px; margin-bottom: 32px;">
+            <button class="btn-primary" id="generateBtn" style="flex: 2; padding: 20px; font-size: 1.2rem; background: var(--amber); color: var(--ink); border-color: var(--ink);"><i data-lucide="refresh-cw" style="stroke-width: 3;"></i> Run 1,000 Simulated Days</button>
+          </div>
+          
+          <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 40px; display:none;" id="proceedMatrixWrapper">
+            <button id="goToMatrixBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--blue);"><i data-lucide="arrow-right" style="stroke-width: 3;"></i> View Durability Results</button>
+          </div>
+        </div>
+
+        <div class="tab-content" id="dashboard">
+          <div id="scatterEvalBox" style="margin-bottom: 32px; padding: 24px; border-radius: 16px; border: 4px solid var(--ink); background: white; box-shadow: var(--shadow);">
+             <h4 id="scatterEvalTitle" style="margin: 0 0 12px 0; font-size: 1.4rem; font-weight: 900; display: flex; align-items: center; gap: 12px;">Analyzing Institutional Integrity...</h4>
+             <p id="scatterEvalDesc" style="margin: 0; font-size: 1.1rem; line-height: 1.5; font-weight: 700; color: var(--muted);"></p>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+            <div>
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900;"><i data-lucide="scatter-chart" style="color: var(--blue); stroke-width: 3;"></i> The Failure Matrix</h3>
+              <p style="margin: 8px 0 0 0; color: var(--ink); font-size: 1rem; font-weight: 800;">Distribution of 1,000 days: Daily Tax Yield vs. Legal/Social Stability.</p>
+            </div>
+          </div>
+
+          <div class="scatter-container" id="scatterPlot">
+            <div class="quad-top-right"></div>
+            <div class="quad-bottom-right"></div>
+            <div class="quad-top-left"></div>
+            <div class="quad-bottom-left"></div>
+            
+            <div class="axis-y"></div>
+            <div class="axis-x"></div>
+            <div class="ax-label ax-top">+ Legal & Trust (Safe)</div>
+            <div class="ax-label ax-bottom">- Lawsuits & Recalls</div>
+            <div class="ax-label ax-right">High Tax Yield +</div>
+            <div class="ax-label ax-left">- Opportunity Cost / Deficit</div>
+
+            <div class="quad-label ql-tr">Sustainable Mandate<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Taxes secured, low legal risk</span></div>
+            <div class="quad-label ql-br">Political Crisis<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Money secured, FOIA/Appeals triggered</span></div>
+            <div class="quad-label ql-tl">Over-Regulation<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Town safe, but developer withdraws</span></div>
+            <div class="quad-label ql-bl">Total Failure<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Deficits and Vested Rights Battles</span></div>
+            
+            <div id="scatterDots"></div>
+          </div>
+          
+          <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 32px;">
+            <p style="font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 8px;">Prepare for the Public.</p>
+            <p style="color: var(--muted); font-weight: 800; margin-bottom: 24px; font-size: 1.1rem;">The impact is clear. Now face the stakeholders who will argue these precise points.</p>
+            <button id="goToTownHallBtn" class="btn-success" style="background:var(--purple); margin: 0 auto; max-width: 400px; font-size: 1.2rem;"><i data-lucide="mic" style="stroke-width: 3;"></i> Enter Town Hall Debate</button>
+          </div>
+        </div>
+
+        <div class="tab-content" id="townhall">
+          <div style="margin-bottom: 32px; background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; box-shadow: var(--shadow);">
+            <h3 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 12px; font-size: 1.8rem; font-weight: 900;"><i data-lucide="users" style="color: var(--purple); width: 32px; height: 32px; stroke-width: 3;"></i> Live Town Hall Forum</h3>
+            <p style="color: var(--muted); font-size: 1.1rem; margin: 0; font-weight: 800;">Watch the stakeholder perspectives unfold based on the realities of the Warrenton case study. Read their arguments carefully before beginning the classroom roleplay.</p>
+          </div>
+
+          <div class="chat-container" id="chatContainer">
+            </div>
+
+          <div class="chat-controls">
+            <button id="nextMsgBtn" class="btn-primary" style="display:flex; align-items:center; gap:8px; font-size: 1.2rem; padding: 16px 32px; background: var(--blue);"><i data-lucide="message-circle" style="stroke-width: 3;"></i> Next Speaker</button>
+            <button id="finishChatBtn" class="btn-success" style="display:none; max-width: 400px; font-size: 1.2rem; padding: 16px 32px; background: var(--green);"><i data-lucide="gavel" style="stroke-width: 3;"></i> Reveal Roleplay Instructions</button>
+          </div>
+
+          <div id="roleplayGuidance" style="display: none; margin-top: 40px; padding: 32px; border: 4px solid var(--purple); border-radius: 16px; background: white; box-shadow: var(--shadow-lg); animation: fadeUp 0.5s ease-out forwards;">
+            <h3 style="margin-top: 0; color: var(--purple); display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 900;"><i data-lucide="clipboard-list" style="stroke-width: 3; width: 28px; height: 28px;"></i> Live Roleplay Instructions</h3>
+            <p style="font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 24px;">The simulated chat above mirrors the actual public hearings where stakeholders clashed over fiscal windfalls, NDAs, and environmental racism. Now it is your turn to negotiate SUP-22-3.</p>
+            
+            <ul style="font-size: 1.05rem; font-weight: 700; color: var(--muted); padding-left: 24px; line-height: 1.8; margin-bottom: 32px;">
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 1: Breakout (10 mins)</strong> - Divide into assigned groups. Identify the metrics you cannot compromise on based on the case record.
+                <ul style="list-style-type: circle; margin-top: 8px; margin-bottom: 16px; color: var(--muted); font-size: 0.95rem;">
+                  <li><em>Town Council Majority:</em> Secure the $900k revenue while mitigating enough harm to survive the next election. Decide if you will accept fee-in-lieu payments or negotiate CBAs.</li>
+                  <li><em>AWS / Data Services:</em> Resist burdensome clean-energy mandates and infrastructure costs (like undergrounding). Push for direct fee-in-lieu tax structures and emphasize your role in global decarbonization.</li>
+                  <li><em>Citizens / Preservation Advocates:</em> Demand algorithmic restraint, standard property taxes for schools, and zero fossil-fuel emissions to prevent environmental racism at the fence-line. Use the threat of FOIA litigation.</li>
+                  <li><em>Town Planners / Utilities:</em> Enforce zoning logic and prevent regional grid strain and aquifer depletion from local decisions.</li>
+                </ul>
+              </li>
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 2: Opening Statements (10 mins)</strong> - Each group gets 2 minutes to present their non-negotiable demands to the room.</li>
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 3: Open Negotiation (25 mins)</strong> - The Council moderates. Debate the core conditions: NDAs, Gas Turbines/Emissions, CBAs vs Fees-in-Lieu, and Noise testing.</li>
+              <li><strong class="text-game-dark">Step 4: The Final Vote (10 mins)</strong> - The Town Council formally votes on the finalized SUP conditions.</li>
+            </ul>
+            
+            <div style="text-align: center; font-size: 1.4rem; font-weight: 900; color: var(--ink); border-top: 4px dashed var(--purple); padding-top: 24px;">
+              Close your laptops. The floor is now open!
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+
+  function mulberry32(a) {
+    return function() {
+      let t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+  }
+
+  // Modals
+  document.getElementById('openScoreModalBtn')?.addEventListener('click', () => {
+    document.getElementById('scoreModal')?.classList.add('active');
+  });
+  document.getElementById('closeScoreModal')?.addEventListener('click', () => {
+    document.getElementById('scoreModal')?.classList.remove('active');
+  });
+  document.getElementById('scoreModal')?.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
+  });
+
+  // State
+  let selectedOptions = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0, s7: 0, s8: 0 }; 
+  let currentPhase = 1;
+  let generatedRows = [];
+  let chatIndex = 0;
+
+  document.getElementById('startBtn')?.addEventListener('click', () => {
+    document.getElementById('landingPage').style.display = 'none';
+    const bgBlobs = document.getElementById('bgBlobs');
+    if (bgBlobs) bgBlobs.style.display = 'none'; 
+    document.getElementById('appContainer').style.display = 'flex';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  });
+
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!btn.classList.contains('locked')) {
+        switchTab(btn.dataset.tab);
+      }
+    });
+  });
+
+  // --- Revised Balanced Scenarios (3 Choices Each) ---
+  const scenarios = [
+    {
+      id: "s1", tag: "Zoning History", icon: "book-open",
+      title: "The 2021 Zoning Text Amendment",
+      desc: "The site has been industrially zoned since 1970. You must decide whether to leverage this zoning to catalyze a major technological transition, carefully phase its integration, or restrict it to prioritize historical preservation.",
+      options: [
+        { name: "Embrace the Tech Boom", summary: "Fully annex land to signal the town is 'open for business.' This secures a massive $550M investment, mints a new middle class through high-paying tech careers, and provides immense tax revenues to fund local public schools.", effects: { fiscal: 20, trust: -10, gateway: -10, legal: 10 } },
+        { name: "Phased Industrial Integration", summary: "Allow development but strictly cap the square footage and scale for the first five years. This secures moderate initial tax revenue and jobs while preserving community buffers, though it frustrates developers seeking immediate, unconstrained hyperscale expansion.", effects: { fiscal: 10, trust: 5, gateway: 5, legal: -5 } },
+        { name: "Prioritize Historic Preservation", summary: "Treat the hyperscale use as fundamentally incompatible to protect the gateway's historic character and rural identity. This prevents industrialization but risks losing an anchor investor, alienating regional job markets, and forfeiting transformative school funding.", effects: { fiscal: -20, trust: 20, gateway: 15, legal: -20 } }
+      ]
+    },
+    {
+      id: "s2", tag: "Process", icon: "eye",
+      title: "Transparency & NDA Protocols",
+      desc: "Critics allege back-door meetings and filed FOIA requests for 3,000+ withheld emails. Do you rely on standard corporate confidentiality to secure the deal, seek a middle-ground disclosure, or mandate full openness?",
+      options: [
+        { name: "Maintain Executive NDAs", summary: "Protect proprietary corporate data essential for the rapid deployment of global tech infrastructure. Shielding negotiations prevents competitors from stalling the project, securing the immediate regional tax base and expediting local economic integration.", effects: { fiscal: 15, trust: -30, gateway: 0, legal: -15 } },
+        { name: "Targeted Public Summaries", summary: "Require developers to release comprehensive environmental and fiscal impact summaries while shielding proprietary server blueprints. This balances public awareness with corporate security, though it leaves transparency advocates highly suspicious and developers mildly constrained.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 5 } },
+        { name: "Mandate Full Disclosure", summary: "Release all internal records to restore public trust and ensure absolute democratic legitimacy. While this prevents accusations of backdoor deals, it risks chilling future tech investments, significantly delaying revenue streams, and frustrating developer operations.", effects: { fiscal: -15, trust: 30, gateway: 0, legal: 15 } }
+      ]
+    },
+    {
+      id: "s3", tag: "Aesthetics", icon: "layout",
+      title: "Gateway Design Standards",
+      desc: "AWS wants a standard industrial build for rapid deployment. Planners and citizens demand compatibility with historic Warrenton: brick facades, heavy landscaping, and strict height limits.",
+      options: [
+        { name: "Standard Industrial Design", summary: "Approve a standard build to minimize developer friction and expedite the municipal tax windfall. This allows for the rapid activation of local supplier networks—benefiting concrete layers, fencers, and businesses that thrive on construction booms.", effects: { fiscal: 20, trust: -20, gateway: -30, legal: 0 } },
+        { name: "Hybrid Green Infrastructure", summary: "Require living green walls and extensive berms to mask the facility without altering the fundamental building dimensions. This somewhat softens the visual impact and noise for residents, but imposes moderate, unstandardized maintenance costs on the developer.", effects: { fiscal: 0, trust: 5, gateway: 15, legal: 5 } },
+        { name: "Mandate 37ft Cap & Brick", summary: "Preserve the historic visual character of the gateway and naturally limit acoustic disruption through strict aesthetic rules. However, imposing strict architectural mandates creates massive redesign costs that threaten the project's overall financial viability and timeline.", effects: { fiscal: -15, trust: 15, gateway: 30, legal: 5 } }
+      ]
+    },
+    {
+      id: "s4", tag: "Env. Justice", icon: "alert-triangle",
+      title: "Power Sourcing & Emissions",
+      desc: "To meet immediate power needs, developers often rely on gas turbines or extended coal plants. How will the town balance immediate grid reliability against fence-line pollution and long-term sustainability?",
+      options: [
+        { name: "Allow Flexible Power Sourcing", summary: "Permit flexible power sourcing to ensure immediate grid reliability. This powers AI systems capable of global climate modeling, generates a local utility contracting boom, and prevents delays in the facility's highly lucrative operational timeline.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -10 } },
+        { name: "Mandate Grid Upgrade Subsidies", summary: "Force the developer to co-fund regional substation upgrades to handle their immense load alongside standard fossil fuels. This stabilizes the local grid for residents, but creates complex legal contracts and slightly reduces the developer's immediate profit margins.", effects: { fiscal: 5, trust: 5, gateway: -5, legal: 15 } },
+        { name: "Require Clean Energy Matching", summary: "Follow the Lancaster model by requiring 100% renewable energy offsets to protect frontline communities from emissions. This ensures environmental justice but heavily burdens the developer, limits facility uptime, and slows overall profitability.", effects: { fiscal: -15, trust: 25, gateway: 20, legal: 5 } }
+      ]
+    },
+    {
+      id: "s5", tag: "Tax Policy", icon: "landmark",
+      title: "Revenue Allocation & Benefits",
+      desc: "Developers frequently offer nontax 'fees-in-lieu' for immediate town cash, but this bypasses school districts. How will you structure the massive incoming tax windfall for maximum community benefit?",
+      options: [
+        { name: "Accept Direct Fee-in-Lieu", summary: "Create an immediate, concentrated municipal budget surge. This provides the town council with flexible, unbureaucratic capital to rapidly build civic infrastructure and manage rapid growth, bypassing complex school district funding formulas entirely.", effects: { fiscal: 30, trust: -20, gateway: 0, legal: -15 } },
+        { name: "Apply Standard Commercial Taxes", summary: "Reject special agreements and apply standard industrial tax rates. This ensures a predictable, legally unassailable revenue stream that automatically funds school districts, but it sacrifices the potential for a massive, targeted municipal cash injection.", effects: { fiscal: 10, trust: 10, gateway: 0, legal: 25 } },
+        { name: "Negotiate Robust CBAs", summary: "Legally bind the developer to fund specific community projects like affordable housing and STEM grants. This ensures broad, equitable community enrichment, but complicates the approval process and risks driving the developer to a cheaper county.", effects: { fiscal: -5, trust: 30, gateway: 5, legal: 5 } }
+      ]
+    },
+    {
+      id: "s6", tag: "Resources", icon: "droplet",
+      title: "Water-Use Restrictions",
+      desc: "Data centers can consume massive amounts of water. The town must determine the limits on standard evaporative cooling systems versus forcing the developer into unproven technologies or seasonal caps.",
+      options: [
+        { name: "Permit Evaporative Cooling", summary: "Utilize highly efficient, standard cooling technology that keeps the facility economically competitive on a global scale. This guarantees the ongoing municipal tax stream and avoids forcing the developer into unproven, expensive mechanical redesigns.", effects: { fiscal: 20, trust: -25, gateway: -25, legal: -5 } },
+        { name: "Enforce Seasonal Water Caps", summary: "Allow standard cooling but mandate severe usage restrictions during summer drought months. This protects the local aquifer during critical periods while allowing standard tech, though it forces the data center to throttle compute power during peaks.", effects: { fiscal: 5, trust: 10, gateway: 10, legal: 5 } },
+        { name: "Mandate Closed-Loop Systems", summary: "Protect the local aquifer from rapid depletion and ensure long-term regional water security. While environmentally sound, it forces expensive technological shifts that could significantly delay or deter the facility's local economic gains.", effects: { fiscal: -15, trust: 20, gateway: 25, legal: 0 } }
+      ]
+    },
+    {
+      id: "s7", tag: "Lifecycle", icon: "trash-2",
+      title: "Decommissioning Conditions",
+      desc: "What happens if technology changes and the building is abandoned in 15 years? Citizens want a bonded guarantee the site will be cleared, while developers want standard real estate risk profiles.",
+      options: [
+        { name: "Assume Standard Commercial Risk", summary: "Signal the town is highly business-friendly, encouraging a clustered tech ecosystem that continually upgrades servers. It assumes ongoing growth will organically replace aging infrastructure without preemptive, hostile regulatory burdens on the developer.", effects: { fiscal: 15, trust: -20, gateway: -10, legal: -15 } },
+        { name: "Establish Partial Escrow Fund", summary: "Require a moderate, incremental fund built over ten years to cover basic demolition if abandoned. This provides a safety net for the town without an aggressive upfront financial hurdle, though it may not cover full site remediation.", effects: { fiscal: 5, trust: 10, gateway: 5, legal: 10 } },
+        { name: "Require Full Decommissioning Bond", summary: "Guarantee the site won't become a stranded asset or a blighted industrial shell if technology shifts rapidly. While it protects the town physically, requiring a steep upfront financial bond strongly deters future hyperscale builders.", effects: { fiscal: -10, trust: 25, gateway: 15, legal: 20 } }
+      ]
+    },
+    {
+      id: "s8", tag: "Strategy", icon: "git-commit",
+      title: "Post-Approval Policy",
+      desc: "If approved, how does the town handle future data center applications in Industrial zones to prevent serial development while maintaining a strong tech tax base?",
+      options: [
+        { name: "Retain SUP Pathway for Growth", summary: "Embrace the AI boom to permanently transition the town into a prosperous tech hub. This strategy funds local public goods indefinitely through future builds, accepting manageable growing pains like rising housing demand as acceptable.", effects: { fiscal: 25, trust: -30, gateway: -20, legal: -10 } },
+        { name: "Implement Zone-Specific Caps", summary: "Allow future development but strictly limit it to specific, pre-approved industrial acreage limits. This balances ongoing tech investment with controlled municipal growth, though it caps the ultimate economic ceiling and frustrates developers.", effects: { fiscal: 10, trust: 10, gateway: 10, legal: 15 } },
+        { name: "Initiate Ban on Future Builds", summary: "Protect the town's rural identity from becoming a permanent industrial corridor. This decisively prevents serial data center development and regional infrastructure strain, but permanently locks the municipality out of the digital economy's wealth.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 10 } }
+      ]
+    }
+  ];
+
+  const scenarioGrid = document.getElementById('scenarioGrid');
+
+  function getBadgeClass(val) {
+    if(val > 0) return 'badge-pos';
+    if(val < 0) return 'badge-neg';
+    return 'badge-neu';
+  }
+
+  function renderScenarios() {
+    if (!scenarioGrid) return;
+    scenarioGrid.innerHTML = '';
+
+    scenarios.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'scenario-card';
+      
+      card.innerHTML = `
+        <div class="scenario-tag"><i data-lucide="${s.icon}" style="width:16px; height:16px; stroke-width: 3;"></i> ${s.tag}</div>
+        <h3>${s.title}</h3>
+        <p>${s.desc}</p>
+        <div class="option-list"></div>
+      `;
+      
+      const list = card.querySelector('.option-list');
+      s.options.forEach((op, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn' + (selectedOptions[s.id] === idx ? ' active' : '');
+        
+        let impactHtml = '';
+        if (currentPhase === 2) {
+            const fB = `<span class="impact-badge ${getBadgeClass(op.effects.fiscal)}"><i data-lucide="dollar-sign" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.fiscal > 0 ? '+':''}${op.effects.fiscal}</span>`;
+            const tB = `<span class="impact-badge ${getBadgeClass(op.effects.trust)}"><i data-lucide="users" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.trust > 0 ? '+':''}${op.effects.trust}</span>`;
+            const gB = `<span class="impact-badge ${getBadgeClass(op.effects.gateway)}"><i data-lucide="map" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.gateway > 0 ? '+':''}${op.effects.gateway}</span>`;
+            const lB = `<span class="impact-badge ${getBadgeClass(op.effects.legal)}"><i data-lucide="scale" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.legal > 0 ? '+':''}${op.effects.legal}</span>`;
+            impactHtml = `<div class="impact-preview">${fB}${tB}${gB}${lB}</div>`;
+        }
+
+        btn.innerHTML = `
+          <div class="option-text">
+            <strong>${op.name}</strong>
+            <span>${op.summary}</span>
+          </div>
+          ${impactHtml}
+        `;
+        btn.addEventListener('click', () => {
+          selectedOptions[s.id] = idx;
+          renderScenarios();
+          updateAll();
+        });
+        list.appendChild(btn);
+      });
+      scenarioGrid.appendChild(card);
+    });
+    
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function getAggregate() {
+    const total = { fiscal: 0, trust: 0, gateway: 0, legal: 0 };
+    scenarios.forEach(s => {
+      const choice = s.options[selectedOptions[s.id] || 0];
+      Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
+    });
+    return total;
+  }
+
+  function animateValue(id, end, suffix = '') {
+    const obj = document.getElementById(id);
+    if (!obj) return;
+    const startText = obj.textContent.replace(/[^0-9-]/g, ''); 
+    const start = parseInt(startText) || 0;
+    const duration = 500;
+    let startTimestamp = null;
+    
+    obj.classList.remove('animate-pop');
+    void obj.offsetWidth; 
+    obj.classList.add('animate-pop');
+
+    let finalColor = end > 0 ? 'var(--green)' : end < 0 ? 'var(--red)' : 'var(--ink)';
+    obj.style.color = finalColor;
+    setTimeout(() => { obj.style.color = 'var(--ink)'; }, 600);
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const current = Math.floor(progress * (end - start) + start);
+      obj.textContent = (current > 0 ? '+' : '') + current + suffix;
+      if (progress < 1) window.requestAnimationFrame(step);
+      else obj.textContent = (end > 0 ? '+' : '') + end + suffix;
+    };
+    window.requestAnimationFrame(step);
+  }
+
+  function updateAll() {
+    const total = getAggregate();
+    animateValue('finScore', total.fiscal);
+    animateValue('socScore', total.trust);
+    animateValue('natScore', total.gateway);
+    animateValue('legalScore', total.legal);
+  }
+
+  document.getElementById('phaseActionBtn')?.addEventListener('click', () => {
+    if (currentPhase === 1) {
+      currentPhase = 2;
+      const btn = document.getElementById('phaseActionBtn');
+      btn.innerHTML = '<i data-lucide="check-check" style="stroke-width: 3;"></i> Proceed to Durability Stress Test';
+      
+      renderScenarios();
+      alert("Impact Metrics unlocked! You can now see the exact trade-offs on the Town Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } else if (currentPhase === 2) {
+      document.getElementById('tabBtnDataset').classList.remove('locked');
+      switchTab('dataset');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  document.getElementById('goToMatrixBtn')?.addEventListener('click', () => {
+      document.getElementById('tabBtnDashboard').classList.remove('locked');
+      switchTab('dashboard');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('goToTownHallBtn')?.addEventListener('click', () => {
+      document.getElementById('tabBtnTownhall').classList.remove('locked');
+      switchTab('townhall');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // --- Monte Carlo Generator Logic ---
+  function generateDataset() {
+    const size = 1000; 
+    const agg = getAggregate();
+    const rand = mulberry32(size + 11);
+    const randNormal = () => (rand() + rand() + rand() + rand() + rand() + rand() - 3) / 3;
+
+    generatedRows = [];
+
+    for (let i = 1; i <= size; i++) {
+      const litigationVolatility = randNormal() * 20; 
+      const dailyFiscal = Math.round(agg.fiscal + (randNormal() * 15));
+      const legalSocialStability = Math.round((agg.legal + agg.trust) / 2 + (litigationVolatility * (agg.legal < 0 ? -1.5 : 0.5)));
+
+      generatedRows.push({ day: i, fiscal: dailyFiscal, stability: legalSocialStability });
+    }
+    
+    renderDashboard(); 
+    
+    const btn = document.getElementById('generateBtn');
+    if(btn) {
+        btn.innerHTML = '<i data-lucide="check" style="stroke-width: 3;"></i> 1,000 Days Simulated!';
+        btn.style.background = 'var(--green)';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        setTimeout(() => { document.getElementById('proceedMatrixWrapper').style.display = 'block'; }, 1000);
+    }
+  }
+
+  function renderDashboard() {
+    let data = generatedRows;
+    if (data.length === 0) return;
+
+    let avgF = 0, avgS = 0;
+    data.forEach(r => { avgF += r.fiscal; avgS += r.stability; });
+    avgF /= data.length; avgS /= data.length;
+
+    const evalTitle = document.getElementById('scatterEvalTitle');
+    const evalDesc = document.getElementById('scatterEvalDesc');
+    const evalBox = document.getElementById('scatterEvalBox');
+
+    if (avgF >= 0 && avgS >= 0) {
+      evalTitle.innerHTML = '<i data-lucide="check-circle" style="color:var(--green); stroke-width:3;"></i> Sustainable Mandate Achieved';
+      evalDesc.innerHTML = `Your conditions secured the tax revenue while maintaining enough procedural legitimacy to avoid debilitating FOIA lawsuits and aesthetic degradation.`;
+      evalBox.style.borderColor = 'var(--green)';
+      evalBox.style.background = '#ecfdf5';
+    } else if (avgF >= 0 && avgS < 0) {
+      evalTitle.innerHTML = '<i data-lucide="alert-triangle" style="color:var(--amber); stroke-width:3;"></i> Fiscal Win, Political Crisis';
+      evalDesc.innerHTML = `You secured the money (Avg Tax Yield <strong style="color:var(--green)">+${avgF.toFixed(1)}</strong>), but by failing to mandate transparency and strict gateway protections, you triggered a massive FOIA lawsuit in the Court of Appeals.`;
+      evalBox.style.borderColor = 'var(--amber)';
+      evalBox.style.background = '#fffbeb';
+    } else if (avgF < 0 && avgS >= 0) {
+      evalTitle.innerHTML = '<i data-lucide="info" style="color:var(--blue); stroke-width:3;"></i> Over-Regulated Safety';
+      evalDesc.innerHTML = `The gateway view is perfectly safe and trust is high (Stability: <strong>+${avgS.toFixed(1)}</strong>), but the massive burdens placed on the developer threaten the project's viability, creating municipal opportunity costs.`;
+      evalBox.style.borderColor = 'var(--blue)';
+      evalBox.style.background = '#eff6ff';
+    } else {
+      evalTitle.innerHTML = '<i data-lucide="x-circle" style="color:var(--red); stroke-width:3;"></i> Catastrophic Strategic Deficit';
+      evalDesc.innerHTML = `You managed to lose the financial upside while still triggering vested rights battles and citizen outrage. You have severely damaged the Town's regulatory authority.`;
+      evalBox.style.borderColor = 'var(--red)';
+      evalBox.style.background = '#fef2f2';
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    const scatterDots = document.getElementById('scatterDots');
+    if (scatterDots) {
+      scatterDots.innerHTML = '';
+      const sampleSize = 350;
+      const step = Math.max(1, Math.floor(data.length / sampleSize));
+      
+      for(let i=0; i<data.length; i+=step) {
+        let r = data[i];
+        if(!r) break;
+
+        let xPos = ((r.fiscal + 100) / 200) * 100;
+        xPos = Math.max(2, Math.min(98, xPos)); 
+        
+        let yPos = 100 - (((r.stability + 100) / 200) * 100);
+        yPos = Math.max(2, Math.min(98, yPos));
+
+        const dot = document.createElement('div');
+        dot.className = 'scatter-dot';
+        dot.style.left = `${xPos}%`;
+        dot.style.top = `${yPos}%`;
+        dot.title = `Day ${r.day} | Fiscal Yield: ${r.fiscal} | Legal/Social Stability: ${r.stability}`;
+        
+        scatterDots.appendChild(dot);
+      }
+    }
+  }
+
+  document.getElementById('generateBtn')?.addEventListener('click', generateDataset);
+
+  // --- Town Hall Chat Logic ---
+  const chatScript = [
+    { type: 'msg-aws', name: 'AWS Executive', role: 'Data Center Rep', img: 'https://i.pravatar.cc/150?img=59', text: "Good evening. We are thrilled to bring $550 million to Warrenton. Look at Hermiston and Umatilla, OR—they announced they were 'open for business' and we minted a new middle class! We foster a regional tech ecosystem, drive business for local contractors, and provide the compute power needed to optimize global climate decarbonization." },
+    { type: 'msg-ngo', name: 'Citizens for Fauquier County', role: 'Preservation Advocate', img: 'https://i.pravatar.cc/150?img=44', text: "Global decarbonization? What about the unpermitted gas turbines xAI used in Memphis? We will not let you bring environmental racism and toxic emissions to our fence-line communities like they did in Boxtown, just so you can bypass standard taxes with these 'fees-in-lieu'!" },
+    { type: 'msg-staff', name: 'Town Planner', role: 'Zoning Administrator', img: 'https://i.pravatar.cc/150?img=32', text: "To clarify for the record, the Planning Commission recommended denial of this SUP based on inadequate information regarding noise, utility routing, and the 'giant soda straw' depletion of our local aquifer." },
+    { type: 'msg-biz', name: 'Local Business Owner', role: 'Tax Base Advocate', img: 'https://i.pravatar.cc/150?img=11', text: "Listen, our town desperately needs this revenue. In Oregon, Amazon employee gatherings alone pay a bar owner's rent in two days. And look at Henrico County and New Albany—they successfully used data center CBAs to fund STEM centers and $60 million in affordable housing! We can't turn this away." },
+    { type: 'msg-util', name: 'Utility Rep', role: 'Regional Infrastructure', img: 'https://i.pravatar.cc/150?img=41', text: "We still need to discuss power. If AWS doesn't agree to a Lancaster, PA style clean-energy agreement or mitigate their local load, we will have to keep the regional coal plant open, raising residential utility bills for everyone to subsidize their AI energy demand." },
+    { type: 'msg-council', name: 'Mayor', role: 'Town Council Majority', img: 'https://i.pravatar.cc/150?img=68', isRight: true, text: "We hear the speakers tonight. AWS, you have to agree to the 37-foot height cap, the brick facade, and we need a concrete Community Benefits Agreement to fund local schools, or we simply can't pass this politically without being voted out." },
+    { type: 'msg-aws', name: 'AWS Executive', role: 'Data Center Rep', img: 'https://i.pravatar.cc/150?img=59', text: "We have already made major concessions on the architecture. If you deny this or force unviable infrastructure and clean-energy costs on us, remember our vested rights based on the 2021 zoning amendment." },
+    { type: 'msg-dissent', name: 'Council Dissenter', role: 'Town Council Minority', img: 'https://i.pravatar.cc/150?img=12', isRight: true, text: "I'm voting no. The Oregon boom also priced out blue-collar workers, driving up housing and childcare costs for an industry that provides very few permanent jobs compared to its massive physical footprint. It's an extractive boom-and-bust cycle we cannot afford." }
+  ];
+
+  const chatContainer = document.getElementById('chatContainer');
+  const nextMsgBtn = document.getElementById('nextMsgBtn');
+  const finishChatBtn = document.getElementById('finishChatBtn');
+
+  nextMsgBtn?.addEventListener('click', () => {
+    if (chatIndex < chatScript.length) {
+      const msg = chatScript[chatIndex];
+      const msgEl = document.createElement('div');
+      msgEl.className = `chat-msg ${msg.type} ${msg.isRight ? 'right' : ''}`;
+      msgEl.innerHTML = `
+        <img src="${msg.img}" class="chat-avatar" alt="Avatar">
+        <div class="chat-bubble">
+          <div class="chat-header">
+            <span class="chat-name">${msg.name}</span>
+            <span class="chat-role">${msg.role}</span>
+          </div>
+          ${msg.text}
+        </div>
+      `;
+      chatContainer.appendChild(msgEl);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      chatIndex++;
+
+      if (chatIndex >= chatScript.length) {
+        nextMsgBtn.style.display = 'none';
+        finishChatBtn.style.display = 'flex';
+      }
+    }
+  });
+
+  finishChatBtn?.addEventListener('click', () => {
+     document.getElementById('roleplayGuidance').style.display = 'block';
+     finishChatBtn.style.display = 'none';
+     if (typeof lucide !== 'undefined') lucide.createIcons();
+     // Scroll down gently to reveal the instructions
+     setTimeout(() => {
+       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+     }, 100);
+  });
+
+  // Init routines
+  renderScenarios();
+  updateAll();
+</script>
+</body>
+</html>

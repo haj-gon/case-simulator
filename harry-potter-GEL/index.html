@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marauder's Mercantile: Accounting Magic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        hogwarts: {
+                            bg: '#f8f5f0',
+                            purple: '#371f45',
+                            gold: '#cfb53b',
+                            red: '#740001',
+                            green: '#1a472a',
+                            blue: '#0e1a40',
+                            dark: '#111111'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        body: ['Quicksand', 'sans-serif'],
+                    },
+                    keyframes: {
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '75%': { transform: 'translateX(5px)' }
+                        },
+                        floatUp: {
+                            '0%': { transform: 'translateY(0) scale(0.8)', opacity: 0 },
+                            '20%': { transform: 'translateY(-20px) scale(1.1)', opacity: 1 },
+                            '80%': { transform: 'translateY(-60px) scale(1)', opacity: 1 },
+                            '100%': { transform: 'translateY(-80px) scale(0.8)', opacity: 0 }
+                        },
+                        ambientFloat: {
+                            '0%': { transform: 'translateY(100vh) scale(0.5)', opacity: 0 },
+                            '10%': { opacity: 0.6 },
+                            '90%': { opacity: 0.6 },
+                            '100%': { transform: 'translateY(-10vh) scale(1.2)', opacity: 0 }
+                        }
+                    },
+                    animation: {
+                        'shake-fast': 'shake 0.3s ease-in-out',
+                        'float-up': 'floatUp 2s ease-out forwards',
+                        'ambient-float': 'ambientFloat linear infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #0a0a1a;
+            color: #111111;
+            padding-bottom: 90px;
+            /* Fixed background with a dark, magical gradient overlay for atmosphere */
+            background-image: linear-gradient(to bottom, rgba(14, 26, 64, 0.85), rgba(10, 10, 26, 0.95)), url('https://images.unsplash.com/photo-1618944847023-38aa001235f0?q=80&w=2069&auto=format&fit=crop');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        h1, h2, h3, h4, .font-heading { font-family: 'Cinzel', serif; }
+        
+        .page-section { display: none; animation: fadeIn 0.5s ease-in-out; position: relative; z-index: 10;}
+        .page-section.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: -4px; left: 0; background-color: #cfb53b;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active-nav::after { width: 100%; }
+
+        .hud-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: #371f45;
+            color: white;
+            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            transition: all 0.3s ease;
+        }
+        .balance-update {
+            animation: pulseColor 1s ease;
+        }
+        @keyframes pulseColor {
+            0% { color: #cfb53b; transform: scale(1.2); }
+            100% { color: white; transform: scale(1); }
+        }
+
+        /* Interactive Particle Dust */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: explode 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+            50% { transform: translate(var(--dx), var(--dy-peak)) scale(1.5); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy-fall)) scale(0.5); opacity: 0; }
+        }
+
+        /* Ambient Floating Dust */
+        .ambient-dust {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1; /* Behind the content, over the background */
+            background: #cfb53b;
+            box-shadow: 0 0 12px 2px #cfb53b;
+        }
+
+        .funny-text {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 2rem;
+            color: #cfb53b;
+            text-shadow: 2px 2px 0px #740001, -1px -1px 0px #000;
+            animation: float-up 2s ease-out forwards;
+        }
+
+        .hover-float { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-float:hover { transform: translateY(-4px); box-shadow: 0 10px 20px -5px rgba(116, 0, 1, 0.3); border-color: #cfb53b;}
+        
+        .bounce-img { animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+        }
+        .flip-back { transform: rotateY(180deg); }
+
+        /* Mini Flip Cards for guessing */
+        .mini-flip-card { perspective: 1000px; cursor: pointer; height: 100%; min-height: 80px; }
+        .mini-flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .mini-flip-card.flipped .mini-flip-card-inner { transform: rotateX(180deg); }
+        .mini-flip-front, .mini-flip-back {
+            position: absolute; inset: 0;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 0.5rem;
+        }
+        .mini-flip-back { transform: rotateX(180deg); }
+
+        /* Rune specific styling */
+        .rune-btn {
+            transition: all 0.2s ease;
+            cursor: grab;
+        }
+        .rune-btn:active { cursor: grabbing; }
+        
+        /* Custom scrollbar for palette */
+        .rune-palette-scroll::-webkit-scrollbar { height: 6px; }
+        .rune-palette-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .rune-palette-scroll::-webkit-scrollbar-thumb { background: #cfb53b; border-radius: 4px; }
+        
+        /* Safe listing dynamically used colors to ensure Tailwind keeps them */
+        .bg-yellow-100 { background-color: #fef9c3; }
+        .text-yellow-800 { color: #854d0e; }
+        .text-yellow-700 { color: #a16207; }
+        .border-yellow-300 { border-color: #fde047; }
+        .border-yellow-400 { border-color: #facc15; }
+        .hover\:bg-yellow-200:hover { background-color: #fef08a; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Top Navigation -->
+    <nav class="bg-hogwarts-purple text-white shadow-lg sticky top-0 z-40 relative">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16 overflow-x-auto whitespace-nowrap hide-scrollbar">
+                <div class="flex items-center space-x-2 cursor-pointer pr-4" onclick="navigate('home')">
+                    <i data-lucide="wand-2" class="text-hogwarts-gold w-6 h-6"></i>
+                    <span class="font-heading text-xl font-bold text-hogwarts-gold tracking-wider">Accounting Magic</span>
+                </div>
+                <div class="flex space-x-4 md:space-x-6 text-sm md:text-base font-bold">
+                    <button onclick="navigate('home')" class="nav-link nav-btn active-nav hover:text-hogwarts-gold flex items-center gap-1" data-target="home">Intro</button>
+                    <button onclick="navigate('lesson1')" class="nav-link nav-btn hover:text-hogwarts-gold flex items-center gap-1" data-target="lesson1">Q1</button>
+                    <button onclick="navigate('lesson2')" class="nav-link nav-btn hover:text-hogwarts-gold flex items-center gap-1" data-target="lesson2">Q2</button>
+                    <button onclick="navigate('lesson3')" class="nav-link nav-btn hover:text-hogwarts-gold flex items-center gap-1" data-target="lesson3">Q3</button>
+                    <button onclick="navigate('lesson4')" class="nav-link nav-btn hover:text-hogwarts-gold flex items-center gap-1" data-target="lesson4">Q4</button>
+                    <button onclick="navigate('transactions')" class="nav-link nav-btn hover:text-hogwarts-gold flex items-center gap-1 text-yellow-300" data-target="transactions"><i data-lucide="scroll" class="w-4 h-4"></i> Play!</button>
+                    <button onclick="navigate('summary')" class="nav-link nav-btn hover:text-hogwarts-gold flex items-center gap-1" data-target="summary"><i data-lucide="book-open" class="w-4 h-4"></i> Summary</button>
+                    <button onclick="navigate('financials')" class="nav-link nav-btn hover:text-hogwarts-gold flex items-center gap-1" data-target="financials"><i data-lucide="bar-chart-3" class="w-4 h-4"></i> Reports</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-5xl mx-auto w-full p-4 md:p-8 relative">
+
+        <!-- PAGE 0: HOME -->
+        <section id="home" class="page-section active">
+            <div class="bg-white/90 rounded-2xl shadow-xl overflow-hidden border border-gray-300 backdrop-blur-sm">
+                <div class="bg-hogwarts-red text-center py-12 px-6 text-white relative overflow-hidden">
+                    <h1 class="text-3xl md:text-5xl font-heading font-bold mb-4 text-hogwarts-gold animate-bounce">The Marauder's Mercantile</h1>
+                    <h2 class="text-xl md:text-2xl text-gray-200 font-heading">Learn Accounting by Magic!</h2>
+                </div>
+                
+                <div class="p-6 md:p-10 flex flex-col md:flex-row gap-8 items-center">
+                    <div class="md:w-1/3 flex justify-center">
+                        <img src="Clue 7 - Arthur Weasley.jpg" alt="Arthur Weasley" class="w-48 h-48 rounded-full border-4 border-hogwarts-gold object-cover shadow-xl bounce-img bg-gray-200" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23eee\'/><text x=\'50\' y=\'55\' font-family=\'sans-serif\' font-size=\'14\' text-anchor=\'middle\'>Arthur Weasley</text></svg>'">
+                    </div>
+                    <div class="md:w-2/3">
+                        <h3 class="text-2xl font-bold mb-4 text-hogwarts-purple font-heading">Welcome, Student Accountant!</h3>
+                        <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                            You don't need to be a math genius to understand business. Accounting is simply a way of telling a story about your money.
+                        </p>
+                        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                            Before we open our shop, explore the first 4 magical lessons. Can you guess the answers before flipping the cards? Once you've mastered the theory, play the game to balance the books!
+                        </p>
+                        <button onclick="navigate('lesson1')" class="w-full md:w-auto bg-hogwarts-gold text-hogwarts-dark font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition transform hover:-translate-y-1 text-lg">
+                            Start Lesson 1 ✨
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LECTURE 1: The Magic Backpack -->
+        <section id="lesson1" class="page-section">
+            <div class="flip-card h-[800px] md:h-[650px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+                <div class="flip-card-inner">
+                    <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-blue p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
+                        <i data-lucide="building-2" class="w-24 h-24 text-hogwarts-blue mb-6 animate-bounce"></i>
+                        <h2 class="text-4xl font-bold text-hogwarts-blue font-heading mb-6">Question 1: The Foundation</h2>
+                        <p class="text-2xl text-gray-800 mb-8 font-medium leading-relaxed">
+                            Think about a large company like <strong>Apple</strong>.<br>
+                            Do they just guess how much stuff they own?<br><br>
+                            What exactly is a <span class="text-hogwarts-red font-bold">Balance Sheet</span>?
+                        </p>
+                        <span class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-6 py-3 rounded-full font-bold animate-pulse flex items-center gap-2">
+                            <i data-lucide="hand" class="w-5 h-5"></i> Click to Reveal the Magic
+                        </span>
+                    </div>
+
+                    <div class="flip-back bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-blue p-6 md:p-10 flex flex-col backdrop-blur-md">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-hogwarts-blue pb-2 font-heading flex items-center gap-3">
+                            <i data-lucide="backpack" class="text-hogwarts-blue w-8 h-8"></i> The Balance Sheet
+                        </h3>
+                        <p class="text-lg text-gray-700 mb-6"><strong>Apple</strong> has a detailed Balance Sheet showing billions in cash and equipment (Assets), what they owe suppliers (Liabilities), and what truly belongs to their shareholders (Equity).</p>
+                        
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 mb-6 shadow-inner">
+                            <h4 class="font-bold text-hogwarts-blue text-xl mb-3 flex items-center gap-2">✨ The Magic Backpack Analogy</h4>
+                            <p class="text-gray-700 mb-4 text-sm md:text-base">Imagine you have a magical school backpack. The Balance Sheet just lists what's inside and who it really belongs to.</p>
+                            
+                            <!-- Mini Flip Cards for Q1 -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <!-- Assets -->
+                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                    <div class="mini-flip-card-inner shadow-md rounded-lg">
+                                        <div class="mini-flip-front bg-white border-l-4 border-green-500 rounded-lg flex-col gap-1">
+                                            <span class="text-green-700 font-bold text-lg flex items-center gap-2"><i data-lucide="package" class="w-5 h-5"></i> Assets</span>
+                                            <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
+                                        </div>
+                                        <div class="mini-flip-back bg-green-50 border-l-4 border-green-500 rounded-lg p-3 text-center text-sm text-gray-800">
+                                            You have a magic wand and 10 shiny gold coins.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Liabilities -->
+                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                    <div class="mini-flip-card-inner shadow-md rounded-lg">
+                                        <div class="mini-flip-front bg-white border-l-4 border-red-500 rounded-lg flex-col gap-1">
+                                            <span class="text-red-700 font-bold text-lg flex items-center gap-2"><i data-lucide="handshake" class="w-5 h-5"></i> Liabilities</span>
+                                            <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
+                                        </div>
+                                        <div class="mini-flip-back bg-red-50 border-l-4 border-red-500 rounded-lg p-3 text-center text-sm text-gray-800">
+                                            You borrowed 3 coins from Ron. You owe him!
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Equity -->
+                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                    <div class="mini-flip-card-inner shadow-md rounded-lg">
+                                        <div class="mini-flip-front bg-white border-l-4 border-purple-500 rounded-lg flex-col gap-1">
+                                            <span class="text-purple-700 font-bold text-lg flex items-center gap-2"><i data-lucide="crown" class="w-5 h-5"></i> Equity</span>
+                                            <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
+                                        </div>
+                                        <div class="mini-flip-back bg-purple-50 border-l-4 border-purple-500 rounded-lg p-3 text-center text-sm text-gray-800">
+                                            If you paid Ron, the 7 coins left are truly yours.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="bg-hogwarts-dark text-white p-4 rounded-xl text-center mt-auto shadow-lg mb-6">
+                            <p class="text-sm text-gray-300 mb-1 uppercase tracking-widest">The Golden Rule</p>
+                            <p class="text-xl md:text-2xl font-heading font-bold text-hogwarts-gold">ASSETS = LIABILITIES + EQUITY</p>
+                        </div>
+                        
+                        <div class="mt-auto mb-6 flex justify-between items-center px-2">
+                            <span class="text-sm text-gray-500 italic"><i data-lucide="rotate-ccw" class="w-4 h-4 inline"></i> Click anywhere to flip back</span>
+                            <button onclick="event.stopPropagation(); navigate('lesson2')" class="bg-hogwarts-blue text-white px-6 py-2 rounded-full shadow hover:bg-blue-900 transition font-bold flex items-center gap-2">Next <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LECTURE 2: The Potion Shop -->
+        <section id="lesson2" class="page-section">
+            <div class="flip-card h-[800px] md:h-[650px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+                <div class="flip-card-inner">
+                    <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-green p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
+                        <i data-lucide="clapperboard" class="w-24 h-24 text-hogwarts-green mb-6 animate-bounce"></i>
+                        <h2 class="text-4xl font-bold text-hogwarts-green font-heading mb-6">Question 2: The Action</h2>
+                        <p class="text-2xl text-gray-800 mb-8 font-medium leading-relaxed">
+                            How do companies like <strong>Netflix</strong> know if they actually had a good year?<br><br>
+                            What exactly does an <span class="text-hogwarts-red font-bold">Income Statement</span> show?
+                        </p>
+                        <span class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-6 py-3 rounded-full font-bold animate-pulse flex items-center gap-2">
+                            <i data-lucide="hand" class="w-5 h-5"></i> Click to Reveal the Magic
+                        </span>
+                    </div>
+
+                    <div class="flip-back bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-green p-6 md:p-10 flex flex-col backdrop-blur-md">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-hogwarts-green pb-2 font-heading flex items-center gap-3">
+                            <i data-lucide="store" class="text-hogwarts-green w-8 h-8"></i> The Income Statement
+                        </h3>
+                        <p class="text-lg text-gray-700 mb-6"><strong>Netflix</strong> tracks every monthly subscription paid (Revenue) and subtracts the cost of every movie produced (Expense). If Revenue is bigger, they make a Profit!</p>
+                        
+                        <div class="bg-green-50 p-4 rounded-xl border border-green-200 mb-6 shadow-inner flex flex-col md:flex-row items-center gap-6">
+                            <div class="md:w-2/3 space-y-3">
+                                <h4 class="font-bold text-hogwarts-green text-xl mb-3 flex items-center gap-2">✨ The Potion Shop Analogy</h4>
+                                
+                                <!-- Mini Flip Cards for Q2 -->
+                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                    <div class="mini-flip-card-inner shadow-sm border-l-4 border-yellow-400 rounded bg-white">
+                                        <div class="mini-flip-front justify-between px-4 w-full">
+                                            <strong class="text-yellow-600 text-lg">1. Revenue</strong>
+                                            <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
+                                        </div>
+                                        <div class="mini-flip-back bg-yellow-50 px-4 text-sm text-gray-800 w-full text-center">
+                                            You sell 10 Butterbeers for 50 coins total.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                    <div class="mini-flip-card-inner shadow-sm border-l-4 border-orange-400 rounded bg-white">
+                                        <div class="mini-flip-front justify-between px-4 w-full">
+                                            <strong class="text-orange-600 text-lg">2. Expenses</strong>
+                                            <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
+                                        </div>
+                                        <div class="mini-flip-back bg-orange-50 px-4 text-sm text-gray-800 w-full text-center">
+                                            Buying the cups and syrup cost you 20 coins.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                    <div class="mini-flip-card-inner shadow-sm border-l-4 border-green-500 rounded bg-white">
+                                        <div class="mini-flip-front justify-between px-4 w-full">
+                                            <strong class="text-green-700 text-lg">3. Net Income</strong>
+                                            <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
+                                        </div>
+                                        <div class="mini-flip-back bg-green-100 px-4 text-base font-bold text-green-800 w-full text-center">
+                                            50 - 20 = 30 coins Profit!
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="md:w-1/3 flex justify-center relative">
+                                <img src="Clue 1 - Hermione Granger.jpg" alt="Hermione Granger" class="w-28 h-28 rounded-full border-4 border-hogwarts-gold object-cover shadow-lg hover-float" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23f9e8e8\'/><text x=\'100\' y=\'105\' text-anchor=\'middle\'>Hermione</text></svg>'">
+                                <img src="butterbeer.png" alt="Butterbeer" class="absolute -bottom-4 -right-4 w-16 h-16 bounce-img drop-shadow-xl" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+
+                        <div class="mt-auto mb-6 flex justify-between items-center px-2">
+                            <span class="text-sm text-gray-500 italic"><i data-lucide="rotate-ccw" class="w-4 h-4 inline"></i> Click anywhere to flip back</span>
+                            <button onclick="event.stopPropagation(); navigate('lesson3')" class="bg-hogwarts-green text-white px-6 py-2 rounded-full shadow hover:bg-green-900 transition font-bold flex items-center gap-2">Next <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LECTURE 3: The Magical Link -->
+        <section id="lesson3" class="page-section">
+            <div class="flip-card h-[800px] md:h-[650px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+                <div class="flip-card-inner">
+                    <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-purple p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
+                        <i data-lucide="link" class="w-24 h-24 text-hogwarts-purple mb-6 animate-bounce"></i>
+                        <h2 class="text-4xl font-bold text-hogwarts-purple font-heading mb-6">Question 3: The Missing Link</h2>
+                        <p class="text-2xl text-gray-800 mb-8 font-medium leading-relaxed">
+                            When a company like <strong>Amazon</strong> makes a significant profit, does it just disappear?<br><br>
+                            How do these two financial statements <span class="text-hogwarts-red font-bold">connect</span>?
+                        </p>
+                        <span class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-6 py-3 rounded-full font-bold animate-pulse flex items-center gap-2">
+                            <i data-lucide="hand" class="w-5 h-5"></i> Click to Reveal the Magic
+                        </span>
+                    </div>
+
+                    <div class="flip-back bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-purple p-6 md:p-10 flex flex-col backdrop-blur-md">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-hogwarts-purple pb-2 font-heading flex items-center gap-3">
+                            <i data-lucide="infinity" class="text-hogwarts-purple w-8 h-8"></i> The Magical Link
+                        </h3>
+                        <p class="text-lg text-gray-700 mb-6">Not at all! When <strong>Amazon</strong> makes a profit on its Income Statement, that money is magically added straight to their Balance Sheet.</p>
+                        
+                        <div class="bg-gradient-to-r from-purple-100 to-fuchsia-50 p-6 rounded-xl border-2 border-purple-300 mb-6 shadow-inner text-center relative overflow-hidden">
+                            <i data-lucide="arrow-down" class="w-24 h-24 text-purple-200 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"></i>
+                            <p class="text-lg md:text-xl text-gray-800 relative z-10 leading-loose font-medium">
+                                Remember the <strong>30 coins of Profit</strong> you made at the Potion Shop? <br><br>
+                                At the end of the day, you take those 30 coins and drop them straight into your <strong>Magic Backpack</strong>.<br>
+                                Because you made a profit, your <strong>Equity (True Wealth) goes UP!</strong>
+                            </p>
+                        </div>
+
+                        <div class="mt-auto mb-6 flex justify-between items-center px-2">
+                            <span class="text-sm text-gray-500 italic"><i data-lucide="rotate-ccw" class="w-4 h-4 inline"></i> Click to flip back</span>
+                            <button onclick="event.stopPropagation(); navigate('lesson4')" class="bg-hogwarts-blue text-white px-6 py-2 rounded-full shadow hover:bg-blue-900 transition font-bold flex items-center gap-2">Next <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LECTURE 4: Cash Flow -->
+        <section id="lesson4" class="page-section">
+            <div class="flip-card h-[800px] md:h-[650px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+                <div class="flip-card-inner">
+                    <!-- Front -->
+                    <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-gold p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
+                        <i data-lucide="wallet" class="w-24 h-24 text-hogwarts-gold mb-6 animate-bounce"></i>
+                        <h2 class="text-4xl font-bold text-hogwarts-gold font-heading mb-6">Question 4: The Reality Check</h2>
+                        <p class="text-2xl text-gray-800 mb-8 font-medium leading-relaxed">
+                            If a business reports a 1 million Galleon profit, do they actually have 1 million Galleons in the bank right now?<br><br>
+                            Why is <span class="text-hogwarts-red font-bold">Profit</span> not the same as <span class="text-hogwarts-green font-bold">Cash</span>?
+                        </p>
+                        <span class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-6 py-3 rounded-full font-bold animate-pulse flex items-center gap-2">
+                            <i data-lucide="hand" class="w-5 h-5"></i> Click to Reveal the Magic
+                        </span>
+                    </div>
+
+                    <!-- Back -->
+                    <div class="flip-back bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-gold p-6 md:p-10 flex flex-col backdrop-blur-md">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-hogwarts-gold pb-2 font-heading flex items-center gap-3">
+                            <i data-lucide="coins" class="text-hogwarts-gold w-8 h-8"></i> Statement of Cash Flows
+                        </h3>
+                        <p class="text-lg text-gray-700 mb-6">Absolutely not! You can sell a potion today and make a profit on paper, but if the customer promises to pay you <em>next month</em>, your actual cash hasn't changed yet.</p>
+                        
+                        <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 mb-6 shadow-inner">
+                            <h4 class="font-bold text-yellow-700 text-xl mb-3 flex items-center gap-2">✨ The Gringotts Vault Rule</h4>
+                            <p class="text-gray-700 mb-4 text-sm md:text-base">The Cash Flow Statement completely ignores "promises." It only tracks real coins entering and leaving your vault through three magical doors:</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="bg-white border-l-4 border-blue-500 rounded-lg p-3 shadow-sm">
+                                    <strong class="text-blue-700 block mb-1"><i data-lucide="refresh-cw" class="w-4 h-4 inline"></i> Operating</strong>
+                                    <span class="text-sm text-gray-600">Daily shop sales and paying the usual bills.</span>
+                                </div>
+                                <div class="bg-white border-l-4 border-green-500 rounded-lg p-3 shadow-sm">
+                                    <strong class="text-green-700 block mb-1"><i data-lucide="trending-up" class="w-4 h-4 inline"></i> Investing</strong>
+                                    <span class="text-sm text-gray-600">Buying or selling long-term gear, like cauldrons.</span>
+                                </div>
+                                <div class="bg-white border-l-4 border-purple-500 rounded-lg p-3 shadow-sm">
+                                    <strong class="text-purple-700 block mb-1"><i data-lucide="landmark" class="w-4 h-4 inline"></i> Financing</strong>
+                                    <span class="text-sm text-gray-600">Borrowing from Gringotts or owner investments.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-hogwarts-dark text-white p-4 rounded-xl text-center mt-auto shadow-lg mb-6">
+                            <p class="text-sm text-gray-300 mb-1 uppercase tracking-widest">The Harsh Truth</p>
+                            <p class="text-xl md:text-2xl font-heading font-bold text-red-400">PROFIT ≠ CASH FLOW</p>
+                        </div>
+                        
+                        <div class="mt-auto mb-6 flex justify-between items-center px-2">
+                            <span class="text-sm text-gray-500 italic"><i data-lucide="rotate-ccw" class="w-4 h-4 inline"></i> Click to flip back</span>
+                            <button onclick="event.stopPropagation(); navigate('transactions')" class="bg-hogwarts-gold text-hogwarts-dark font-bold px-8 py-3 rounded-full shadow-lg hover:bg-yellow-400 transition transform hover:scale-105 flex items-center gap-2 text-lg animate-pulse">
+                                <i data-lucide="gamepad-2" class="w-5 h-5"></i> Play Game!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: DAILY TRANSACTIONS -->
+        <section id="transactions" class="page-section">
+            <div class="flex items-center gap-3 mb-6 bg-white/80 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
+                <i data-lucide="scroll" class="w-8 h-8 text-hogwarts-red"></i>
+                <h2 class="text-3xl font-bold text-hogwarts-purple font-heading">Daily Transactions</h2>
+            </div>
+            <p class="text-gray-800 mb-6 bg-yellow-50/90 p-4 rounded-xl border border-yellow-200 shadow font-medium backdrop-blur-sm">
+                Tap a rune, then tap the box to place it (or Drag and Drop!). Choose the direction, and cast your spell to balance the books!
+            </p>
+
+            <div class="space-y-6" id="daily-ledger-container">
+                <!-- Transactions injected via JS -->
+            </div>
+
+            <div class="mt-8 flex justify-end">
+                <button onclick="navigate('adjustments')" class="bg-hogwarts-purple text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-purple-900 transition flex items-center gap-2">
+                    Next: End of Month Adjustments <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE: ADJUSTMENTS -->
+        <section id="adjustments" class="page-section">
+            <div class="flex items-center gap-3 mb-6 bg-white/80 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
+                <i data-lucide="moon" class="w-8 h-8 text-hogwarts-blue"></i>
+                <h2 class="text-3xl font-bold text-hogwarts-purple font-heading">Month-End Adjustments</h2>
+            </div>
+            
+            <div class="space-y-6" id="adj-ledger-container">
+                <!-- Adjustments injected via JS -->
+            </div>
+
+            <div class="mt-8 flex justify-end">
+                <button onclick="navigate('summary')" class="bg-hogwarts-gold text-hogwarts-dark font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition flex items-center gap-2">
+                    View Summary <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE: SUMMARY CHEAT SHEET -->
+        <section id="summary" class="page-section">
+            <div class="flex items-center gap-3 mb-6 bg-white/80 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
+                <i data-lucide="book-open" class="w-8 h-8 text-hogwarts-purple"></i>
+                <h2 class="text-3xl font-bold text-hogwarts-purple font-heading">Magical Cheat Sheet</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Card 1 -->
+                <div class="bg-white/95 p-6 rounded-2xl shadow-lg border-t-8 border-hogwarts-blue hover-float">
+                    <h3 class="text-xl font-bold font-heading text-hogwarts-blue flex items-center gap-2 mb-3"><i data-lucide="backpack" class="w-5 h-5"></i> The Balance Sheet</h3>
+                    <p class="text-gray-700 text-sm mb-4">A snapshot of what the business owns and owes at a specific moment in time.</p>
+                    <div class="bg-blue-50 p-3 rounded font-bold text-sm text-center text-blue-900 border border-blue-200">
+                        Assets = Liabilities + Equity
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white/95 p-6 rounded-2xl shadow-lg border-t-8 border-hogwarts-green hover-float">
+                    <h3 class="text-xl font-bold font-heading text-hogwarts-green flex items-center gap-2 mb-3"><i data-lucide="store" class="w-5 h-5"></i> The Income Statement</h3>
+                    <p class="text-gray-700 text-sm mb-4">A record of performance over a period of time to see if you made a profit.</p>
+                    <div class="bg-green-50 p-3 rounded font-bold text-sm text-center text-green-900 border border-green-200">
+                        Revenue - Expenses = Net Income
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white/95 p-6 rounded-2xl shadow-lg border-t-8 border-hogwarts-purple hover-float">
+                    <h3 class="text-xl font-bold font-heading text-hogwarts-purple flex items-center gap-2 mb-3"><i data-lucide="infinity" class="w-5 h-5"></i> The Missing Link</h3>
+                    <p class="text-gray-700 text-sm mb-4">Net Income flows directly into Equity, magically connecting the two statements.</p>
+                    <div class="bg-purple-50 p-3 rounded font-bold text-sm text-center text-purple-900 border border-purple-200">
+                        Equity = Capital + Net Income
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Expanded Equation -->
+            <div class="bg-hogwarts-dark text-white p-8 rounded-2xl shadow-xl text-center border-4 border-hogwarts-gold relative overflow-hidden">
+                <h3 class="text-2xl font-heading font-bold text-hogwarts-gold mb-6">The Expanded Golden Rule</h3>
+                <div class="flex flex-wrap justify-center items-center gap-2 md:gap-4 text-lg md:text-2xl font-bold bg-white/10 p-4 rounded-xl">
+                    <span class="text-blue-300">Assets</span>
+                    <span class="text-hogwarts-gold">=</span>
+                    <span class="text-red-300">Liabilities</span>
+                    <span class="text-hogwarts-gold">+</span>
+                    <span class="text-purple-300">Capital</span>
+                    <span class="text-hogwarts-gold">+</span>
+                    <span class="text-yellow-300">Revenue</span>
+                    <span class="text-hogwarts-gold">-</span>
+                    <span class="text-green-300">Expenses</span>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end">
+                <button onclick="navigate('financials')" class="bg-hogwarts-gold text-hogwarts-dark font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition flex items-center gap-2">
+                    View Live Financial Statements <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE: FINANCIAL STATEMENTS -->
+        <section id="financials" class="page-section relative">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+                <div class="flex items-center gap-3 bg-white/80 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
+                    <i data-lucide="bar-chart-3" class="w-8 h-8 text-hogwarts-green"></i>
+                    <h2 class="text-3xl font-bold text-hogwarts-purple font-heading">Financial Statements</h2>
+                </div>
+                <div class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-2 rounded-full font-bold text-sm shadow animate-pulse flex items-center gap-2">
+                    <i data-lucide="activity" class="w-4 h-4"></i> Live Magic Ledger Active
+                </div>
+            </div>
+
+            <!-- Removed the Sealed Overlay to allow live viewing -->
+
+            <!-- Success Message (only shows when completed) -->
+            <div id="success-message" class="hidden mb-8 bg-gradient-to-r from-green-100 to-green-50 border-4 border-green-400 p-8 rounded-2xl text-center shadow-xl relative overflow-hidden">
+                <i data-lucide="trophy" class="w-16 h-16 text-yellow-500 mx-auto mb-4 animate-bounce"></i>
+                <h3 class="text-3xl font-bold text-green-800 font-heading mb-2">150 Points to Gryffindor!</h3>
+                <p class="text-xl text-gray-800 font-bold">You balanced the books! The Marauder's Mercantile is a smashing success!</p>
+                <div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%2322c55e\' fill-opacity=\'1\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E');"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="statements-container">
+                
+                <!-- Income Statement -->
+                <div class="bg-white/95 p-6 md:p-8 rounded-xl shadow-xl border-t-8 border-hogwarts-green backdrop-blur-md">
+                    <h3 class="font-heading font-bold text-2xl text-center border-b-2 border-gray-200 pb-3 mb-6">Income Statement<br><span class="text-sm text-gray-500 font-body">For the Month Ended October 31</span></h3>
+                    
+                    <div class="flex justify-between mb-3"><span class="font-bold text-lg">Revenues:</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 text-lg"><span>Service & Sales Revenue</span><span id="st-rev">0 G</span></div>
+                    
+                    <div class="flex justify-between mt-6 mb-3"><span class="font-bold text-lg">Expenses:</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Advertising Expense</span><span id="st-exp-adv">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Supplies Expense</span><span id="st-exp-sup">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Rent Expense</span><span id="st-exp-rent">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Depreciation Expense</span><span id="st-exp-dep">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Delivery Expense</span><span id="st-exp-del">0 G</span></div>
+                    
+                    <div class="flex justify-between font-bold border-t border-gray-300 mt-4 pt-3 text-lg"><span>Total Expenses</span><span id="st-total-exp">0 G</span></div>
+                    <div class="flex justify-between font-bold text-xl text-hogwarts-green border-t-2 border-b-4 border-gray-800 mt-4 py-3 bg-green-50 px-3 rounded">
+                        <span>Net Income (Profit)</span><span id="st-net-income">0 G</span>
+                    </div>
+                </div>
+
+                <!-- Balance Sheet -->
+                <div class="bg-white/95 p-6 md:p-8 rounded-xl shadow-xl border-t-8 border-hogwarts-blue backdrop-blur-md">
+                    <h3 class="font-heading font-bold text-2xl text-center border-b-2 border-gray-200 pb-3 mb-6">Balance Sheet<br><span class="text-sm text-gray-500 font-body">As of October 31</span></h3>
+                    
+                    <div class="flex justify-between mb-3"><span class="font-bold text-hogwarts-blue text-xl">ASSETS (Backpack)</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Cash</span><span id="st-cash">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Accounts Receivable</span><span id="st-ar">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Supplies</span><span id="st-sup">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Prepaid Rent</span><span id="st-prent">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Equipment</span><span id="st-equip">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Less: Accum. Depreciation</span><span id="st-adep">0 G</span></div>
+                    <div class="flex justify-between font-bold border-t border-gray-300 mt-3 pt-3 mb-6 text-lg"><span>Total Assets</span><span id="st-total-assets">0 G</span></div>
+
+                    <div class="flex justify-between mb-3"><span class="font-bold text-hogwarts-red text-xl">LIABILITIES (Owed)</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Accounts Payable</span><span id="st-ap">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Unearned Revenue</span><span id="st-urev">0 G</span></div>
+                    <div class="flex justify-between font-bold border-t border-gray-300 mt-3 pt-3 mb-6 text-lg"><span>Total Liabilities</span><span id="st-total-liab">0 G</span></div>
+
+                    <div class="flex justify-between mb-3"><span class="font-bold text-hogwarts-purple text-xl">EQUITY (True Wealth)</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Owners' Capital</span><span id="st-cap">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Retained Earnings (from Profit)</span><span id="st-re">0 G</span></div>
+                    
+                    <div class="flex justify-between font-bold border-t-2 border-gray-800 mt-5 pt-3 text-2xl text-hogwarts-dark bg-yellow-100 px-4 py-2 rounded shadow-inner"><span>Total Liab. & Equity</span><span id="st-total-le">0 G</span></div>
+                </div>
+
+                <!-- Statement of Cash Flows -->
+                <div class="bg-white/95 p-6 md:p-8 rounded-xl shadow-xl border-t-8 border-hogwarts-gold backdrop-blur-md lg:col-span-2">
+                    <h3 class="font-heading font-bold text-2xl text-center border-b-2 border-gray-200 pb-3 mb-6">Statement of Cash Flows<br><span class="text-sm text-gray-500 font-body">For the Month Ended October 31</span></h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Operating -->
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            <h4 class="font-bold text-hogwarts-blue mb-2 border-b border-gray-300 pb-1"><i data-lucide="refresh-cw" class="w-4 h-4 inline"></i> Operating Activities</h4>
+                            <p class="text-sm text-gray-600 mb-2">Cash from day-to-day business (sales, paying bills).</p>
+                            <div class="text-xl font-bold text-right mt-4" id="st-cf-ops">0 G</div>
+                        </div>
+                        
+                        <!-- Investing -->
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            <h4 class="font-bold text-hogwarts-green mb-2 border-b border-gray-300 pb-1"><i data-lucide="trending-up" class="w-4 h-4 inline"></i> Investing Activities</h4>
+                            <p class="text-sm text-gray-600 mb-2">Cash used to buy long-term assets (equipment).</p>
+                            <div class="text-xl font-bold text-right mt-4" id="st-cf-inv">0 G</div>
+                        </div>
+
+                        <!-- Financing -->
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            <h4 class="font-bold text-hogwarts-purple mb-2 border-b border-gray-300 pb-1"><i data-lucide="landmark" class="w-4 h-4 inline"></i> Financing Activities</h4>
+                            <p class="text-sm text-gray-600 mb-2">Cash from owners investing or taking out loans.</p>
+                            <div class="text-xl font-bold text-right mt-4" id="st-cf-fin">0 G</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mt-6 pt-4 border-t-4 border-gray-800">
+                        <span class="font-bold text-xl uppercase tracking-wider">Net Increase in Cash</span>
+                        <span class="font-bold text-3xl text-hogwarts-gold bg-gray-900 px-6 py-2 rounded-lg shadow-inner" id="st-cf-net">0 G</span>
+                    </div>
+                </div>
+
+            </div>
+            
+        </section>
+
+    </main>
+
+    <!-- HUD (Heads Up Display) -->
+    <div class="hud-bar p-3 md:p-4">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
+            <div class="text-sm text-gray-300 font-heading tracking-widest hidden md:block">ACCOUNTING EQUATION (The Golden Rule)</div>
+            
+            <!-- Expanded Equation Display -->
+            <div class="flex flex-wrap justify-center items-center gap-1 md:gap-3 text-sm md:text-xl font-bold">
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] md:text-xs text-blue-300 font-normal uppercase">Assets</span>
+                    <span id="hud-assets" class="text-white">0 G</span>
+                </div>
+                <div class="text-hogwarts-gold">=</div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] md:text-xs text-red-300 font-normal uppercase">Liab.</span>
+                    <span id="hud-liab" class="text-white">0 G</span>
+                </div>
+                <div class="text-hogwarts-gold">+</div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] md:text-xs text-purple-300 font-normal uppercase">Capital</span>
+                    <span id="hud-cap" class="text-white">0 G</span>
+                </div>
+                <div class="text-hogwarts-gold">+</div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] md:text-xs text-yellow-300 font-normal uppercase">Rev.</span>
+                    <span id="hud-rev" class="text-yellow-400">0 G</span>
+                </div>
+                <div class="text-hogwarts-gold">-</div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] md:text-xs text-green-300 font-normal uppercase">Exp.</span>
+                    <span id="hud-exp" class="text-green-400">0 G</span>
+                </div>
+            </div>
+
+            <div class="text-sm font-bold bg-hogwarts-gold text-hogwarts-dark px-4 py-2 rounded-full flex items-center gap-2 shadow-lg shadow-yellow-500/50 border border-yellow-200">
+                <i data-lucide="star" class="w-5 h-5 fill-current"></i> <span id="hud-progress" class="text-lg">0/15</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructor Lock Footer -->
+    <footer class="mt-12 mb-24 text-center text-gray-100 flex justify-center items-center gap-2 font-bold drop-shadow-md relative z-10">
+        <p class="text-sm bg-black/40 px-4 py-2 rounded-full backdrop-blur-sm">Hogwarts School of Business &copy; 2026</p>
+        <button onclick="unlockTeacherMode()" class="p-2 bg-black/40 hover:bg-black/60 rounded-full transition backdrop-blur-sm" title="Teacher Access">
+            <i data-lucide="lock" class="w-4 h-4 text-white"></i>
+        </button>
+    </footer>
+
+    <!-- Teacher Modal -->
+    <div id="teacher-modal" class="fixed inset-0 bg-black bg-opacity-60 z-[100] hidden flex justify-center items-center backdrop-blur-sm">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full border-4 border-hogwarts-gold relative">
+            <button onclick="closeTeacherModal()" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="text-center mb-6">
+                <i data-lucide="key" class="w-12 h-12 text-hogwarts-purple mx-auto mb-2"></i>
+                <h3 class="text-2xl font-heading font-bold text-hogwarts-dark">Instructor Access</h3>
+                <p class="text-sm text-gray-600">Enter password to unlock the map.</p>
+            </div>
+            <input type="password" id="teacher-pwd" class="w-full p-3 border-2 border-gray-300 rounded-lg mb-4 focus:border-hogwarts-purple focus:outline-none text-lg" placeholder="Password...">
+            <p id="teacher-error" class="text-red-600 text-sm font-bold mb-4 hidden text-center bg-red-50 p-2 rounded border border-red-200">Invalid password! The map insults your intelligence.</p>
+            <button onclick="submitTeacherModal()" class="w-full bg-hogwarts-purple text-white font-bold py-3 text-lg rounded-lg hover:bg-purple-900 transition flex justify-center items-center gap-2 shadow-lg">
+                <i data-lucide="wand-2" class="w-5 h-5"></i> Mischief Managed
+            </button>
+        </div>
+    </div>
+
+    <!-- Ambient Magic Background Layer -->
+    <div id="ambient-magic-container"></div>
+
+    <!-- Application Logic -->
+    <script>
+        lucide.createIcons();
+
+        let state = {
+            completed: 0,
+            assets: 0, liabilities: 0, equity: 0,
+            accounts: {
+                cash: 0, ar: 0, supplies: 0, prent: 0, equip: 0, adep: 0, 
+                ap: 0, urev: 0, capital: 0, rev: 0, 
+                expAdv: 0, expSup: 0, expRent: 0, expDep: 0, expDel: 0 
+            },
+            cashFlow: {
+                operating: 0, investing: 0, financing: 0
+            }
+        };
+
+        // Magical Rune Palette Groups
+        const runeGroups = [
+            { label: "Assets", color: "blue", accounts: [{val: 'cash', text: 'Cash'}, {val: 'ar', text: 'Receivables'}, {val: 'supplies', text: 'Supplies'}, {val: 'prent', text: 'Prepaid Rent'}, {val: 'equip', text: 'Equipment'}, {val: 'adep', text: 'Accum. Deprec.'}] },
+            { label: "Liabilities", color: "red", accounts: [{val: 'ap', text: 'Payables'}, {val: 'urev', text: 'Unearned Rev'}] },
+            { label: "Equity", color: "purple", accounts: [{val: 'capital', text: 'Capital'}] },
+            { label: "Revenue", color: "yellow", accounts: [{val: 'rev', text: 'Revenue'}] },
+            { label: "Expenses", color: "green", accounts: [{val: 'expAdv', text: 'Ad Exp.'}, {val: 'expSup', text: 'Supplies Exp.'}, {val: 'expRent', text: 'Rent Exp.'}, {val: 'expDep', text: 'Deprec. Exp.'}, {val: 'expDel', text: 'Delivery Exp.'}] }
+        ];
+
+        // Transactions array with Difficulty Multipliers (1-3) added
+        const transactions = [
+            { id: 't1', difficulty: 1, type: 'daily', date: 'Oct 1', desc: 'Arthur Weasley invests 5,000 Galleons of his own money into the business.', amt: 5000, img: 'Clue 7 - Arthur Weasley.jpg', charName: 'Arthur Weasley',
+              dialogue: "I'm investing 5,000 Galleons to get this mercantile off the ground! Fascinating Muggle concepts...",
+              hint: "The business receives money (Cash goes up). In exchange, Arthur's ownership stake increases (Capital goes up).",
+              answers: [
+                  { acc: 'cash', dir: 'inc', fset: 'asset', display: '+5,000 Cash' },
+                  { acc: 'capital', dir: 'inc', fset: 'equity', display: '+5,000 Capital' }
+              ],
+              update: () => { state.accounts.cash += 5000; state.accounts.capital += 5000; state.assets += 5000; state.equity += 5000; state.cashFlow.financing += 5000; } },
+              
+            { id: 't2', difficulty: 1, type: 'daily', date: 'Oct 2', desc: 'George Weasley purchases brewing cauldrons (Equipment) for 1,000 Galleons cash.', amt: 1000, img: 'Clue 2 - George Weasley.jpg', charName: 'George Weasley',
+              dialogue: "Just bought some brilliant cauldrons for 1,000 Galleons. Paid in cold, hard cash!",
+              hint: "We gained new gear (Equipment goes up), but we had to pay for it immediately (Cash goes down).",
+              answers: [
+                  { acc: 'equip', dir: 'inc', fset: 'asset', display: '+1,000 Equipment' },
+                  { acc: 'cash', dir: 'dec', fset: 'asset', display: '-1,000 Cash' }
+              ],
+              update: () => { state.accounts.equip += 1000; state.accounts.cash -= 1000; state.cashFlow.investing -= 1000; } },
+              
+            { id: 't3', difficulty: 1, type: 'daily', date: 'Oct 5', desc: 'Prof. McGonagall buys potion ingredients (Supplies) for 500 Galleons on account.', amt: 500, img: 'Clue 8 - Prof. McGonagall.jpg', charName: 'Prof. McGonagall',
+              dialogue: "I require 500 Galleons of potion supplies. Please charge it to my account, I will pay later.",
+              hint: "We brought in inventory (Supplies go up), but we haven't paid yet, creating a debt (Accounts Payable goes up).",
+              answers: [
+                  { acc: 'supplies', dir: 'inc', fset: 'asset', display: '+500 Supplies' },
+                  { acc: 'ap', dir: 'inc', fset: 'liab', display: '+500 Payables' }
+              ],
+              update: () => { state.accounts.supplies += 500; state.accounts.ap += 500; state.assets += 500; state.liabilities += 500; } },
+              
+            { id: 't4', difficulty: 2, type: 'daily', date: 'Oct 8', desc: 'Rubeus Hagrid pays 3 months shop rent in advance: 600 Galleons cash.', amt: 600, img: 'Clue 4 - Rubeus Hagrid.jpg', charName: 'Rubeus Hagrid',
+              dialogue: "Here's 600 Galleons for the next three months of rent, paid right up front!",
+              hint: "Paying rent in advance creates a future benefit (Prepaid Rent goes up). Naturally, paying it reduces our money (Cash goes down).",
+              answers: [
+                  { acc: 'prent', dir: 'inc', fset: 'asset', display: '+600 Prepaid Rent' },
+                  { acc: 'cash', dir: 'dec', fset: 'asset', display: '-600 Cash' }
+              ],
+              update: () => { state.accounts.prent += 600; state.accounts.cash -= 600; state.cashFlow.operating -= 600; } },
+              
+            { id: 't5', difficulty: 3, type: 'daily', date: 'Oct 12', desc: 'Receive 400 Galleons from Hermione Granger for custom study potions not yet made.', amt: 400, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
+              dialogue: "Here is 400 Galleons for those custom study potions. I expect them brewed perfectly and delivered soon!",
+              hint: "We got the money (Cash goes up), but we owe her a service we haven't done yet (Unearned Revenue goes up).",
+              answers: [
+                  { acc: 'cash', dir: 'inc', fset: 'asset', display: '+400 Cash' },
+                  { acc: 'urev', dir: 'inc', fset: 'liab', display: '+400 Unearned Rev.' }
+              ],
+              update: () => { state.accounts.cash += 400; state.accounts.urev += 400; state.assets += 400; state.liabilities += 400; state.cashFlow.operating += 400; } },
+              
+            { id: 't6', difficulty: 1, type: 'daily', date: 'Oct 15', desc: 'Neville Longbottom buys gadgets and jokes for 800 Galleons cash.', amt: 800, img: 'Clue 6 - Neville Longbottom.jpg', charName: 'Neville Longbottom',
+              dialogue: "I'll take 800 Galleons worth of these joke gadgets. Here's the cash!",
+              hint: "A direct sale! We receive money (Cash goes up), and we record our earnings (Revenue goes up).",
+              answers: [
+                  { acc: 'cash', dir: 'inc', fset: 'asset', display: '+800 Cash' },
+                  { acc: 'rev', dir: 'inc', fset: 'equity', display: '+800 Revenue' }
+              ],
+              update: () => { state.accounts.cash += 800; state.accounts.rev += 800; state.assets += 800; state.equity += 800; state.cashFlow.operating += 800; } },
+              
+            { id: 't7', difficulty: 2, type: 'daily', date: 'Oct 18', desc: 'Sell broom polish to Ginny Weasley for 300 Galleons on account.', amt: 300, img: 'Clue 5 - Ginny Weasley.jpg', charName: 'Ginny Weasley',
+              dialogue: "I need 300 Galleons of broom polish for Quidditch practice. Put it on my tab!",
+              hint: "We made a sale so we earned it (Revenue goes up), but since she hasn't paid us yet, someone owes us (Accounts Receivable goes up).",
+              answers: [
+                  { acc: 'ar', dir: 'inc', fset: 'asset', display: '+300 Receivables' },
+                  { acc: 'rev', dir: 'inc', fset: 'equity', display: '+300 Revenue' }
+              ],
+              update: () => { state.accounts.ar += 300; state.accounts.rev += 300; state.assets += 300; state.equity += 300; } },
+              
+            { id: 't8', difficulty: 1, type: 'daily', date: 'Oct 20', desc: 'Hermione Granger pays 100 Galleons cash for an advertisement in the Daily Prophet.', amt: 100, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
+              dialogue: "I've just paid 100 Galleons to the Daily Prophet to run an advertisement for the shop.",
+              hint: "Advertising is a cost of doing business (Advertising Expense goes up), and paying for it drains funds (Cash goes down).",
+              answers: [
+                  { acc: 'expAdv', dir: 'inc', fset: 'equity', display: '-100 Ad Expense' },
+                  { acc: 'cash', dir: 'dec', fset: 'asset', display: '-100 Cash' }
+              ],
+              update: () => { state.accounts.expAdv += 100; state.accounts.cash -= 100; state.assets -= 100; state.equity -= 100; state.cashFlow.operating -= 100; } },
+              
+            { id: 't9', difficulty: 2, type: 'daily', date: 'Oct 25', desc: 'Ron Weasley pays 200 Galleons cash toward the potion ingredients bought on Oct 5.', amt: 200, img: 'Clue 3 - Ron Weasley.jpg', charName: 'Ron Weasley',
+              dialogue: "Here is 200 Galleons toward that debt we owe for the potion ingredients.",
+              hint: "We are paying off a debt we owe (Accounts Payable goes down), which requires us to use funds (Cash goes down).",
+              answers: [
+                  { acc: 'ap', dir: 'dec', fset: 'liab', display: '-200 Payables' },
+                  { acc: 'cash', dir: 'dec', fset: 'asset', display: '-200 Cash' }
+              ],
+              update: () => { state.accounts.ap -= 200; state.accounts.cash -= 200; state.assets -= 200; state.liabilities -= 200; state.cashFlow.operating -= 200; } },
+              
+            { id: 't10', difficulty: 2, type: 'daily', date: 'Oct 28', desc: 'Receive 150 Galleons cash from Ginny Weasley for the Oct 18 sale.', amt: 150, img: 'Clue 5 - Ginny Weasley.jpg', charName: 'Ginny Weasley',
+              dialogue: "Here is 150 Galleons cash towards that broom polish I bought earlier this month.",
+              hint: "We are collecting money owed to us (Cash goes up). Because she paid us, her outstanding tab shrinks (Accounts Receivable goes down).",
+              answers: [
+                  { acc: 'cash', dir: 'inc', fset: 'asset', display: '+150 Cash' },
+                  { acc: 'ar', dir: 'dec', fset: 'asset', display: '-150 Receivables' }
+              ],
+              update: () => { state.accounts.cash += 150; state.accounts.ar -= 150; state.cashFlow.operating += 150; } },
+            
+            // Adjustments
+            { id: 'a1', difficulty: 2, type: 'adj', date: 'Oct 31', desc: 'Inventory check shows 200 Galleons of potion supplies bought by Prof. McGonagall were used up.', amt: 200, img: 'Clue 8 - Prof. McGonagall.jpg', charName: 'Prof. McGonagall',
+              dialogue: "I've checked the storeroom. Exactly 200 Galleons worth of those potion supplies have been completely used up.",
+              hint: "Using up supplies becomes a cost (Supplies Expense goes up), and our physical inventory shrinks (Supplies go down).",
+              answers: [
+                  { acc: 'expSup', dir: 'inc', fset: 'equity', display: '-200 Supplies Exp.' },
+                  { acc: 'supplies', dir: 'dec', fset: 'asset', display: '-200 Supplies' }
+              ],
+              update: () => { state.accounts.expSup += 200; state.accounts.supplies -= 200; state.assets -= 200; state.equity -= 200; } },
+              
+            { id: 'a2', difficulty: 2, type: 'adj', date: 'Oct 31', desc: 'One month of shop rent paid by Rubeus Hagrid (200 Galleons) has now expired.', amt: 200, img: 'Clue 4 - Rubeus Hagrid.jpg', charName: 'Rubeus Hagrid',
+              dialogue: "A whole month has passed already! That means 200 Galleons of that rent I paid is now officially used.",
+              hint: "The time has passed, so the benefit is used up (Rent Expense goes up), decreasing the prepaid value we held (Prepaid Rent goes down).",
+              answers: [
+                  { acc: 'expRent', dir: 'inc', fset: 'equity', display: '-200 Rent Exp.' },
+                  { acc: 'prent', dir: 'dec', fset: 'asset', display: '-200 Prepaid Rent' }
+              ],
+              update: () => { state.accounts.expRent += 200; state.accounts.prent -= 200; state.assets -= 200; state.equity -= 200; } },
+              
+            { id: 'a3', difficulty: 2, type: 'adj', date: 'Oct 31', desc: 'Record monthly wear & tear (depreciation) on cauldrons bought by George Weasley: 50 Galleons.', amt: 50, img: 'Clue 2 - George Weasley.jpg', charName: 'George Weasley',
+              dialogue: "These cauldrons have taken a beating! I estimate about 50 Galleons worth of wear and tear this month.",
+              hint: "We must record the wear and tear cost (Depreciation Expense goes up), which accumulates against the equipment's value (Accumulated Depreciation goes up).",
+              answers: [
+                  { acc: 'expDep', dir: 'inc', fset: 'equity', display: '-50 Deprec. Exp.' },
+                  { acc: 'adep', dir: 'inc', fset: 'asset', display: '-50 Accum. Deprec.' }
+              ],
+              update: () => { state.accounts.expDep += 50; state.accounts.adep += 50; state.assets -= 50; state.equity -= 50; } },
+              
+            { id: 'a4', difficulty: 3, type: 'adj', date: 'Oct 31', desc: 'Delivered half of Hermione Granger\'s custom potions (Earned 200 Galleons).', amt: 200, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
+              dialogue: "I've finally received half of my custom potions order. That covers 200 Galleons of my earlier payment.",
+              hint: "We finally did the work, so we owe her less (Unearned Revenue goes down). Because the work is done, we officially earned it (Revenue goes up).",
+              answers: [
+                  { acc: 'urev', dir: 'dec', fset: 'liab', display: '-200 Unearned Rev.' },
+                  { acc: 'rev', dir: 'inc', fset: 'equity', display: '+200 Revenue' }
+              ],
+              update: () => { state.accounts.urev -= 200; state.accounts.rev += 200; state.liabilities -= 200; state.equity += 200; } },
+              
+            { id: 'a5', difficulty: 3, type: 'adj', date: 'Oct 31', desc: 'Received bill for owl-post deliveries for Neville Longbottom: 50 Galleons. Not yet paid.', amt: 50, img: 'Clue 6 - Neville Longbottom.jpg', charName: 'Neville Longbottom',
+              dialogue: "An owl just dropped off a bill for 50 Galleons for all my recent deliveries. We haven't paid it yet.",
+              hint: "The delivery service was provided, generating a cost (Delivery Expense goes up). Since we haven't paid the owl yet, we owe money (Accounts Payable goes up).",
+              answers: [
+                  { acc: 'expDel', dir: 'inc', fset: 'equity', display: '-50 Delivery Exp.' },
+                  { acc: 'ap', dir: 'inc', fset: 'liab', display: '+50 Payables' }
+              ],
+              update: () => { state.accounts.expDel += 50; state.accounts.ap += 50; state.liabilities += 50; state.equity -= 50; } }
+        ];
+
+        const funnyPhrases = [
+            "10 Points to Gryffindor!",
+            "Bloody Brilliant!",
+            "Merlin's Beard! Correct!",
+            "Outstanding (O)!",
+            "Wicked!",
+            "Perfect Spell!"
+        ];
+
+        let selectedRune = null;
+
+        function renderTransactions() {
+            const dailyContainer = document.getElementById('daily-ledger-container');
+            const adjContainer = document.getElementById('adj-ledger-container');
+            
+            transactions.forEach((t) => {
+                // Generate Rune Palette HTML for this specific transaction
+                let paletteHtml = '';
+                runeGroups.forEach(group => {
+                    paletteHtml += `<div class="flex-shrink-0"><div class="text-xs font-bold text-${group.color}-700 uppercase mb-1">${group.label}</div><div class="flex flex-col gap-1">`;
+                    group.accounts.forEach(acc => {
+                        paletteHtml += `<button class="rune-btn text-xs md:text-sm font-bold bg-${group.color}-100 text-${group.color}-800 border-2 border-${group.color}-300 rounded px-2 py-1 hover:bg-${group.color}-200 flex items-center justify-center whitespace-nowrap" data-val="${acc.val}" data-color="${group.color}" draggable="true" ondragstart="dragRune(event)" onclick="selectRune(this)">${acc.text}</button>`;
+                    });
+                    paletteHtml += `</div></div>`;
+                });
+
+                const html = `
+                    <div class="bg-white/95 hover-float rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden relative backdrop-blur-md" id="card-${t.id}">
+                        <div class="p-6 md:p-8">
+                            
+                            <!-- Story Header -->
+                            <div class="mb-4 flex flex-col md:flex-row items-start gap-4 bg-red-50 p-4 rounded-xl border border-red-100 shadow-inner">
+                                <div class="flex-shrink-0 relative">
+                                    <img src="${t.img}" alt="${t.charName}" class="w-16 h-16 rounded-full border-2 border-hogwarts-gold object-cover shadow-md bg-white z-10 relative" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                    <div class="hidden w-16 h-16 rounded-full border-2 border-hogwarts-gold bg-hogwarts-red text-white justify-center items-center shadow-md">
+                                        <i data-lucide="user" class="w-8 h-8"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1 w-full">
+                                    <span class="text-xs font-bold text-white bg-hogwarts-red px-3 py-1 rounded-full mb-2 inline-block shadow uppercase tracking-wide">${t.date}</span>
+                                    <p class="text-gray-800 font-bold text-lg md:text-xl leading-snug mb-3">${t.desc}</p>
+                                    
+                                    <!-- Dialogue Bubble -->
+                                    <div class="bg-white p-3 rounded-2xl rounded-tl-none border-2 border-gray-200 shadow-sm relative text-sm font-medium text-gray-700 italic flex items-center gap-2">
+                                        <div class="absolute -left-2 top-0 w-3 h-3 bg-white border-l-2 border-t-2 border-gray-200 transform -rotate-45 mt-2"></div>
+                                        <i data-lucide="message-circle" class="w-4 h-4 text-gray-400 flex-shrink-0"></i> "${t.dialogue}"
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Interactive FSET Spell Caster -->
+                            <div id="interaction-${t.id}" class="mt-4 bg-gray-50 p-5 rounded-xl border border-gray-200 shadow-inner">
+                                <p class="text-sm font-bold text-hogwarts-purple mb-3 uppercase tracking-wider flex items-center gap-2"><i data-lucide="wand" class="w-4 h-4"></i> Cast your balancing spell:</p>
+                                
+                                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                                    <!-- SLOT 1 -->
+                                    <div class="flex-1 flex items-center gap-2">
+                                        <div id="drop1-${t.id}" data-val="" class="drop-zone flex-1 p-3 border-2 border-dashed border-gray-300 bg-white rounded-lg flex items-center justify-center min-h-[60px] cursor-pointer hover:bg-gray-50 transition" onclick="placeRune(this)" ondragover="allowDrop(event)" ondrop="dropRune(event, this)">
+                                            <span class="text-gray-400 text-sm font-bold">Tap Rune, then Tap Here</span>
+                                        </div>
+                                        <button id="dir1-${t.id}" onclick="toggleDir(this)" data-dir="inc" class="p-3 bg-green-100 text-green-700 rounded-lg border-2 border-green-300 w-14 h-14 flex justify-center items-center hover:bg-green-200 transition focus:outline-none shadow-sm flex-shrink-0">
+                                            <i data-lucide="trending-up" class="w-6 h-6 pointer-events-none"></i>
+                                        </button>
+                                    </div>
+                                    <!-- SLOT 2 -->
+                                    <div class="flex-1 flex items-center gap-2">
+                                        <div id="drop2-${t.id}" data-val="" class="drop-zone flex-1 p-3 border-2 border-dashed border-gray-300 bg-white rounded-lg flex items-center justify-center min-h-[60px] cursor-pointer hover:bg-gray-50 transition" onclick="placeRune(this)" ondragover="allowDrop(event)" ondrop="dropRune(event, this)">
+                                            <span class="text-gray-400 text-sm font-bold">Tap Rune, then Tap Here</span>
+                                        </div>
+                                        <button id="dir2-${t.id}" onclick="toggleDir(this)" data-dir="inc" class="p-3 bg-green-100 text-green-700 rounded-lg border-2 border-green-300 w-14 h-14 flex justify-center items-center hover:bg-green-200 transition focus:outline-none shadow-sm flex-shrink-0">
+                                            <i data-lucide="trending-up" class="w-6 h-6 pointer-events-none"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- The Rune Palette for this transaction -->
+                                <div class="bg-white p-3 rounded-lg border border-gray-200 mb-4 shadow-sm">
+                                    <p class="text-xs text-gray-500 font-bold mb-2 uppercase"><i data-lucide="hand" class="w-3 h-3 inline"></i> Rune Palette</p>
+                                    <div class="flex gap-4 overflow-x-auto pb-2 rune-palette-scroll">
+                                        ${paletteHtml}
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between items-center mt-4">
+                                    <span id="error-${t.id}" class="text-red-600 font-bold hidden flex items-center gap-2 bg-red-100 p-2 rounded px-4 border border-red-200"><i data-lucide="alert-triangle" class="w-5 h-5"></i> Spell fizzled!</span>
+                                    <button onclick="castFSET('${t.id}')" class="ml-auto bg-hogwarts-gold text-hogwarts-dark font-bold px-6 py-3 rounded-xl hover:bg-yellow-400 transition shadow-lg flex items-center gap-2 text-lg transform hover:scale-105">
+                                        <i data-lucide="wand-2" class="w-5 h-5"></i> Apply Magic
+                                    </button>
+                                </div>
+                                
+                                <!-- Hermione's Hint Section -->
+                                <div class="mt-4 border-t border-gray-200 pt-3">
+                                    <button onclick="document.getElementById('hint-${t.id}').classList.toggle('hidden')" class="text-sm font-bold text-hogwarts-blue flex items-center gap-1 hover:underline outline-none">
+                                        <i data-lucide="help-circle" class="w-4 h-4"></i> Need a Hint?
+                                    </button>
+                                    <div id="hint-${t.id}" class="hidden mt-3 p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm text-gray-800 flex items-start gap-3 shadow-inner">
+                                        <img src="Clue 1 - Hermione Granger.jpg" class="w-10 h-10 rounded-full border-2 border-hogwarts-blue object-cover shadow" onerror="this.style.display='none'">
+                                        <div>
+                                            <strong class="text-hogwarts-blue block mb-1">Hermione says:</strong> 
+                                            ${t.hint}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- FSET Automatic Result -->
+                            <div id="result-${t.id}" class="hidden mt-4 bg-green-50 border-2 border-green-300 p-5 rounded-xl shadow-inner">
+                                <h4 class="font-bold text-green-800 flex items-center gap-2 mb-4 font-heading text-xl">
+                                    <i data-lucide="check-circle-2" class="w-6 h-6 text-green-600"></i> Magic Ledger Updated!
+                                </h4>
+                                <div class="grid grid-cols-3 gap-2 text-center text-sm md:text-base font-bold bg-white p-4 rounded-lg border-2 border-green-200 shadow-sm">
+                                    <div class="text-hogwarts-blue">Assets<br><span class="text-gray-800 font-bold block mt-2 text-lg">${formatEffect(t, 'asset')}</span></div>
+                                    <div class="text-hogwarts-red border-l-2 border-r-2 border-gray-100">Liabilities<br><span class="text-gray-800 font-bold block mt-2 text-lg">${formatEffect(t, 'liab')}</span></div>
+                                    <div class="text-hogwarts-purple">Equity<br><span class="text-gray-800 font-bold block mt-2 text-lg">${formatEffect(t, 'equity')}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                if (t.type === 'daily') dailyContainer.innerHTML += html;
+                else adjContainer.innerHTML += html;
+            });
+            lucide.createIcons();
+        }
+
+        // --- Drag & Drop / Tap to Place Logic ---
+        
+        function selectRune(runeElement) {
+            // Deselect all
+            document.querySelectorAll('.rune-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-yellow-400', 'scale-110', 'shadow-lg'));
+            // Select current
+            runeElement.classList.add('ring-4', 'ring-yellow-400', 'scale-110', 'shadow-lg');
+            
+            selectedRune = {
+                val: runeElement.dataset.val,
+                html: runeElement.innerHTML,
+                color: runeElement.dataset.color
+            };
+
+            // Pulse drop zones
+            document.querySelectorAll('.drop-zone').forEach(z => {
+                if(z.closest('.page-section').classList.contains('active')) {
+                    z.classList.add('ring-2', 'ring-yellow-400', 'animate-pulse');
+                }
+            });
+        }
+
+        function placeRune(zoneElement) {
+            if (selectedRune) {
+                zoneElement.innerHTML = selectedRune.html;
+                zoneElement.dataset.val = selectedRune.val;
+                zoneElement.className = `drop-zone flex-1 p-3 border-2 border-dashed rounded-lg flex items-center justify-center min-h-[60px] cursor-pointer shadow-md bg-${selectedRune.color}-100 border-${selectedRune.color}-400 text-${selectedRune.color}-800 font-bold text-sm md:text-base`;
+
+                // Clear
+                document.querySelectorAll('.rune-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-yellow-400', 'scale-110', 'shadow-lg'));
+                document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('ring-2', 'ring-yellow-400', 'animate-pulse'));
+                selectedRune = null;
+            } else if (zoneElement.dataset.val !== "") {
+                // Clear zone if tapped empty
+                zoneElement.innerHTML = '<span class="text-gray-400 text-sm font-bold">Tap Rune, then Tap Here</span>';
+                zoneElement.dataset.val = "";
+                zoneElement.className = "drop-zone flex-1 p-3 border-2 border-dashed border-gray-300 bg-white rounded-lg flex items-center justify-center min-h-[60px] cursor-pointer hover:bg-gray-50 transition";
+            }
+        }
+
+        function dragRune(e) {
+            e.dataTransfer.setData("val", e.target.dataset.val);
+            e.dataTransfer.setData("html", e.target.innerHTML);
+            e.dataTransfer.setData("color", e.target.dataset.color);
+        }
+
+        function allowDrop(e) { 
+            e.preventDefault(); 
+        }
+
+        function dropRune(e, zoneElement) {
+            e.preventDefault();
+            const val = e.dataTransfer.getData("val");
+            const html = e.dataTransfer.getData("html");
+            const color = e.dataTransfer.getData("color");
+            if(val) {
+                zoneElement.innerHTML = html;
+                zoneElement.dataset.val = val;
+                zoneElement.className = `drop-zone flex-1 p-3 border-2 border-dashed rounded-lg flex items-center justify-center min-h-[60px] cursor-pointer shadow-md bg-${color}-100 border-${color}-400 text-${color}-800 font-bold text-sm md:text-base`;
+            }
+        }
+
+        // --- Core Logic ---
+
+        function toggleDir(btn) {
+            if(btn.dataset.dir === 'inc') {
+                btn.dataset.dir = 'dec';
+                btn.classList.replace('bg-green-100', 'bg-red-100');
+                btn.classList.replace('text-green-700', 'text-red-700');
+                btn.classList.replace('border-green-300', 'border-red-300');
+                btn.innerHTML = '<i data-lucide="trending-down" class="w-6 h-6 pointer-events-none"></i>';
+            } else {
+                btn.dataset.dir = 'inc';
+                btn.classList.replace('bg-red-100', 'bg-green-100');
+                btn.classList.replace('text-red-700', 'text-green-700');
+                btn.classList.replace('border-red-300', 'border-green-300');
+                btn.innerHTML = '<i data-lucide="trending-up" class="w-6 h-6 pointer-events-none"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        function formatEffect(t, type) {
+            let effects = [];
+            t.answers.forEach(a => {
+                if(a.fset === type) {
+                    let color = a.display.startsWith('+') ? 'text-green-600' : 'text-red-600';
+                    effects.push(`<span class="${color}">${a.display}</span>`);
+                }
+            });
+            return effects.length > 0 ? effects.join('<br>') : '<span class="text-gray-400 italic font-normal text-base">No Effect</span>';
+        }
+
+        function castFSET(id, silent = false) {
+            const t = transactions.find(x => x.id === id);
+            if(!t || document.getElementById(`interaction-${id}`).style.display === 'none') return;
+
+            const acc1 = document.getElementById(`drop1-${id}`).dataset.val;
+            const dir1 = document.getElementById(`dir1-${id}`).dataset.dir;
+            const acc2 = document.getElementById(`drop2-${id}`).dataset.val;
+            const dir2 = document.getElementById(`dir2-${id}`).dataset.dir;
+            const err = document.getElementById(`error-${id}`);
+
+            if(!acc1 || !acc2) {
+                if(!silent) {
+                    err.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5"></i> Please place two runes!';
+                    err.classList.remove('hidden');
+                }
+                return;
+            }
+
+            const ans1 = t.answers[0];
+            const ans2 = t.answers[1];
+            const match1 = (acc1 === ans1.acc && dir1 === ans1.dir && acc2 === ans2.acc && dir2 === ans2.dir);
+            const match2 = (acc1 === ans2.acc && dir1 === ans2.dir && acc2 === ans1.acc && dir2 === ans1.dir);
+
+            if(match1 || match2) {
+                // Success
+                err.classList.add('hidden');
+                document.getElementById(`interaction-${id}`).style.display = 'none';
+                
+                const res = document.getElementById(`result-${id}`);
+                res.classList.remove('hidden');
+                res.classList.add('animate-[fadeIn_0.4s_ease-out]');
+                
+                const card = document.getElementById(`card-${id}`);
+                card.classList.replace('border-gray-200', 'border-hogwarts-gold');
+                card.style.boxShadow = '0 0 20px rgba(207, 181, 59, 0.6)';
+
+                if(!silent) {
+                    const rect = document.getElementById(`card-${id}`).getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+                    
+                    extremeMagicDust(cx, cy, t.difficulty || 1);
+                    playMagicSound();
+                    showFunnyText(cx, cy);
+                }
+
+                t.update();
+                state.completed++;
+                updateHUD();
+                updateFinancials(); // Live updates!
+                
+                if(state.completed === transactions.length) {
+                    if(!silent) setTimeout(triggerGrandFinale, 1000);
+                    document.getElementById('success-message').classList.remove('hidden');
+                }
+            } else {
+                // Failure
+                if(!silent) {
+                    err.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5"></i> Spell fizzled! Check accounts/directions.';
+                    err.classList.remove('hidden');
+                    const intBox = document.getElementById(`interaction-${id}`);
+                    intBox.classList.remove('animate-shake-fast');
+                    void intBox.offsetWidth; // trigger reflow
+                    intBox.classList.add('animate-shake-fast');
+                    lucide.createIcons();
+                }
+            }
+        }
+
+        // --- Teacher Mode ---
+        function unlockTeacherMode() {
+            document.getElementById('teacher-modal').classList.remove('hidden');
+            document.getElementById('teacher-pwd').value = '';
+            document.getElementById('teacher-error').classList.add('hidden');
+            document.getElementById('teacher-pwd').focus();
+        }
+
+        function closeTeacherModal() {
+            document.getElementById('teacher-modal').classList.add('hidden');
+        }
+
+        function submitTeacherModal() {
+            const pwd = document.getElementById('teacher-pwd').value;
+            if (pwd === "teacher") {
+                closeTeacherModal();
+                
+                showFunnyText(window.innerWidth / 2, window.innerHeight / 2);
+                
+                transactions.forEach(t => {
+                    const intBox = document.getElementById(`interaction-${t.id}`);
+                    if (intBox && intBox.style.display !== 'none') {
+                        
+                        document.getElementById(`drop1-${t.id}`).dataset.val = t.answers[0].acc;
+                        const btn1 = document.getElementById(`dir1-${t.id}`);
+                        if(btn1.dataset.dir !== t.answers[0].dir) toggleDir(btn1);
+
+                        document.getElementById(`drop2-${t.id}`).dataset.val = t.answers[1].acc;
+                        const btn2 = document.getElementById(`dir2-${t.id}`);
+                        if(btn2.dataset.dir !== t.answers[1].dir) toggleDir(btn2);
+
+                        castFSET(t.id, true);
+                    }
+                });
+
+                if (state.completed === transactions.length) {
+                     triggerGrandFinale();
+                     document.getElementById('success-message').classList.remove('hidden');
+                }
+                
+            } else {
+                document.getElementById('teacher-error').classList.remove('hidden');
+                const modal = document.querySelector('#teacher-modal > div');
+                modal.classList.remove('animate-shake-fast');
+                void modal.offsetWidth;
+                modal.classList.add('animate-shake-fast');
+            }
+        }
+
+        // --- Special Effects ---
+        function showFunnyText(x, y) {
+            const el = document.createElement('div');
+            el.className = 'funny-text';
+            el.innerText = funnyPhrases[Math.floor(Math.random() * funnyPhrases.length)];
+            el.style.left = (x - 100) + 'px';
+            el.style.top = (y - 50) + 'px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 2000);
+        }
+
+        // Multiplied by difficulty (1 to 3)
+        function extremeMagicDust(x, y, difficulty = 1) {
+            const totalParticles = 20 * difficulty; // More particles for harder problems
+            for (let i = 0; i < totalParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Clean, beautiful magic CSS glowing orbs instead of emojis
+                const size = Math.random() * (10 + (difficulty*2)) + 4;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.borderRadius = '50%';
+                
+                // Add varied colors based on difficulty
+                const colors = ['#cfb53b', '#ffea00', '#ffffff'];
+                if(difficulty > 1) colors.push('#740001'); // Add red sparks for higher diff
+                if(difficulty > 2) colors.push('#371f45'); // Add purple sparks for highest diff
+                
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.boxShadow = `0 0 ${10 * difficulty}px ${particle.style.background}`;
+                
+                const destX = (Math.random() - 0.5) * (300 * difficulty); // Wider spread
+                const destYPeak = - (Math.random() * 200 + 100);
+                const destYFall = destYPeak + 100 + Math.random() * 100;
+                
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--dx', destX + 'px');
+                particle.style.setProperty('--dy-peak', destYPeak + 'px');
+                particle.style.setProperty('--dy-fall', destYFall + 'px');
+                
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        function festiveGoldDust(e) {
+            if (!e || e.clientX === undefined) return;
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 8 + 3;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.borderRadius = '50%';
+                particle.style.background = ['#cfb53b', '#ffea00', '#ffd700'][Math.floor(Math.random() * 3)];
+                particle.style.boxShadow = `0 0 8px ${particle.style.background}`;
+                
+                const destX = (Math.random() - 0.5) * 150;
+                const destYPeak = - (Math.random() * 80 + 30);
+                const destYFall = destYPeak + 30 + Math.random() * 50;
+                
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--dx', destX + 'px');
+                particle.style.setProperty('--dy-peak', destYPeak + 'px');
+                particle.style.setProperty('--dy-fall', destYFall + 'px');
+                
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        function createAmbientDust() {
+            const container = document.getElementById('ambient-magic-container');
+            for(let i=0; i<30; i++) {
+                let dust = document.createElement('div');
+                dust.className = 'ambient-dust';
+                dust.style.left = Math.random() * 100 + 'vw';
+                dust.style.animation = `ambientFloat ${Math.random() * 10 + 10}s infinite linear`;
+                dust.style.animationDelay = (Math.random() * -20) + 's';
+                let size = Math.random() * 4 + 2;
+                dust.style.width = size + 'px';
+                dust.style.height = size + 'px';
+                container.appendChild(dust);
+            }
+        }
+
+        function triggerGrandFinale() {
+            playMagicSound();
+            playMagicSound();
+            
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            showFunnyText(centerX, centerY);
+            document.querySelector('.funny-text').innerText = "150 POINTS TO GRYFFINDOR!!";
+            document.querySelector('.funny-text').style.fontSize = "4rem";
+            document.querySelector('.funny-text').style.left = (centerX - 300) + 'px';
+
+            for(let i=0; i<5; i++) {
+                setTimeout(() => {
+                    extremeMagicDust(Math.random() * window.innerWidth, Math.random() * window.innerHeight, 3);
+                }, i * 300);
+            }
+        }
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playMagicSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.type = 'sine';
+            const now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(600, now);
+            osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+            osc.frequency.exponentialRampToValueAtTime(2400, now + 0.3);
+            
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.2, now + 0.05);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+            
+            osc.start(now);
+            osc.stop(now + 0.5);
+        }
+
+        function updateHUD() {
+            const accs = state.accounts;
+            
+            // Calculate components dynamically to avoid state duplication
+            const assets = accs.cash + accs.ar + accs.supplies + accs.prent + accs.equip - accs.adep;
+            const liab = accs.ap + accs.urev;
+            const cap = accs.capital;
+            const rev = accs.rev;
+            const exp = accs.expAdv + accs.expSup + accs.expRent + accs.expDep + accs.expDel;
+
+            const els = ['assets', 'liab', 'cap', 'rev', 'exp'].map(id => document.getElementById(`hud-${id}`));
+
+            els.forEach(el => {
+                if(el) {
+                    el.classList.remove('balance-update');
+                    void el.offsetWidth;
+                    el.classList.add('balance-update');
+                }
+            });
+
+            if (els[0]) els[0].innerText = assets.toLocaleString() + ' G';
+            if (els[1]) els[1].innerText = liab.toLocaleString() + ' G';
+            if (els[2]) els[2].innerText = cap.toLocaleString() + ' G';
+            if (els[3]) els[3].innerText = rev.toLocaleString() + ' G';
+            if (els[4]) els[4].innerText = exp.toLocaleString() + ' G';
+            
+            document.getElementById('hud-progress').innerText = state.completed + '/15';
+        }
+
+        // Live updating Financial Statements!
+        function updateFinancials() {
+            // Income Statement Updates
+            document.getElementById('st-rev').innerText = state.accounts.rev.toLocaleString() + ' G';
+            document.getElementById('st-exp-adv').innerText = state.accounts.expAdv.toLocaleString() + ' G';
+            document.getElementById('st-exp-sup').innerText = state.accounts.expSup.toLocaleString() + ' G';
+            document.getElementById('st-exp-rent').innerText = state.accounts.expRent.toLocaleString() + ' G';
+            document.getElementById('st-exp-dep').innerText = state.accounts.expDep.toLocaleString() + ' G';
+            document.getElementById('st-exp-del').innerText = state.accounts.expDel.toLocaleString() + ' G';
+            
+            const totalExp = state.accounts.expAdv + state.accounts.expSup + state.accounts.expRent + state.accounts.expDep + state.accounts.expDel;
+            document.getElementById('st-total-exp').innerText = totalExp.toLocaleString() + ' G';
+            
+            const netIncome = state.accounts.rev - totalExp;
+            document.getElementById('st-net-income').innerText = netIncome.toLocaleString() + ' G';
+
+            // Balance Sheet Updates
+            document.getElementById('st-cash').innerText = state.accounts.cash.toLocaleString() + ' G';
+            document.getElementById('st-ar').innerText = state.accounts.ar.toLocaleString() + ' G';
+            document.getElementById('st-sup').innerText = state.accounts.supplies.toLocaleString() + ' G';
+            document.getElementById('st-prent').innerText = state.accounts.prent.toLocaleString() + ' G';
+            document.getElementById('st-equip').innerText = state.accounts.equip.toLocaleString() + ' G';
+            document.getElementById('st-adep').innerText = '(' + state.accounts.adep.toLocaleString() + ' G)';
+            document.getElementById('st-total-assets').innerText = state.assets.toLocaleString() + ' G';
+
+            document.getElementById('st-ap').innerText = state.accounts.ap.toLocaleString() + ' G';
+            document.getElementById('st-urev').innerText = state.accounts.urev.toLocaleString() + ' G';
+            document.getElementById('st-total-liab').innerText = state.liabilities.toLocaleString() + ' G';
+
+            document.getElementById('st-cap').innerText = state.accounts.capital.toLocaleString() + ' G';
+            document.getElementById('st-re').innerText = netIncome.toLocaleString() + ' G';
+            document.getElementById('st-total-le').innerText = (state.liabilities + state.accounts.capital + netIncome).toLocaleString() + ' G';
+            
+            // Cash Flow Statement Updates
+            document.getElementById('st-cf-ops').innerText = state.cashFlow.operating.toLocaleString() + ' G';
+            document.getElementById('st-cf-inv').innerText = state.cashFlow.investing.toLocaleString() + ' G';
+            document.getElementById('st-cf-fin').innerText = state.cashFlow.financing.toLocaleString() + ' G';
+            const netCash = state.cashFlow.operating + state.cashFlow.investing + state.cashFlow.financing;
+            document.getElementById('st-cf-net').innerText = netCash.toLocaleString() + ' G';
+            
+            // Animation prompt on the nav tab
+            const finTab = document.querySelector('[data-target="financials"]');
+            if(finTab) {
+                finTab.classList.remove('animate-bounce');
+                void finTab.offsetWidth;
+                finTab.classList.add('animate-bounce');
+                finTab.classList.add('text-yellow-300');
+                setTimeout(() => {
+                    finTab.classList.remove('animate-bounce');
+                    finTab.classList.remove('text-yellow-300');
+                }, 1500);
+            }
+        }
+
+        function navigate(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active-nav');
+                if(btn.dataset.target === pageId) {
+                    btn.classList.add('active-nav');
+                }
+            });
+            window.scrollTo(0, 0);
+        }
+
+        window.onload = () => {
+            renderTransactions();
+            updateHUD();
+            updateFinancials(); // Initial paint of live statements
+            createAmbientDust();
+        };
+
+    </script>
+</body>
+</html>

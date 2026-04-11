@@ -179,6 +179,7 @@
         .rune-btn {
             transition: all 0.2s ease;
             cursor: grab;
+            width: 120px; /* Uniform width */
         }
         .rune-btn:active { cursor: grabbing; }
         
@@ -225,7 +226,7 @@
 
         <!-- PAGE 0: HOME -->
         <section id="home" class="page-section active">
-            <div class="bg-white/90 rounded-2xl shadow-xl overflow-hidden border border-gray-300 backdrop-blur-sm">
+            <div class="bg-white/95 rounded-2xl shadow-xl overflow-hidden border border-gray-200 backdrop-blur-sm">
                 <div class="bg-hogwarts-red text-center py-12 px-6 text-white relative overflow-hidden">
                     <h1 class="text-3xl md:text-5xl font-heading font-bold mb-4 text-hogwarts-gold animate-bounce">The Marauder's Mercantile</h1>
                     <h2 class="text-xl md:text-2xl text-gray-200 font-heading">Learn Accounting by Magic!</h2>
@@ -238,13 +239,13 @@
                     <div class="md:w-2/3">
                         <h3 class="text-2xl font-bold mb-4 text-hogwarts-purple font-heading">Welcome, Student Accountant!</h3>
                         <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                            You don't need to be a math genius to understand business. Accounting is simply a way of telling a story about your money.
+                            You do not need to be a math genius to understand business. Accounting is simply a way of telling a story about your money.
                         </p>
                         <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                            Before we open our shop, explore the first 4 magical lessons. Can you guess the answers before flipping the cards? Once you've mastered the theory, play the game to balance the books!
+                            Before we open our shop, explore the first 4 magical lessons. Can you guess the answers before flipping the cards? Once you have mastered the theory, play the game to balance the books!
                         </p>
-                        <button onclick="navigate('lesson1')" class="w-full md:w-auto bg-hogwarts-gold text-hogwarts-dark font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition transform hover:-translate-y-1 text-lg">
-                            Start Lesson 1 ✨
+                        <button onclick="navigate('lesson1')" class="w-full md:w-auto bg-hogwarts-gold text-hogwarts-dark font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition transform hover:-translate-y-1 text-lg flex items-center justify-center gap-2">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i> Start Lesson 1
                         </button>
                     </div>
                 </div>
@@ -253,18 +254,31 @@
 
         <!-- LECTURE 1: The Magic Backpack -->
         <section id="lesson1" class="page-section">
-            <div class="flip-card h-[800px] md:h-[650px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
                 <div class="flip-card-inner">
                     <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-blue p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
                         <i data-lucide="building-2" class="w-24 h-24 text-hogwarts-blue mb-6 animate-bounce"></i>
                         <h2 class="text-4xl font-bold text-hogwarts-blue font-heading mb-6">Question 1: The Foundation</h2>
                         <p class="text-2xl text-gray-800 mb-8 font-medium leading-relaxed">
-                            Think about a large company like <strong>Apple</strong>.<br>
-                            Do they just guess how much stuff they own?<br><br>
-                            What exactly is a <span class="text-hogwarts-red font-bold">Balance Sheet</span>?
+                            Think about a company like <strong>Apple</strong>.<br>
+                            They track billions in cash, equipment, and debts.<br><br>
+                            Which statement records exactly what they own and owe?
                         </p>
+                        
+                        <div class="flex flex-col md:flex-row gap-3 w-full max-w-2xl mx-auto mb-8">
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-hogwarts-blue hover:text-hogwarts-blue transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> Income Statement
+                            </div>
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-hogwarts-blue hover:text-hogwarts-blue transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> The Balance Sheet
+                            </div>
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-hogwarts-blue hover:text-hogwarts-blue transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> Cash Flow Report
+                            </div>
+                        </div>
+
                         <span class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-6 py-3 rounded-full font-bold animate-pulse flex items-center gap-2">
-                            <i data-lucide="hand" class="w-5 h-5"></i> Click to Reveal the Magic
+                            <i data-lucide="hand" class="w-5 h-5"></i> Select an answer to flip the card
                         </span>
                     </div>
 
@@ -272,11 +286,23 @@
                         <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-hogwarts-blue pb-2 font-heading flex items-center gap-3">
                             <i data-lucide="backpack" class="text-hogwarts-blue w-8 h-8"></i> The Balance Sheet
                         </h3>
-                        <p class="text-lg text-gray-700 mb-6"><strong>Apple</strong> has a detailed Balance Sheet showing billions in cash and equipment (Assets), what they owe suppliers (Liabilities), and what truly belongs to their shareholders (Equity).</p>
+                        <p class="text-lg text-gray-700 mb-4"><strong>Apple</strong> has a detailed Balance Sheet showing billions in cash and equipment (Assets), what they owe suppliers (Liabilities), and what truly belongs to their shareholders (Equity).</p>
+                        
+                        <!-- Apple Simplified Statement -->
+                        <div class="bg-gray-100 p-5 rounded-xl border border-gray-300 mb-6 shadow-inner text-sm md:text-base">
+                            <h4 class="font-bold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center gap-2">
+                                <i data-lucide="smartphone" class="w-5 h-5 text-gray-600"></i> Apple Inc. (Simplified Balance Sheet)
+                            </h4>
+                            <div class="flex justify-between text-green-700 font-bold mb-1"><span>Total Assets (Owned)</span><span>$352 Billion</span></div>
+                            <div class="flex justify-between text-red-700 font-bold mb-1"><span>Total Liabilities (Owed)</span><span>$279 Billion</span></div>
+                            <div class="flex justify-between text-purple-700 font-bold mt-2 border-t border-gray-300 pt-2"><span>Total Equity (Yours)</span><span>$73 Billion</span></div>
+                        </div>
                         
                         <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 mb-6 shadow-inner">
-                            <h4 class="font-bold text-hogwarts-blue text-xl mb-3 flex items-center gap-2">✨ The Magic Backpack Analogy</h4>
-                            <p class="text-gray-700 mb-4 text-sm md:text-base">Imagine you have a magical school backpack. The Balance Sheet just lists what's inside and who it really belongs to.</p>
+                            <h4 class="font-bold text-hogwarts-blue text-xl mb-3 flex items-center gap-2">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i> The Magic Backpack Analogy
+                            </h4>
+                            <p class="text-gray-700 mb-4 text-sm md:text-base">Imagine you have a magical school backpack. The Balance Sheet just lists what is inside and who it really belongs to.</p>
                             
                             <!-- Mini Flip Cards for Q1 -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -288,7 +314,7 @@
                                             <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
                                         </div>
                                         <div class="mini-flip-back bg-green-50 border-l-4 border-green-500 rounded-lg p-3 text-center text-sm text-gray-800">
-                                            You have a magic wand and 10 shiny gold coins.
+                                            You have a magic wand and 10 Cash.
                                         </div>
                                     </div>
                                 </div>
@@ -300,7 +326,7 @@
                                             <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
                                         </div>
                                         <div class="mini-flip-back bg-red-50 border-l-4 border-red-500 rounded-lg p-3 text-center text-sm text-gray-800">
-                                            You borrowed 3 coins from Ron. You owe him!
+                                            You borrowed 3 Cash from Ron. You owe him!
                                         </div>
                                     </div>
                                 </div>
@@ -312,7 +338,7 @@
                                             <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
                                         </div>
                                         <div class="mini-flip-back bg-purple-50 border-l-4 border-purple-500 rounded-lg p-3 text-center text-sm text-gray-800">
-                                            If you paid Ron, the 7 coins left are truly yours.
+                                            If you paid Ron, the 7 Cash left is truly yours.
                                         </div>
                                     </div>
                                 </div>
@@ -336,17 +362,30 @@
 
         <!-- LECTURE 2: The Potion Shop -->
         <section id="lesson2" class="page-section">
-            <div class="flip-card h-[800px] md:h-[650px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
                 <div class="flip-card-inner">
                     <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-green p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
                         <i data-lucide="clapperboard" class="w-24 h-24 text-hogwarts-green mb-6 animate-bounce"></i>
                         <h2 class="text-4xl font-bold text-hogwarts-green font-heading mb-6">Question 2: The Action</h2>
                         <p class="text-2xl text-gray-800 mb-8 font-medium leading-relaxed">
                             How do companies like <strong>Netflix</strong> know if they actually had a good year?<br><br>
-                            What exactly does an <span class="text-hogwarts-red font-bold">Income Statement</span> show?
+                            Which statement tracks their revenues and expenses?
                         </p>
+
+                        <div class="flex flex-col md:flex-row gap-3 w-full max-w-2xl mx-auto mb-8">
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-hogwarts-green hover:text-hogwarts-green transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> Income Statement
+                            </div>
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-hogwarts-green hover:text-hogwarts-green transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> The Balance Sheet
+                            </div>
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-hogwarts-green hover:text-hogwarts-green transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> Cash Flow Report
+                            </div>
+                        </div>
+
                         <span class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-6 py-3 rounded-full font-bold animate-pulse flex items-center gap-2">
-                            <i data-lucide="hand" class="w-5 h-5"></i> Click to Reveal the Magic
+                            <i data-lucide="hand" class="w-5 h-5"></i> Select an answer to flip the card
                         </span>
                     </div>
 
@@ -354,11 +393,23 @@
                         <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-hogwarts-green pb-2 font-heading flex items-center gap-3">
                             <i data-lucide="store" class="text-hogwarts-green w-8 h-8"></i> The Income Statement
                         </h3>
-                        <p class="text-lg text-gray-700 mb-6"><strong>Netflix</strong> tracks every monthly subscription paid (Revenue) and subtracts the cost of every movie produced (Expense). If Revenue is bigger, they make a Profit!</p>
+                        <p class="text-lg text-gray-700 mb-4"><strong>Netflix</strong> tracks every monthly subscription paid (Revenue) and subtracts the cost of every movie produced (Expense). If Revenue is bigger, they make a Profit!</p>
                         
+                        <!-- Netflix Simplified Statement -->
+                        <div class="bg-gray-100 p-5 rounded-xl border border-gray-300 mb-6 shadow-inner text-sm md:text-base">
+                            <h4 class="font-bold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center gap-2">
+                                <i data-lucide="tv" class="w-5 h-5 text-gray-600"></i> Netflix (Simplified Income Statement)
+                            </h4>
+                            <div class="flex justify-between text-yellow-600 font-bold mb-1"><span>Total Revenue (Subs)</span><span>$33 Billion</span></div>
+                            <div class="flex justify-between text-orange-600 font-bold mb-1"><span>Total Expenses (Costs)</span><span>$26 Billion</span></div>
+                            <div class="flex justify-between text-green-700 font-bold mt-2 border-t border-gray-300 pt-2"><span>Net Income (Profit)</span><span>$7 Billion</span></div>
+                        </div>
+
                         <div class="bg-green-50 p-4 rounded-xl border border-green-200 mb-6 shadow-inner flex flex-col md:flex-row items-center gap-6">
                             <div class="md:w-2/3 space-y-3">
-                                <h4 class="font-bold text-hogwarts-green text-xl mb-3 flex items-center gap-2">✨ The Potion Shop Analogy</h4>
+                                <h4 class="font-bold text-hogwarts-green text-xl mb-3 flex items-center gap-2">
+                                    <i data-lucide="sparkles" class="w-5 h-5"></i> The Potion Shop Analogy
+                                </h4>
                                 
                                 <!-- Mini Flip Cards for Q2 -->
                                 <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
@@ -368,7 +419,7 @@
                                             <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
                                         </div>
                                         <div class="mini-flip-back bg-yellow-50 px-4 text-sm text-gray-800 w-full text-center">
-                                            You sell 10 Butterbeers for 50 coins total.
+                                            You sell 10 Butterbeers for 50 Cash total.
                                         </div>
                                     </div>
                                 </div>
@@ -380,7 +431,7 @@
                                             <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
                                         </div>
                                         <div class="mini-flip-back bg-orange-50 px-4 text-sm text-gray-800 w-full text-center">
-                                            Buying the cups and syrup cost you 20 coins.
+                                            Buying the cups and syrup cost you 20 Cash.
                                         </div>
                                     </div>
                                 </div>
@@ -392,7 +443,7 @@
                                             <span class="text-xs text-gray-400 font-normal">(Tap to guess)</span>
                                         </div>
                                         <div class="mini-flip-back bg-green-100 px-4 text-base font-bold text-green-800 w-full text-center">
-                                            50 - 20 = 30 coins Profit!
+                                            50 - 20 = 30 Cash Profit!
                                         </div>
                                     </div>
                                 </div>
@@ -415,13 +466,13 @@
 
         <!-- LECTURE 3: The Magical Link -->
         <section id="lesson3" class="page-section">
-            <div class="flip-card h-[800px] md:h-[650px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
                 <div class="flip-card-inner">
                     <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-purple p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
                         <i data-lucide="link" class="w-24 h-24 text-hogwarts-purple mb-6 animate-bounce"></i>
                         <h2 class="text-4xl font-bold text-hogwarts-purple font-heading mb-6">Question 3: The Missing Link</h2>
                         <p class="text-2xl text-gray-800 mb-8 font-medium leading-relaxed">
-                            When a company like <strong>Amazon</strong> makes a significant profit, does it just disappear?<br><br>
+                            When a company makes a significant profit, does it just disappear?<br><br>
                             How do these two financial statements <span class="text-hogwarts-red font-bold">connect</span>?
                         </p>
                         <span class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-6 py-3 rounded-full font-bold animate-pulse flex items-center gap-2">
@@ -433,14 +484,23 @@
                         <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-hogwarts-purple pb-2 font-heading flex items-center gap-3">
                             <i data-lucide="infinity" class="text-hogwarts-purple w-8 h-8"></i> The Magical Link
                         </h3>
-                        <p class="text-lg text-gray-700 mb-6">Not at all! When <strong>Amazon</strong> makes a profit on its Income Statement, that money is magically added straight to their Balance Sheet.</p>
+                        <p class="text-lg text-gray-700 mb-6">Not at all! When a company makes a profit on its Income Statement, that money is magically added straight to their Balance Sheet. <strong>Retained Earnings is the link!</strong></p>
                         
+                        <!-- Simplified Stockholders Equity / Retained Earnings -->
+                        <div class="bg-purple-50 p-6 rounded-xl border border-purple-200 mb-6 shadow-inner text-sm md:text-base">
+                            <h4 class="font-bold text-purple-800 border-b border-purple-200 pb-2 mb-3 flex items-center gap-2">
+                                <i data-lucide="file-spreadsheet" class="w-5 h-5"></i> Statement of Retained Earnings
+                            </h4>
+                            <div class="flex justify-between text-gray-600 mb-2"><span>Beginning Retained Earnings</span><span>0 Cash</span></div>
+                            <div class="flex justify-between text-green-700 font-bold mb-2"><span>Add: Net Income (from Income Statement)</span><span>+ 30 Cash</span></div>
+                            <div class="flex justify-between text-red-600 mb-2"><span>Less: Dividends (Owner Withdrawals)</span><span>- 0 Cash</span></div>
+                            <div class="flex justify-between text-purple-800 font-bold mt-3 border-t-2 border-purple-200 pt-3 text-lg"><span>Ending Retained Earnings (to Balance Sheet)</span><span>30 Cash</span></div>
+                        </div>
+
                         <div class="bg-gradient-to-r from-purple-100 to-fuchsia-50 p-6 rounded-xl border-2 border-purple-300 mb-6 shadow-inner text-center relative overflow-hidden">
                             <i data-lucide="arrow-down" class="w-24 h-24 text-purple-200 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"></i>
                             <p class="text-lg md:text-xl text-gray-800 relative z-10 leading-loose font-medium">
-                                Remember the <strong>30 coins of Profit</strong> you made at the Potion Shop? <br><br>
-                                At the end of the day, you take those 30 coins and drop them straight into your <strong>Magic Backpack</strong>.<br>
-                                Because you made a profit, your <strong>Equity (True Wealth) goes UP!</strong>
+                                Because you made a profit, those <strong>30 Cash</strong> magically flow over and make your <strong>Equity (True Wealth) go UP!</strong>
                             </p>
                         </div>
 
@@ -455,18 +515,31 @@
 
         <!-- LECTURE 4: Cash Flow -->
         <section id="lesson4" class="page-section">
-            <div class="flip-card h-[800px] md:h-[650px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
                 <div class="flip-card-inner">
                     <!-- Front -->
                     <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-gold p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
                         <i data-lucide="wallet" class="w-24 h-24 text-hogwarts-gold mb-6 animate-bounce"></i>
                         <h2 class="text-4xl font-bold text-hogwarts-gold font-heading mb-6">Question 4: The Reality Check</h2>
                         <p class="text-2xl text-gray-800 mb-8 font-medium leading-relaxed">
-                            If a business reports a 1 million Galleon profit, do they actually have 1 million Galleons in the bank right now?<br><br>
-                            Why is <span class="text-hogwarts-red font-bold">Profit</span> not the same as <span class="text-hogwarts-green font-bold">Cash</span>?
+                            If a business reports a 1 million Cash profit, do they actually have 1 million Cash in the bank right now?<br><br>
+                            Which statement tracks the real movement of money?
                         </p>
+
+                        <div class="flex flex-col md:flex-row gap-3 w-full max-w-2xl mx-auto mb-8">
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-yellow-600 hover:text-yellow-600 transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> Income Statement
+                            </div>
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-yellow-600 hover:text-yellow-600 transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> The Balance Sheet
+                            </div>
+                            <div class="flex-1 bg-white border-2 border-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:border-yellow-600 hover:text-yellow-600 transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="circle" class="w-4 h-4"></i> Cash Flow Report
+                            </div>
+                        </div>
+
                         <span class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-6 py-3 rounded-full font-bold animate-pulse flex items-center gap-2">
-                            <i data-lucide="hand" class="w-5 h-5"></i> Click to Reveal the Magic
+                            <i data-lucide="hand" class="w-5 h-5"></i> Select an answer to flip the card
                         </span>
                     </div>
 
@@ -475,11 +548,24 @@
                         <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b-2 border-hogwarts-gold pb-2 font-heading flex items-center gap-3">
                             <i data-lucide="coins" class="text-hogwarts-gold w-8 h-8"></i> Statement of Cash Flows
                         </h3>
-                        <p class="text-lg text-gray-700 mb-6">Absolutely not! You can sell a potion today and make a profit on paper, but if the customer promises to pay you <em>next month</em>, your actual cash hasn't changed yet.</p>
+                        <p class="text-lg text-gray-700 mb-4">Absolutely not! You can sell a potion today and make a profit on paper, but if the customer promises to pay you <em>next month</em>, your actual cash has not changed yet.</p>
                         
+                        <!-- Amazon Simplified Statement -->
+                        <div class="bg-gray-100 p-5 rounded-xl border border-gray-300 mb-6 shadow-inner text-sm md:text-base">
+                            <h4 class="font-bold text-gray-800 border-b border-gray-300 pb-2 mb-3 flex items-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-600"></i> Amazon (Simplified Cash Flow)
+                            </h4>
+                            <div class="flex justify-between text-blue-700 font-bold mb-1"><span>Operating Activities</span><span>+$84 Billion</span></div>
+                            <div class="flex justify-between text-green-700 font-bold mb-1"><span>Investing Activities</span><span>-$58 Billion</span></div>
+                            <div class="flex justify-between text-purple-700 font-bold mb-1"><span>Financing Activities</span><span>-$15 Billion</span></div>
+                            <div class="flex justify-between text-gray-800 font-bold mt-2 border-t border-gray-300 pt-2"><span>Net Change in Cash</span><span>+$11 Billion</span></div>
+                        </div>
+
                         <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 mb-6 shadow-inner">
-                            <h4 class="font-bold text-yellow-700 text-xl mb-3 flex items-center gap-2">✨ The Gringotts Vault Rule</h4>
-                            <p class="text-gray-700 mb-4 text-sm md:text-base">The Cash Flow Statement completely ignores "promises." It only tracks real coins entering and leaving your vault through three magical doors:</p>
+                            <h4 class="font-bold text-yellow-700 text-xl mb-3 flex items-center gap-2">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i> The Gringotts Vault Rule
+                            </h4>
+                            <p class="text-gray-700 mb-4 text-sm md:text-base">The Cash Flow Statement completely ignores "promises." It only tracks actual cash entering and leaving your vault through three magical doors:</p>
                             
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                                 <div class="bg-white border-l-4 border-blue-500 rounded-lg p-3 shadow-sm">
@@ -515,12 +601,12 @@
 
         <!-- PAGE: DAILY TRANSACTIONS -->
         <section id="transactions" class="page-section">
-            <div class="flex items-center gap-3 mb-6 bg-white/80 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
+            <div class="flex items-center gap-3 mb-6 bg-white/90 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
                 <i data-lucide="scroll" class="w-8 h-8 text-hogwarts-red"></i>
                 <h2 class="text-3xl font-bold text-hogwarts-purple font-heading">Daily Transactions</h2>
             </div>
-            <p class="text-gray-800 mb-6 bg-yellow-50/90 p-4 rounded-xl border border-yellow-200 shadow font-medium backdrop-blur-sm">
-                Tap a rune, then tap the box to place it (or Drag and Drop!). Choose the direction, and cast your spell to balance the books!
+            <p class="text-gray-800 mb-6 bg-yellow-50/95 p-4 rounded-xl border border-yellow-200 shadow font-medium backdrop-blur-sm">
+                Tap a rune, then tap the box to place it. Choose the direction, and cast your spell to balance the books!
             </p>
 
             <div class="space-y-6" id="daily-ledger-container">
@@ -536,9 +622,18 @@
 
         <!-- PAGE: ADJUSTMENTS -->
         <section id="adjustments" class="page-section">
-            <div class="flex items-center gap-3 mb-6 bg-white/80 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
+            <div class="flex items-center gap-3 mb-6 bg-white/90 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
                 <i data-lucide="moon" class="w-8 h-8 text-hogwarts-blue"></i>
                 <h2 class="text-3xl font-bold text-hogwarts-purple font-heading">Month-End Adjustments</h2>
+            </div>
+
+            <div class="bg-blue-50/95 p-6 rounded-xl border border-blue-200 shadow mb-8 backdrop-blur-sm">
+                <h3 class="font-bold text-hogwarts-blue text-xl mb-3 flex items-center gap-2">
+                    <i data-lucide="info" class="w-6 h-6"></i> Why are Adjustments necessary?
+                </h3>
+                <p class="text-gray-800 font-medium leading-relaxed">
+                    Not all business activities trigger a receipt or a cash exchange on the exact day they happen. As the month passes, rent is used up, supplies are consumed, and services are fulfilled. <strong>Month-End Adjustments</strong> are necessary to update our ledger so it perfectly reflects reality before we generate our final financial statements. This ensures we exactly match our expenses to the revenues they helped generate!
+                </p>
             </div>
             
             <div class="space-y-6" id="adj-ledger-container">
@@ -554,7 +649,7 @@
 
         <!-- PAGE: SUMMARY CHEAT SHEET -->
         <section id="summary" class="page-section">
-            <div class="flex items-center gap-3 mb-6 bg-white/80 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
+            <div class="flex items-center gap-3 mb-6 bg-white/90 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
                 <i data-lucide="book-open" class="w-8 h-8 text-hogwarts-purple"></i>
                 <h2 class="text-3xl font-bold text-hogwarts-purple font-heading">Magical Cheat Sheet</h2>
             </div>
@@ -612,7 +707,7 @@
         <!-- PAGE: FINANCIAL STATEMENTS -->
         <section id="financials" class="page-section relative">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
-                <div class="flex items-center gap-3 bg-white/80 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
+                <div class="flex items-center gap-3 bg-white/90 p-4 rounded-xl shadow backdrop-blur-sm w-fit">
                     <i data-lucide="bar-chart-3" class="w-8 h-8 text-hogwarts-green"></i>
                     <h2 class="text-3xl font-bold text-hogwarts-purple font-heading">Financial Statements</h2>
                 </div>
@@ -620,8 +715,6 @@
                     <i data-lucide="activity" class="w-4 h-4"></i> Live Magic Ledger Active
                 </div>
             </div>
-
-            <!-- Removed the Sealed Overlay to allow live viewing -->
 
             <!-- Success Message (only shows when completed) -->
             <div id="success-message" class="hidden mb-8 bg-gradient-to-r from-green-100 to-green-50 border-4 border-green-400 p-8 rounded-2xl text-center shadow-xl relative overflow-hidden">
@@ -638,18 +731,17 @@
                     <h3 class="font-heading font-bold text-2xl text-center border-b-2 border-gray-200 pb-3 mb-6">Income Statement<br><span class="text-sm text-gray-500 font-body">For the Month Ended October 31</span></h3>
                     
                     <div class="flex justify-between mb-3"><span class="font-bold text-lg">Revenues:</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 text-lg"><span>Service & Sales Revenue</span><span id="st-rev">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 text-lg"><span>Service & Sales Revenue</span><span id="st-rev">0 Cash</span></div>
                     
                     <div class="flex justify-between mt-6 mb-3"><span class="font-bold text-lg">Expenses:</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Advertising Expense</span><span id="st-exp-adv">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Supplies Expense</span><span id="st-exp-sup">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Rent Expense</span><span id="st-exp-rent">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Depreciation Expense</span><span id="st-exp-dep">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Delivery Expense</span><span id="st-exp-del">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Advertising Expense</span><span id="st-exp-adv">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Supplies Expense</span><span id="st-exp-sup">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Rent Expense</span><span id="st-exp-rent">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Delivery Expense</span><span id="st-exp-del">0 Cash</span></div>
                     
-                    <div class="flex justify-between font-bold border-t border-gray-300 mt-4 pt-3 text-lg"><span>Total Expenses</span><span id="st-total-exp">0 G</span></div>
+                    <div class="flex justify-between font-bold border-t border-gray-300 mt-4 pt-3 text-lg"><span>Total Expenses</span><span id="st-total-exp">0 Cash</span></div>
                     <div class="flex justify-between font-bold text-xl text-hogwarts-green border-t-2 border-b-4 border-gray-800 mt-4 py-3 bg-green-50 px-3 rounded">
-                        <span>Net Income (Profit)</span><span id="st-net-income">0 G</span>
+                        <span>Net Income (Profit)</span><span id="st-net-income">0 Cash</span>
                     </div>
                 </div>
 
@@ -658,24 +750,23 @@
                     <h3 class="font-heading font-bold text-2xl text-center border-b-2 border-gray-200 pb-3 mb-6">Balance Sheet<br><span class="text-sm text-gray-500 font-body">As of October 31</span></h3>
                     
                     <div class="flex justify-between mb-3"><span class="font-bold text-hogwarts-blue text-xl">ASSETS (Backpack)</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Cash</span><span id="st-cash">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Accounts Receivable</span><span id="st-ar">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Supplies</span><span id="st-sup">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Prepaid Rent</span><span id="st-prent">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Equipment</span><span id="st-equip">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Less: Accum. Depreciation</span><span id="st-adep">0 G</span></div>
-                    <div class="flex justify-between font-bold border-t border-gray-300 mt-3 pt-3 mb-6 text-lg"><span>Total Assets</span><span id="st-total-assets">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Cash</span><span id="st-cash">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Accounts Receivable</span><span id="st-ar">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Supplies</span><span id="st-sup">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Prepaid Rent</span><span id="st-prent">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Equipment</span><span id="st-equip">0 Cash</span></div>
+                    <div class="flex justify-between font-bold border-t border-gray-300 mt-3 pt-3 mb-6 text-lg"><span>Total Assets</span><span id="st-total-assets">0 Cash</span></div>
 
                     <div class="flex justify-between mb-3"><span class="font-bold text-hogwarts-red text-xl">LIABILITIES (Owed)</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Accounts Payable</span><span id="st-ap">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Unearned Revenue</span><span id="st-urev">0 G</span></div>
-                    <div class="flex justify-between font-bold border-t border-gray-300 mt-3 pt-3 mb-6 text-lg"><span>Total Liabilities</span><span id="st-total-liab">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Accounts Payable</span><span id="st-ap">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Unearned Revenue</span><span id="st-urev">0 Cash</span></div>
+                    <div class="flex justify-between font-bold border-t border-gray-300 mt-3 pt-3 mb-6 text-lg"><span>Total Liabilities</span><span id="st-total-liab">0 Cash</span></div>
 
                     <div class="flex justify-between mb-3"><span class="font-bold text-hogwarts-purple text-xl">EQUITY (True Wealth)</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Owners' Capital</span><span id="st-cap">0 G</span></div>
-                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Retained Earnings (from Profit)</span><span id="st-re">0 G</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Owners' Capital</span><span id="st-cap">0 Cash</span></div>
+                    <div class="flex justify-between pl-4 text-gray-700 mb-1"><span>Retained Earnings (from Profit)</span><span id="st-re">0 Cash</span></div>
                     
-                    <div class="flex justify-between font-bold border-t-2 border-gray-800 mt-5 pt-3 text-2xl text-hogwarts-dark bg-yellow-100 px-4 py-2 rounded shadow-inner"><span>Total Liab. & Equity</span><span id="st-total-le">0 G</span></div>
+                    <div class="flex justify-between font-bold border-t-2 border-gray-800 mt-5 pt-3 text-2xl text-hogwarts-dark bg-yellow-100 px-4 py-2 rounded shadow-inner"><span>Total Liab. & Equity</span><span id="st-total-le">0 Cash</span></div>
                 </div>
 
                 <!-- Statement of Cash Flows -->
@@ -687,27 +778,27 @@
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                             <h4 class="font-bold text-hogwarts-blue mb-2 border-b border-gray-300 pb-1"><i data-lucide="refresh-cw" class="w-4 h-4 inline"></i> Operating Activities</h4>
                             <p class="text-sm text-gray-600 mb-2">Cash from day-to-day business (sales, paying bills).</p>
-                            <div class="text-xl font-bold text-right mt-4" id="st-cf-ops">0 G</div>
+                            <div class="text-xl font-bold text-right mt-4" id="st-cf-ops">0 Cash</div>
                         </div>
                         
                         <!-- Investing -->
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                             <h4 class="font-bold text-hogwarts-green mb-2 border-b border-gray-300 pb-1"><i data-lucide="trending-up" class="w-4 h-4 inline"></i> Investing Activities</h4>
                             <p class="text-sm text-gray-600 mb-2">Cash used to buy long-term assets (equipment).</p>
-                            <div class="text-xl font-bold text-right mt-4" id="st-cf-inv">0 G</div>
+                            <div class="text-xl font-bold text-right mt-4" id="st-cf-inv">0 Cash</div>
                         </div>
 
                         <!-- Financing -->
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                             <h4 class="font-bold text-hogwarts-purple mb-2 border-b border-gray-300 pb-1"><i data-lucide="landmark" class="w-4 h-4 inline"></i> Financing Activities</h4>
                             <p class="text-sm text-gray-600 mb-2">Cash from owners investing or taking out loans.</p>
-                            <div class="text-xl font-bold text-right mt-4" id="st-cf-fin">0 G</div>
+                            <div class="text-xl font-bold text-right mt-4" id="st-cf-fin">0 Cash</div>
                         </div>
                     </div>
                     
                     <div class="flex justify-between items-center mt-6 pt-4 border-t-4 border-gray-800">
                         <span class="font-bold text-xl uppercase tracking-wider">Net Increase in Cash</span>
-                        <span class="font-bold text-3xl text-hogwarts-gold bg-gray-900 px-6 py-2 rounded-lg shadow-inner" id="st-cf-net">0 G</span>
+                        <span class="font-bold text-3xl text-hogwarts-gold bg-gray-900 px-6 py-2 rounded-lg shadow-inner" id="st-cf-net">0 Cash</span>
                     </div>
                 </div>
 
@@ -720,38 +811,38 @@
     <!-- HUD (Heads Up Display) -->
     <div class="hud-bar p-3 md:p-4">
         <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
-            <div class="text-sm text-gray-300 font-heading tracking-widest hidden md:block">ACCOUNTING EQUATION (The Golden Rule)</div>
+            <div class="text-sm text-gray-300 font-heading tracking-widest hidden md:block">ACCOUNTING EQUATION</div>
             
             <!-- Expanded Equation Display -->
             <div class="flex flex-wrap justify-center items-center gap-1 md:gap-3 text-sm md:text-xl font-bold">
                 <div class="flex flex-col items-center">
                     <span class="text-[10px] md:text-xs text-blue-300 font-normal uppercase">Assets</span>
-                    <span id="hud-assets" class="text-white">0 G</span>
+                    <span id="hud-assets" class="text-white">0 Cash</span>
                 </div>
                 <div class="text-hogwarts-gold">=</div>
                 <div class="flex flex-col items-center">
                     <span class="text-[10px] md:text-xs text-red-300 font-normal uppercase">Liab.</span>
-                    <span id="hud-liab" class="text-white">0 G</span>
+                    <span id="hud-liab" class="text-white">0 Cash</span>
                 </div>
                 <div class="text-hogwarts-gold">+</div>
                 <div class="flex flex-col items-center">
                     <span class="text-[10px] md:text-xs text-purple-300 font-normal uppercase">Capital</span>
-                    <span id="hud-cap" class="text-white">0 G</span>
+                    <span id="hud-cap" class="text-white">0 Cash</span>
                 </div>
                 <div class="text-hogwarts-gold">+</div>
                 <div class="flex flex-col items-center">
                     <span class="text-[10px] md:text-xs text-yellow-300 font-normal uppercase">Rev.</span>
-                    <span id="hud-rev" class="text-yellow-400">0 G</span>
+                    <span id="hud-rev" class="text-yellow-400">0 Cash</span>
                 </div>
                 <div class="text-hogwarts-gold">-</div>
                 <div class="flex flex-col items-center">
                     <span class="text-[10px] md:text-xs text-green-300 font-normal uppercase">Exp.</span>
-                    <span id="hud-exp" class="text-green-400">0 G</span>
+                    <span id="hud-exp" class="text-green-400">0 Cash</span>
                 </div>
             </div>
 
             <div class="text-sm font-bold bg-hogwarts-gold text-hogwarts-dark px-4 py-2 rounded-full flex items-center gap-2 shadow-lg shadow-yellow-500/50 border border-yellow-200">
-                <i data-lucide="star" class="w-5 h-5 fill-current"></i> <span id="hud-progress" class="text-lg">0/15</span>
+                <i data-lucide="star" class="w-5 h-5 fill-current"></i> <span id="hud-progress" class="text-lg">0/14</span>
             </div>
         </div>
     </div>
@@ -794,28 +885,46 @@
             completed: 0,
             assets: 0, liabilities: 0, equity: 0,
             accounts: {
-                cash: 0, ar: 0, supplies: 0, prent: 0, equip: 0, adep: 0, 
+                cash: 0, ar: 0, supplies: 0, prent: 0, equip: 0,
                 ap: 0, urev: 0, capital: 0, rev: 0, 
-                expAdv: 0, expSup: 0, expRent: 0, expDep: 0, expDel: 0 
+                expAdv: 0, expSup: 0, expRent: 0, expDel: 0 
             },
             cashFlow: {
                 operating: 0, investing: 0, financing: 0
             }
         };
 
-        // Magical Rune Palette Groups
+        // Magical Rune Palette Groups (Text unified in length to maintain clean button sizes)
         const runeGroups = [
-            { label: "Assets", color: "blue", accounts: [{val: 'cash', text: 'Cash'}, {val: 'ar', text: 'Receivables'}, {val: 'supplies', text: 'Supplies'}, {val: 'prent', text: 'Prepaid Rent'}, {val: 'equip', text: 'Equipment'}, {val: 'adep', text: 'Accum. Deprec.'}] },
-            { label: "Liabilities", color: "red", accounts: [{val: 'ap', text: 'Payables'}, {val: 'urev', text: 'Unearned Rev'}] },
-            { label: "Equity", color: "purple", accounts: [{val: 'capital', text: 'Capital'}] },
-            { label: "Revenue", color: "yellow", accounts: [{val: 'rev', text: 'Revenue'}] },
-            { label: "Expenses", color: "green", accounts: [{val: 'expAdv', text: 'Ad Exp.'}, {val: 'expSup', text: 'Supplies Exp.'}, {val: 'expRent', text: 'Rent Exp.'}, {val: 'expDep', text: 'Deprec. Exp.'}, {val: 'expDel', text: 'Delivery Exp.'}] }
+            { label: "Assets", color: "blue", accounts: [
+                {val: 'cash', text: 'Cash Account'}, 
+                {val: 'ar', text: 'Receivables'}, 
+                {val: 'supplies', text: 'Potion Supply'}, 
+                {val: 'prent', text: 'Prepaid Rent'}, 
+                {val: 'equip', text: 'Shop Equip.'}
+            ]},
+            { label: "Liabilities", color: "red", accounts: [
+                {val: 'ap', text: 'Accounts Pay'}, 
+                {val: 'urev', text: 'Unearned Rev'}
+            ]},
+            { label: "Equity", color: "purple", accounts: [
+                {val: 'capital', text: 'Owner Capital'}
+            ]},
+            { label: "Revenue", color: "yellow", accounts: [
+                {val: 'rev', text: 'Sales Revenue'}
+            ]},
+            { label: "Expenses", color: "green", accounts: [
+                {val: 'expAdv', text: 'Advert. Exp.'}, 
+                {val: 'expSup', text: 'Supplies Exp'}, 
+                {val: 'expRent', text: 'Rent Expense'}, 
+                {val: 'expDel', text: 'Delivery Exp'}
+            ]}
         ];
 
-        // Transactions array with Difficulty Multipliers (1-3) added
+        // Transactions array
         const transactions = [
-            { id: 't1', difficulty: 1, type: 'daily', date: 'Oct 1', desc: 'Arthur Weasley invests 5,000 Galleons of his own money into the business.', amt: 5000, img: 'Clue 7 - Arthur Weasley.jpg', charName: 'Arthur Weasley',
-              dialogue: "I'm investing 5,000 Galleons to get this mercantile off the ground! Fascinating Muggle concepts...",
+            { id: 't1', difficulty: 1, type: 'daily', date: 'Oct 1', desc: 'Arthur Weasley invests 5,000 Cash of his own money into the business.', amt: 5000, img: 'Clue 7 - Arthur Weasley.jpg', charName: 'Arthur Weasley',
+              dialogue: "I am investing 5,000 Cash to get this mercantile off the ground! Fascinating concepts...",
               hint: "The business receives money (Cash goes up). In exchange, Arthur's ownership stake increases (Capital goes up).",
               answers: [
                   { acc: 'cash', dir: 'inc', fset: 'asset', display: '+5,000 Cash' },
@@ -823,8 +932,8 @@
               ],
               update: () => { state.accounts.cash += 5000; state.accounts.capital += 5000; state.assets += 5000; state.equity += 5000; state.cashFlow.financing += 5000; } },
               
-            { id: 't2', difficulty: 1, type: 'daily', date: 'Oct 2', desc: 'George Weasley purchases brewing cauldrons (Equipment) for 1,000 Galleons cash.', amt: 1000, img: 'Clue 2 - George Weasley.jpg', charName: 'George Weasley',
-              dialogue: "Just bought some brilliant cauldrons for 1,000 Galleons. Paid in cold, hard cash!",
+            { id: 't2', difficulty: 1, type: 'daily', date: 'Oct 2', desc: 'George Weasley purchases brewing cauldrons (Equipment) for 1,000 Cash.', amt: 1000, img: 'Clue 2 - George Weasley.jpg', charName: 'George Weasley',
+              dialogue: "Just bought some brilliant cauldrons for 1,000 Cash. Paid in cold, hard cash!",
               hint: "We gained new gear (Equipment goes up), but we had to pay for it immediately (Cash goes down).",
               answers: [
                   { acc: 'equip', dir: 'inc', fset: 'asset', display: '+1,000 Equipment' },
@@ -832,17 +941,17 @@
               ],
               update: () => { state.accounts.equip += 1000; state.accounts.cash -= 1000; state.cashFlow.investing -= 1000; } },
               
-            { id: 't3', difficulty: 1, type: 'daily', date: 'Oct 5', desc: 'Prof. McGonagall buys potion ingredients (Supplies) for 500 Galleons on account.', amt: 500, img: 'Clue 8 - Prof. McGonagall.jpg', charName: 'Prof. McGonagall',
-              dialogue: "I require 500 Galleons of potion supplies. Please charge it to my account, I will pay later.",
-              hint: "We brought in inventory (Supplies go up), but we haven't paid yet, creating a debt (Accounts Payable goes up).",
+            { id: 't3', difficulty: 1, type: 'daily', date: 'Oct 5', desc: 'Prof. McGonagall buys potion ingredients (Supplies) for 500 Cash on account.', amt: 500, img: 'Clue 8 - Prof. McGonagall.jpg', charName: 'Prof. McGonagall',
+              dialogue: "I require 500 Cash of potion supplies. Please charge it to my account, I will pay later.",
+              hint: "We brought in inventory (Supplies go up), but we have not paid yet, creating a debt (Accounts Payable goes up).",
               answers: [
                   { acc: 'supplies', dir: 'inc', fset: 'asset', display: '+500 Supplies' },
                   { acc: 'ap', dir: 'inc', fset: 'liab', display: '+500 Payables' }
               ],
               update: () => { state.accounts.supplies += 500; state.accounts.ap += 500; state.assets += 500; state.liabilities += 500; } },
               
-            { id: 't4', difficulty: 2, type: 'daily', date: 'Oct 8', desc: 'Rubeus Hagrid pays 3 months shop rent in advance: 600 Galleons cash.', amt: 600, img: 'Clue 4 - Rubeus Hagrid.jpg', charName: 'Rubeus Hagrid',
-              dialogue: "Here's 600 Galleons for the next three months of rent, paid right up front!",
+            { id: 't4', difficulty: 2, type: 'daily', date: 'Oct 8', desc: 'Rubeus Hagrid pays 3 months shop rent in advance: 600 Cash.', amt: 600, img: 'Clue 4 - Rubeus Hagrid.jpg', charName: 'Rubeus Hagrid',
+              dialogue: "Here is 600 Cash for the next three months of rent, paid right up front!",
               hint: "Paying rent in advance creates a future benefit (Prepaid Rent goes up). Naturally, paying it reduces our money (Cash goes down).",
               answers: [
                   { acc: 'prent', dir: 'inc', fset: 'asset', display: '+600 Prepaid Rent' },
@@ -850,17 +959,17 @@
               ],
               update: () => { state.accounts.prent += 600; state.accounts.cash -= 600; state.cashFlow.operating -= 600; } },
               
-            { id: 't5', difficulty: 3, type: 'daily', date: 'Oct 12', desc: 'Receive 400 Galleons from Hermione Granger for custom study potions not yet made.', amt: 400, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
-              dialogue: "Here is 400 Galleons for those custom study potions. I expect them brewed perfectly and delivered soon!",
-              hint: "We got the money (Cash goes up), but we owe her a service we haven't done yet (Unearned Revenue goes up).",
+            { id: 't5', difficulty: 3, type: 'daily', date: 'Oct 12', desc: 'Receive 400 Cash from Hermione Granger for custom study potions not yet made.', amt: 400, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
+              dialogue: "Here is 400 Cash for those custom study potions. I expect them brewed perfectly and delivered soon!",
+              hint: "We got the money (Cash goes up), but we owe her a service we have not done yet (Unearned Revenue goes up).",
               answers: [
                   { acc: 'cash', dir: 'inc', fset: 'asset', display: '+400 Cash' },
                   { acc: 'urev', dir: 'inc', fset: 'liab', display: '+400 Unearned Rev.' }
               ],
               update: () => { state.accounts.cash += 400; state.accounts.urev += 400; state.assets += 400; state.liabilities += 400; state.cashFlow.operating += 400; } },
               
-            { id: 't6', difficulty: 1, type: 'daily', date: 'Oct 15', desc: 'Neville Longbottom buys gadgets and jokes for 800 Galleons cash.', amt: 800, img: 'Clue 6 - Neville Longbottom.jpg', charName: 'Neville Longbottom',
-              dialogue: "I'll take 800 Galleons worth of these joke gadgets. Here's the cash!",
+            { id: 't6', difficulty: 1, type: 'daily', date: 'Oct 15', desc: 'Neville Longbottom buys gadgets and jokes for 800 Cash.', amt: 800, img: 'Clue 6 - Neville Longbottom.jpg', charName: 'Neville Longbottom',
+              dialogue: "I will take 800 Cash worth of these joke gadgets. Here is the cash!",
               hint: "A direct sale! We receive money (Cash goes up), and we record our earnings (Revenue goes up).",
               answers: [
                   { acc: 'cash', dir: 'inc', fset: 'asset', display: '+800 Cash' },
@@ -868,17 +977,17 @@
               ],
               update: () => { state.accounts.cash += 800; state.accounts.rev += 800; state.assets += 800; state.equity += 800; state.cashFlow.operating += 800; } },
               
-            { id: 't7', difficulty: 2, type: 'daily', date: 'Oct 18', desc: 'Sell broom polish to Ginny Weasley for 300 Galleons on account.', amt: 300, img: 'Clue 5 - Ginny Weasley.jpg', charName: 'Ginny Weasley',
-              dialogue: "I need 300 Galleons of broom polish for Quidditch practice. Put it on my tab!",
-              hint: "We made a sale so we earned it (Revenue goes up), but since she hasn't paid us yet, someone owes us (Accounts Receivable goes up).",
+            { id: 't7', difficulty: 2, type: 'daily', date: 'Oct 18', desc: 'Sell broom polish to Ginny Weasley for 300 Cash on account.', amt: 300, img: 'Clue 5 - Ginny Weasley.jpg', charName: 'Ginny Weasley',
+              dialogue: "I need 300 Cash of broom polish for Quidditch practice. Put it on my tab!",
+              hint: "We made a sale so we earned it (Revenue goes up), but since she has not paid us yet, someone owes us (Accounts Receivable goes up).",
               answers: [
                   { acc: 'ar', dir: 'inc', fset: 'asset', display: '+300 Receivables' },
                   { acc: 'rev', dir: 'inc', fset: 'equity', display: '+300 Revenue' }
               ],
               update: () => { state.accounts.ar += 300; state.accounts.rev += 300; state.assets += 300; state.equity += 300; } },
               
-            { id: 't8', difficulty: 1, type: 'daily', date: 'Oct 20', desc: 'Hermione Granger pays 100 Galleons cash for an advertisement in the Daily Prophet.', amt: 100, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
-              dialogue: "I've just paid 100 Galleons to the Daily Prophet to run an advertisement for the shop.",
+            { id: 't8', difficulty: 1, type: 'daily', date: 'Oct 20', desc: 'Hermione Granger pays 100 Cash for an advertisement in the Daily Prophet.', amt: 100, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
+              dialogue: "I have just paid 100 Cash to the Daily Prophet to run an advertisement for the shop.",
               hint: "Advertising is a cost of doing business (Advertising Expense goes up), and paying for it drains funds (Cash goes down).",
               answers: [
                   { acc: 'expAdv', dir: 'inc', fset: 'equity', display: '-100 Ad Expense' },
@@ -886,8 +995,8 @@
               ],
               update: () => { state.accounts.expAdv += 100; state.accounts.cash -= 100; state.assets -= 100; state.equity -= 100; state.cashFlow.operating -= 100; } },
               
-            { id: 't9', difficulty: 2, type: 'daily', date: 'Oct 25', desc: 'Ron Weasley pays 200 Galleons cash toward the potion ingredients bought on Oct 5.', amt: 200, img: 'Clue 3 - Ron Weasley.jpg', charName: 'Ron Weasley',
-              dialogue: "Here is 200 Galleons toward that debt we owe for the potion ingredients.",
+            { id: 't9', difficulty: 2, type: 'daily', date: 'Oct 25', desc: 'Ron Weasley pays 200 Cash toward the potion ingredients bought on Oct 5.', amt: 200, img: 'Clue 3 - Ron Weasley.jpg', charName: 'Ron Weasley',
+              dialogue: "Here is 200 Cash toward that debt we owe for the potion ingredients.",
               hint: "We are paying off a debt we owe (Accounts Payable goes down), which requires us to use funds (Cash goes down).",
               answers: [
                   { acc: 'ap', dir: 'dec', fset: 'liab', display: '-200 Payables' },
@@ -895,18 +1004,18 @@
               ],
               update: () => { state.accounts.ap -= 200; state.accounts.cash -= 200; state.assets -= 200; state.liabilities -= 200; state.cashFlow.operating -= 200; } },
               
-            { id: 't10', difficulty: 2, type: 'daily', date: 'Oct 28', desc: 'Receive 150 Galleons cash from Ginny Weasley for the Oct 18 sale.', amt: 150, img: 'Clue 5 - Ginny Weasley.jpg', charName: 'Ginny Weasley',
-              dialogue: "Here is 150 Galleons cash towards that broom polish I bought earlier this month.",
+            { id: 't10', difficulty: 2, type: 'daily', date: 'Oct 28', desc: 'Receive 150 Cash from Ginny Weasley for the Oct 18 sale.', amt: 150, img: 'Clue 5 - Ginny Weasley.jpg', charName: 'Ginny Weasley',
+              dialogue: "Here is 150 Cash towards that broom polish I bought earlier this month.",
               hint: "We are collecting money owed to us (Cash goes up). Because she paid us, her outstanding tab shrinks (Accounts Receivable goes down).",
               answers: [
                   { acc: 'cash', dir: 'inc', fset: 'asset', display: '+150 Cash' },
                   { acc: 'ar', dir: 'dec', fset: 'asset', display: '-150 Receivables' }
               ],
               update: () => { state.accounts.cash += 150; state.accounts.ar -= 150; state.cashFlow.operating += 150; } },
-            
+              
             // Adjustments
-            { id: 'a1', difficulty: 2, type: 'adj', date: 'Oct 31', desc: 'Inventory check shows 200 Galleons of potion supplies bought by Prof. McGonagall were used up.', amt: 200, img: 'Clue 8 - Prof. McGonagall.jpg', charName: 'Prof. McGonagall',
-              dialogue: "I've checked the storeroom. Exactly 200 Galleons worth of those potion supplies have been completely used up.",
+            { id: 'a1', difficulty: 2, type: 'adj', date: 'Oct 31', desc: 'Inventory check shows 200 Cash of potion supplies bought by Prof. McGonagall were used up.', amt: 200, img: 'Clue 8 - Prof. McGonagall.jpg', charName: 'Prof. McGonagall',
+              dialogue: "I have checked the storeroom. Exactly 200 Cash worth of those potion supplies have been completely used up.",
               hint: "Using up supplies becomes a cost (Supplies Expense goes up), and our physical inventory shrinks (Supplies go down).",
               answers: [
                   { acc: 'expSup', dir: 'inc', fset: 'equity', display: '-200 Supplies Exp.' },
@@ -914,8 +1023,8 @@
               ],
               update: () => { state.accounts.expSup += 200; state.accounts.supplies -= 200; state.assets -= 200; state.equity -= 200; } },
               
-            { id: 'a2', difficulty: 2, type: 'adj', date: 'Oct 31', desc: 'One month of shop rent paid by Rubeus Hagrid (200 Galleons) has now expired.', amt: 200, img: 'Clue 4 - Rubeus Hagrid.jpg', charName: 'Rubeus Hagrid',
-              dialogue: "A whole month has passed already! That means 200 Galleons of that rent I paid is now officially used.",
+            { id: 'a2', difficulty: 2, type: 'adj', date: 'Oct 31', desc: 'One month of shop rent paid by Rubeus Hagrid (200 Cash) has now expired.', amt: 200, img: 'Clue 4 - Rubeus Hagrid.jpg', charName: 'Rubeus Hagrid',
+              dialogue: "A whole month has passed already! That means 200 Cash of that rent I paid is now officially used.",
               hint: "The time has passed, so the benefit is used up (Rent Expense goes up), decreasing the prepaid value we held (Prepaid Rent goes down).",
               answers: [
                   { acc: 'expRent', dir: 'inc', fset: 'equity', display: '-200 Rent Exp.' },
@@ -923,17 +1032,8 @@
               ],
               update: () => { state.accounts.expRent += 200; state.accounts.prent -= 200; state.assets -= 200; state.equity -= 200; } },
               
-            { id: 'a3', difficulty: 2, type: 'adj', date: 'Oct 31', desc: 'Record monthly wear & tear (depreciation) on cauldrons bought by George Weasley: 50 Galleons.', amt: 50, img: 'Clue 2 - George Weasley.jpg', charName: 'George Weasley',
-              dialogue: "These cauldrons have taken a beating! I estimate about 50 Galleons worth of wear and tear this month.",
-              hint: "We must record the wear and tear cost (Depreciation Expense goes up), which accumulates against the equipment's value (Accumulated Depreciation goes up).",
-              answers: [
-                  { acc: 'expDep', dir: 'inc', fset: 'equity', display: '-50 Deprec. Exp.' },
-                  { acc: 'adep', dir: 'inc', fset: 'asset', display: '-50 Accum. Deprec.' }
-              ],
-              update: () => { state.accounts.expDep += 50; state.accounts.adep += 50; state.assets -= 50; state.equity -= 50; } },
-              
-            { id: 'a4', difficulty: 3, type: 'adj', date: 'Oct 31', desc: 'Delivered half of Hermione Granger\'s custom potions (Earned 200 Galleons).', amt: 200, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
-              dialogue: "I've finally received half of my custom potions order. That covers 200 Galleons of my earlier payment.",
+            { id: 'a3', difficulty: 3, type: 'adj', date: 'Oct 31', desc: 'Delivered half of Hermione Granger\'s custom potions (Earned 200 Cash).', amt: 200, img: 'Clue 1 - Hermione Granger.jpg', charName: 'Hermione Granger',
+              dialogue: "I have finally received half of my custom potions order. That covers 200 Cash of my earlier payment.",
               hint: "We finally did the work, so we owe her less (Unearned Revenue goes down). Because the work is done, we officially earned it (Revenue goes up).",
               answers: [
                   { acc: 'urev', dir: 'dec', fset: 'liab', display: '-200 Unearned Rev.' },
@@ -941,9 +1041,9 @@
               ],
               update: () => { state.accounts.urev -= 200; state.accounts.rev += 200; state.liabilities -= 200; state.equity += 200; } },
               
-            { id: 'a5', difficulty: 3, type: 'adj', date: 'Oct 31', desc: 'Received bill for owl-post deliveries for Neville Longbottom: 50 Galleons. Not yet paid.', amt: 50, img: 'Clue 6 - Neville Longbottom.jpg', charName: 'Neville Longbottom',
-              dialogue: "An owl just dropped off a bill for 50 Galleons for all my recent deliveries. We haven't paid it yet.",
-              hint: "The delivery service was provided, generating a cost (Delivery Expense goes up). Since we haven't paid the owl yet, we owe money (Accounts Payable goes up).",
+            { id: 'a4', difficulty: 3, type: 'adj', date: 'Oct 31', desc: 'Received bill for owl-post deliveries for Neville Longbottom: 50 Cash. Not yet paid.', amt: 50, img: 'Clue 6 - Neville Longbottom.jpg', charName: 'Neville Longbottom',
+              dialogue: "An owl just dropped off a bill for 50 Cash for all my recent deliveries. We have not paid it yet.",
+              hint: "The delivery service was provided, generating a cost (Delivery Expense goes up). Since we have not paid the owl yet, we owe money (Accounts Payable goes up).",
               answers: [
                   { acc: 'expDel', dir: 'inc', fset: 'equity', display: '-50 Delivery Exp.' },
                   { acc: 'ap', dir: 'inc', fset: 'liab', display: '+50 Payables' }
@@ -972,7 +1072,7 @@
                 runeGroups.forEach(group => {
                     paletteHtml += `<div class="flex-shrink-0"><div class="text-xs font-bold text-${group.color}-700 uppercase mb-1">${group.label}</div><div class="flex flex-col gap-1">`;
                     group.accounts.forEach(acc => {
-                        paletteHtml += `<button class="rune-btn text-xs md:text-sm font-bold bg-${group.color}-100 text-${group.color}-800 border-2 border-${group.color}-300 rounded px-2 py-1 hover:bg-${group.color}-200 flex items-center justify-center whitespace-nowrap" data-val="${acc.val}" data-color="${group.color}" draggable="true" ondragstart="dragRune(event)" onclick="selectRune(this)">${acc.text}</button>`;
+                        paletteHtml += `<button class="rune-btn text-xs font-bold bg-${group.color}-100 text-${group.color}-800 border-2 border-${group.color}-300 rounded px-2 py-2 hover:bg-${group.color}-200 flex items-center justify-center whitespace-nowrap overflow-hidden text-ellipsis shadow-sm" data-val="${acc.val}" data-color="${group.color}" draggable="true" ondragstart="dragRune(event)" onclick="selectRune(this)" title="${acc.text}">${acc.text}</button>`;
                     });
                     paletteHtml += `</div></div>`;
                 });
@@ -1028,7 +1128,7 @@
 
                                 <!-- The Rune Palette for this transaction -->
                                 <div class="bg-white p-3 rounded-lg border border-gray-200 mb-4 shadow-sm">
-                                    <p class="text-xs text-gray-500 font-bold mb-2 uppercase"><i data-lucide="hand" class="w-3 h-3 inline"></i> Rune Palette</p>
+                                    <p class="text-xs text-gray-500 font-bold mb-2 uppercase flex items-center gap-1"><i data-lucide="layout-grid" class="w-3 h-3"></i> Rune Palette</p>
                                     <div class="flex gap-4 overflow-x-auto pb-2 rune-palette-scroll">
                                         ${paletteHtml}
                                     </div>
@@ -1081,9 +1181,9 @@
         
         function selectRune(runeElement) {
             // Deselect all
-            document.querySelectorAll('.rune-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-yellow-400', 'scale-110', 'shadow-lg'));
+            document.querySelectorAll('.rune-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-yellow-400', 'scale-105', 'shadow-lg', 'z-10'));
             // Select current
-            runeElement.classList.add('ring-4', 'ring-yellow-400', 'scale-110', 'shadow-lg');
+            runeElement.classList.add('ring-4', 'ring-yellow-400', 'scale-105', 'shadow-lg', 'z-10');
             
             selectedRune = {
                 val: runeElement.dataset.val,
@@ -1106,7 +1206,7 @@
                 zoneElement.className = `drop-zone flex-1 p-3 border-2 border-dashed rounded-lg flex items-center justify-center min-h-[60px] cursor-pointer shadow-md bg-${selectedRune.color}-100 border-${selectedRune.color}-400 text-${selectedRune.color}-800 font-bold text-sm md:text-base`;
 
                 // Clear
-                document.querySelectorAll('.rune-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-yellow-400', 'scale-110', 'shadow-lg'));
+                document.querySelectorAll('.rune-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-yellow-400', 'scale-105', 'shadow-lg', 'z-10'));
                 document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('ring-2', 'ring-yellow-400', 'animate-pulse'));
                 selectedRune = null;
             } else if (zoneElement.dataset.val !== "") {
@@ -1425,11 +1525,11 @@
             const accs = state.accounts;
             
             // Calculate components dynamically to avoid state duplication
-            const assets = accs.cash + accs.ar + accs.supplies + accs.prent + accs.equip - accs.adep;
+            const assets = accs.cash + accs.ar + accs.supplies + accs.prent + accs.equip;
             const liab = accs.ap + accs.urev;
             const cap = accs.capital;
             const rev = accs.rev;
-            const exp = accs.expAdv + accs.expSup + accs.expRent + accs.expDep + accs.expDel;
+            const exp = accs.expAdv + accs.expSup + accs.expRent + accs.expDel;
 
             const els = ['assets', 'liab', 'cap', 'rev', 'exp'].map(id => document.getElementById(`hud-${id}`));
 
@@ -1441,54 +1541,52 @@
                 }
             });
 
-            if (els[0]) els[0].innerText = assets.toLocaleString() + ' G';
-            if (els[1]) els[1].innerText = liab.toLocaleString() + ' G';
-            if (els[2]) els[2].innerText = cap.toLocaleString() + ' G';
-            if (els[3]) els[3].innerText = rev.toLocaleString() + ' G';
-            if (els[4]) els[4].innerText = exp.toLocaleString() + ' G';
+            if (els[0]) els[0].innerText = assets.toLocaleString() + ' Cash';
+            if (els[1]) els[1].innerText = liab.toLocaleString() + ' Cash';
+            if (els[2]) els[2].innerText = cap.toLocaleString() + ' Cash';
+            if (els[3]) els[3].innerText = rev.toLocaleString() + ' Cash';
+            if (els[4]) els[4].innerText = exp.toLocaleString() + ' Cash';
             
-            document.getElementById('hud-progress').innerText = state.completed + '/15';
+            document.getElementById('hud-progress').innerText = state.completed + '/14';
         }
 
         // Live updating Financial Statements!
         function updateFinancials() {
             // Income Statement Updates
-            document.getElementById('st-rev').innerText = state.accounts.rev.toLocaleString() + ' G';
-            document.getElementById('st-exp-adv').innerText = state.accounts.expAdv.toLocaleString() + ' G';
-            document.getElementById('st-exp-sup').innerText = state.accounts.expSup.toLocaleString() + ' G';
-            document.getElementById('st-exp-rent').innerText = state.accounts.expRent.toLocaleString() + ' G';
-            document.getElementById('st-exp-dep').innerText = state.accounts.expDep.toLocaleString() + ' G';
-            document.getElementById('st-exp-del').innerText = state.accounts.expDel.toLocaleString() + ' G';
+            document.getElementById('st-rev').innerText = state.accounts.rev.toLocaleString() + ' Cash';
+            document.getElementById('st-exp-adv').innerText = state.accounts.expAdv.toLocaleString() + ' Cash';
+            document.getElementById('st-exp-sup').innerText = state.accounts.expSup.toLocaleString() + ' Cash';
+            document.getElementById('st-exp-rent').innerText = state.accounts.expRent.toLocaleString() + ' Cash';
+            document.getElementById('st-exp-del').innerText = state.accounts.expDel.toLocaleString() + ' Cash';
             
-            const totalExp = state.accounts.expAdv + state.accounts.expSup + state.accounts.expRent + state.accounts.expDep + state.accounts.expDel;
-            document.getElementById('st-total-exp').innerText = totalExp.toLocaleString() + ' G';
+            const totalExp = state.accounts.expAdv + state.accounts.expSup + state.accounts.expRent + state.accounts.expDel;
+            document.getElementById('st-total-exp').innerText = totalExp.toLocaleString() + ' Cash';
             
             const netIncome = state.accounts.rev - totalExp;
-            document.getElementById('st-net-income').innerText = netIncome.toLocaleString() + ' G';
+            document.getElementById('st-net-income').innerText = netIncome.toLocaleString() + ' Cash';
 
             // Balance Sheet Updates
-            document.getElementById('st-cash').innerText = state.accounts.cash.toLocaleString() + ' G';
-            document.getElementById('st-ar').innerText = state.accounts.ar.toLocaleString() + ' G';
-            document.getElementById('st-sup').innerText = state.accounts.supplies.toLocaleString() + ' G';
-            document.getElementById('st-prent').innerText = state.accounts.prent.toLocaleString() + ' G';
-            document.getElementById('st-equip').innerText = state.accounts.equip.toLocaleString() + ' G';
-            document.getElementById('st-adep').innerText = '(' + state.accounts.adep.toLocaleString() + ' G)';
-            document.getElementById('st-total-assets').innerText = state.assets.toLocaleString() + ' G';
+            document.getElementById('st-cash').innerText = state.accounts.cash.toLocaleString() + ' Cash';
+            document.getElementById('st-ar').innerText = state.accounts.ar.toLocaleString() + ' Cash';
+            document.getElementById('st-sup').innerText = state.accounts.supplies.toLocaleString() + ' Cash';
+            document.getElementById('st-prent').innerText = state.accounts.prent.toLocaleString() + ' Cash';
+            document.getElementById('st-equip').innerText = state.accounts.equip.toLocaleString() + ' Cash';
+            document.getElementById('st-total-assets').innerText = state.assets.toLocaleString() + ' Cash';
 
-            document.getElementById('st-ap').innerText = state.accounts.ap.toLocaleString() + ' G';
-            document.getElementById('st-urev').innerText = state.accounts.urev.toLocaleString() + ' G';
-            document.getElementById('st-total-liab').innerText = state.liabilities.toLocaleString() + ' G';
+            document.getElementById('st-ap').innerText = state.accounts.ap.toLocaleString() + ' Cash';
+            document.getElementById('st-urev').innerText = state.accounts.urev.toLocaleString() + ' Cash';
+            document.getElementById('st-total-liab').innerText = state.liabilities.toLocaleString() + ' Cash';
 
-            document.getElementById('st-cap').innerText = state.accounts.capital.toLocaleString() + ' G';
-            document.getElementById('st-re').innerText = netIncome.toLocaleString() + ' G';
-            document.getElementById('st-total-le').innerText = (state.liabilities + state.accounts.capital + netIncome).toLocaleString() + ' G';
+            document.getElementById('st-cap').innerText = state.accounts.capital.toLocaleString() + ' Cash';
+            document.getElementById('st-re').innerText = netIncome.toLocaleString() + ' Cash';
+            document.getElementById('st-total-le').innerText = (state.liabilities + state.accounts.capital + netIncome).toLocaleString() + ' Cash';
             
             // Cash Flow Statement Updates
-            document.getElementById('st-cf-ops').innerText = state.cashFlow.operating.toLocaleString() + ' G';
-            document.getElementById('st-cf-inv').innerText = state.cashFlow.investing.toLocaleString() + ' G';
-            document.getElementById('st-cf-fin').innerText = state.cashFlow.financing.toLocaleString() + ' G';
+            document.getElementById('st-cf-ops').innerText = state.cashFlow.operating.toLocaleString() + ' Cash';
+            document.getElementById('st-cf-inv').innerText = state.cashFlow.investing.toLocaleString() + ' Cash';
+            document.getElementById('st-cf-fin').innerText = state.cashFlow.financing.toLocaleString() + ' Cash';
             const netCash = state.cashFlow.operating + state.cashFlow.investing + state.cashFlow.financing;
-            document.getElementById('st-cf-net').innerText = netCash.toLocaleString() + ' G';
+            document.getElementById('st-cf-net').innerText = netCash.toLocaleString() + ' Cash';
             
             // Animation prompt on the nav tab
             const finTab = document.querySelector('[data-target="financials"]');

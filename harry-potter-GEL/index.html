@@ -254,7 +254,7 @@
 
         <!-- LECTURE 1: The Magic Backpack -->
         <section id="lesson1" class="page-section">
-            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                 <div class="flip-card-inner">
                     <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-blue p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
                         <i data-lucide="building-2" class="w-24 h-24 text-hogwarts-blue mb-6 animate-bounce"></i>
@@ -307,7 +307,7 @@
                             <!-- Mini Flip Cards for Q1 -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                                 <!-- Assets -->
-                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                                     <div class="mini-flip-card-inner shadow-md rounded-lg">
                                         <div class="mini-flip-front bg-white border-l-4 border-green-500 rounded-lg flex-col gap-1">
                                             <span class="text-green-700 font-bold text-lg flex items-center gap-2"><i data-lucide="package" class="w-5 h-5"></i> Assets</span>
@@ -319,7 +319,7 @@
                                     </div>
                                 </div>
                                 <!-- Liabilities -->
-                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                                     <div class="mini-flip-card-inner shadow-md rounded-lg">
                                         <div class="mini-flip-front bg-white border-l-4 border-red-500 rounded-lg flex-col gap-1">
                                             <span class="text-red-700 font-bold text-lg flex items-center gap-2"><i data-lucide="handshake" class="w-5 h-5"></i> Liabilities</span>
@@ -331,7 +331,7 @@
                                     </div>
                                 </div>
                                 <!-- Equity -->
-                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                <div class="mini-flip-card h-24 md:h-32" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                                     <div class="mini-flip-card-inner shadow-md rounded-lg">
                                         <div class="mini-flip-front bg-white border-l-4 border-purple-500 rounded-lg flex-col gap-1">
                                             <span class="text-purple-700 font-bold text-lg flex items-center gap-2"><i data-lucide="crown" class="w-5 h-5"></i> Equity</span>
@@ -362,7 +362,7 @@
 
         <!-- LECTURE 2: The Potion Shop -->
         <section id="lesson2" class="page-section">
-            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                 <div class="flip-card-inner">
                     <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-green p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
                         <i data-lucide="clapperboard" class="w-24 h-24 text-hogwarts-green mb-6 animate-bounce"></i>
@@ -412,7 +412,7 @@
                                 </h4>
                                 
                                 <!-- Mini Flip Cards for Q2 -->
-                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                                     <div class="mini-flip-card-inner shadow-sm border-l-4 border-yellow-400 rounded bg-white">
                                         <div class="mini-flip-front justify-between px-4 w-full">
                                             <strong class="text-yellow-600 text-lg">1. Revenue</strong>
@@ -424,7 +424,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                                     <div class="mini-flip-card-inner shadow-sm border-l-4 border-orange-400 rounded bg-white">
                                         <div class="mini-flip-front justify-between px-4 w-full">
                                             <strong class="text-orange-600 text-lg">2. Expenses</strong>
@@ -436,7 +436,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event)">
+                                <div class="mini-flip-card h-16" onclick="event.stopPropagation(); this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                                     <div class="mini-flip-card-inner shadow-sm border-l-4 border-green-500 rounded bg-white">
                                         <div class="mini-flip-front justify-between px-4 w-full">
                                             <strong class="text-green-700 text-lg">3. Net Income</strong>
@@ -466,7 +466,7 @@
 
         <!-- LECTURE 3: The Magical Link -->
         <section id="lesson3" class="page-section">
-            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                 <div class="flip-card-inner">
                     <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-purple p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
                         <i data-lucide="link" class="w-24 h-24 text-hogwarts-purple mb-6 animate-bounce"></i>
@@ -515,7 +515,7 @@
 
         <!-- LECTURE 4: Cash Flow -->
         <section id="lesson4" class="page-section">
-            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event)">
+            <div class="flip-card h-[1050px] md:h-[850px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped'); festiveGoldDust(event); playSound('flip')">
                 <div class="flip-card-inner">
                     <!-- Front -->
                     <div class="flip-front bg-white/95 rounded-2xl shadow-2xl border-4 border-hogwarts-gold p-8 flex flex-col justify-center items-center text-center backdrop-blur-md group-hover:border-yellow-400 transition">
@@ -1180,6 +1180,7 @@
         // --- Drag & Drop / Tap to Place Logic ---
         
         function selectRune(runeElement) {
+            playSound('select');
             // Deselect all
             document.querySelectorAll('.rune-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-yellow-400', 'scale-105', 'shadow-lg', 'z-10'));
             // Select current
@@ -1201,6 +1202,7 @@
 
         function placeRune(zoneElement) {
             if (selectedRune) {
+                playSound('place');
                 zoneElement.innerHTML = selectedRune.html;
                 zoneElement.dataset.val = selectedRune.val;
                 zoneElement.className = `drop-zone flex-1 p-3 border-2 border-dashed rounded-lg flex items-center justify-center min-h-[60px] cursor-pointer shadow-md bg-${selectedRune.color}-100 border-${selectedRune.color}-400 text-${selectedRune.color}-800 font-bold text-sm md:text-base`;
@@ -1210,6 +1212,7 @@
                 document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('ring-2', 'ring-yellow-400', 'animate-pulse'));
                 selectedRune = null;
             } else if (zoneElement.dataset.val !== "") {
+                playSound('click');
                 // Clear zone if tapped empty
                 zoneElement.innerHTML = '<span class="text-gray-400 text-sm font-bold">Tap Rune, then Tap Here</span>';
                 zoneElement.dataset.val = "";
@@ -1229,6 +1232,7 @@
 
         function dropRune(e, zoneElement) {
             e.preventDefault();
+            playSound('place');
             const val = e.dataTransfer.getData("val");
             const html = e.dataTransfer.getData("html");
             const color = e.dataTransfer.getData("color");
@@ -1242,6 +1246,7 @@
         // --- Core Logic ---
 
         function toggleDir(btn) {
+            playSound('click');
             if(btn.dataset.dir === 'inc') {
                 btn.dataset.dir = 'dec';
                 btn.classList.replace('bg-green-100', 'bg-red-100');
@@ -1281,6 +1286,7 @@
 
             if(!acc1 || !acc2) {
                 if(!silent) {
+                    playSound('error');
                     err.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5"></i> Please place two runes!';
                     err.classList.remove('hidden');
                 }
@@ -1327,6 +1333,7 @@
             } else {
                 // Failure
                 if(!silent) {
+                    playSound('error');
                     err.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5"></i> Spell fizzled! Check accounts/directions.';
                     err.classList.remove('hidden');
                     const intBox = document.getElementById(`interaction-${id}`);
@@ -1379,6 +1386,7 @@
                 }
                 
             } else {
+                playSound('error');
                 document.getElementById('teacher-error').classList.remove('hidden');
                 const modal = document.querySelector('#teacher-modal > div');
                 modal.classList.remove('animate-shake-fast');
@@ -1500,6 +1508,58 @@
         }
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'flip') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.linearRampToValueAtTime(500, now + 0.15);
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.1, now + 0.05);
+                gainNode.gain.linearRampToValueAtTime(0, now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } else if (type === 'error') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.3);
+                gainNode.gain.setValueAtTime(0.2, now);
+                gainNode.gain.linearRampToValueAtTime(0, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'select') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, now);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            } else if (type === 'place') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.1);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            }
+        }
+
         function playMagicSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
@@ -1603,6 +1663,7 @@
         }
 
         function navigate(pageId) {
+            playSound('click');
             document.querySelectorAll('.page-section').forEach(section => {
                 section.classList.remove('active');
             });
@@ -1622,6 +1683,11 @@
             updateHUD();
             updateFinancials(); // Initial paint of live statements
             createAmbientDust();
+            
+            // Ensure audio context starts on first interaction
+            document.body.addEventListener('click', () => {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            }, { once: true });
         };
 
     </script>

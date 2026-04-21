@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshot Audit Dashboard | Chicago Municipal Audit</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        quicksand: ['Quicksand', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe', 300: '#c4b5fd',
+                            400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed', 700: '#6d28d9',
+                            800: '#5b21b6', 900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .no-select { user-select: none; -webkit-user-select: none; }
+    </style>
+</head>
+<body class="bg-slate-50 font-quicksand text-slate-800 pb-32">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white pt-16 pb-24 px-6 relative overflow-hidden shadow-xl border-b border-slate-700">
+        <div class="absolute -right-10 -top-10 opacity-10 transform rotate-12 pointer-events-none">
+            <i data-lucide="image-search" class="w-64 h-64"></i>
+        </div>
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full text-xs font-bold tracking-wide uppercase mb-6 backdrop-blur border border-white/20 shadow-sm">
+                <i data-lucide="check-square" class="w-4 h-4 text-brand-300"></i> Quality Assurance
+            </div>
+            <h1 class="font-fredoka text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300">Screenshot Audit Dashboard</h1>
+            <p class="text-slate-300 text-lg font-medium max-w-2xl leading-relaxed">Chicago Municipal Open Checkbook Continuous Audit. Review the images mapped to each section below. If an image is incorrect, type the correct file name in the box provided. When finished, download your correction list to update the master files.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 -mt-10 relative z-20">
+        <div id="audit-output" class="space-y-12"></div>
+    </main>
+
+    <!-- Floating Action Bar -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 transition-colors" id="correctionBadge">
+                <i data-lucide="file-edit" class="w-5 h-5"></i>
+            </div>
+            <span class="font-bold text-slate-600 text-lg transition-colors" id="correctionCount">0 steps flagged for correction</span>
+        </div>
+        <button id="downloadBtn" class="bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-700 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-[0_4px_14px_0_rgb(124,58,237,0.39)] hover:shadow-[0_6px_20px_rgba(124,58,237,0.23)] transform hover:-translate-y-0.5 flex items-center gap-2">
+            <i data-lucide="download-cloud" class="w-5 h-5"></i> Generate Report
+        </button>
+    </div>
+
+    <script>
+        const SECTIONS = [
+            {
+                "id": "phase1", "label": "Phase 1", "title": "Data Ingestion and Normalization (Master Dataset)",
+                "steps": [
+                    {"title": "Input Data Tool", "shots": ["p1s1.png"], "instruction": "Connect the tool to the downloaded CSV dataset."},
+                    {"title": "Data Cleansing Tool", "shots": ["p1s2.png"], "instruction": "Target the VENDOR NAME column. Apply Upper Case, Remove Punctuation, and Strip Whitespace."},
+                    {"title": "Formula Tool 1", "shots": ["p1s3.png"], "instruction": "Target the AMOUNT column to strip currency symbols while preserving negative signs. Expression: ReplaceChar([AMOUNT], \"$,\", \"\")"},
+                    {"title": "Filter Tool (Drop Subtotals)", "shots": ["p1s4.png"], "instruction": "Historical data older than two years is summarized into annual subtotals and lacks a specific voucher number. Filter out these aggregated rows using the False anchor. Expression: IsNull([VOUCHER NUMBER])"},
+                    {"title": "DateTime Tool 1 (Parse Date)", "shots": ["p1s5.png"], "instruction": "Connect to the False anchor of the filter to keep only valid transactions. Convert the string into a standard Date format. Select CHECK DATE, specify the new column name as Date, and choose the correct format."},
+                    {"title": "Filter Tool (Isolate Granular Data)", "shots": ["p1s6.png"], "instruction": "Add a second filter to ensure we are only analyzing the daily payment data going forward. Expression: [Date] >= \"2024-05-31\""},
+                    {"title": "DateTime Tool 2 (Extract Year)", "shots": ["p1s7.png"], "instruction": "Convert the newly cleaned date into a year string for sampling. Format Date/Time to String, select Date, output to Transaction_Year, format Custom -> yyyy."},
+                    {"title": "Record ID Tool", "shots": ["p1s8.png"], "instruction": "Insert this to generate a primary key. Leave the starting value at 1. Name the column RecordID."},
+                    {"title": "Select Tool", "shots": ["p1s9.png"], "instruction": "Finalize your schema types to prepare for analytical grouping. Ensure amounts are decimals, dates are dates, IDs are integers, and drop the original messy date column."},
+                    {"title": "Phase 1 Checkpoint", "shots": ["p1cp.png"], "instruction": "Group these tools into a container named Phase 1: Normalization. Verify your layout matches the final checkpoint below."}
+                ]
+            },
+            {
+                "id": "phase2", "label": "Phase 2", "title": "Split Payment Audit (Branch 1)",
+                "steps": [
+                    {"title": "Summarize Tool", "shots": ["p2s1.png"], "instruction": "Aggregate the data to find the total amount and number of vouchers per vendor, per day."},
+                    {"title": "Filter Tool", "shots": ["p2s2.png"], "instruction": "Filter for instances where a vendor had multiple vouchers on the same day totaling $10,000 or more. Expression: [Count] >= 2 AND [Sum_AMOUNT] >= 10000"},
+                    {"title": "Join Tool", "shots": ["p2s3.png"], "instruction": "Join your flagged records back to the Master Dataset to retrieve the individual transaction details. Match on VENDOR NAME and Date."},
+                    {"title": "Formula Tool 3", "shots": ["p2s4.png"], "instruction": "Create a flag column named Flag_Split to numerically identify these split payments (e.g., set the value to 1)."},
+                    {"title": "Select Tool", "shots": ["p2s5.png"], "instruction": "Clean up the data stream to only keep the primary key and your new flag. Ensure your flag is set to a numeric type (e.g., Int16)."},
+                    {"title": "Phase 2 Checkpoint", "shots": ["p2cp.png"], "instruction": "Group these tools into a container named Phase 2: Split Payments. Verify your layout matches the final checkpoint below."}
+                ]
+            },
+            {
+                "id": "phase3", "label": "Phase 3", "title": "Duplicate Payment Audit (Branch 2)",
+                "steps": [
+                    {"title": "Summarize Tool", "shots": ["p3s1.png"], "instruction": "Aggregate the data to find instances where the exact same dollar amount was paid to the same vendor on the same day. Count RecordID."},
+                    {"title": "Filter Tool", "shots": ["p3s2.png"], "instruction": "Filter the dataset to keep only the duplicated records. Expression: [Count] > 1"},
+                    {"title": "Join Tool", "shots": ["p3s3.png"], "instruction": "Join the duplicated records back to the Master Dataset to reattach the precise transaction details. Match on VENDOR NAME, Date, and AMOUNT, and in the built in select tool, remove duplicate columns (all the column names that starts with Right_ )."},
+                    {"title": "Formula Tool 4", "shots": ["p3s4.png"], "instruction": "Create a flag column named Flag_Dupe to mathematically identify these duplicate payments. Set the value to 1."},
+                    {"title": "Select Tool", "shots": ["p3s5.png"], "instruction": "Clean up the data stream to only keep the primary key and your newly created flag. Ensure your flag is set to a numeric type (e.g., Int16)."},
+                    {"title": "Phase 3 Checkpoint", "shots": ["p3cp.png"], "instruction": "Group these tools into a container named Phase 3: Duplicates. Verify your layout matches the final checkpoint below."}
+                ]
+            },
+            {
+                "id": "phase4", "label": "Phase 4", "title": "Bypassed Contract Audit (Branch 3)",
+                "steps": [
+                    {"title": "Filter Tool", "shots": ["p4s1.png"], "instruction": "Filter the dataset to isolate exceptionally large payments (over $100,000) that utilized Direct Vouchers. Expression: [CONTRACT NUMBER] = \"DV\" AND [AMOUNT] > 100000"},
+                    {"title": "Formula Tool 5", "shots": ["p4s2.png"], "instruction": "Create a flag column named Flag_DV on the True anchor to identify these risks. Set the value to 1."},
+                    {"title": "Select Tool", "shots": ["p4s3.png"], "instruction": "Clean the output stream to only include the required ID and flag. Ensure your flag is set to a numeric type (e.g., Int16)."},
+                    {"title": "Phase 4 Checkpoint", "shots": ["p4cp.png"], "instruction": "Group these tools into a container named Phase 4: Bypassed Contract. Verify your layout matches the final checkpoint below."}
+                ]
+            },
+            {
+                "id": "phase5", "label": "Phase 5", "title": "Generic Voucher Audit (Branch 4)",
+                "steps": [
+                    {"title": "Filter Tool", "shots": ["p5s1.png"], "instruction": "Filter the dataset to identify payments marked with \"Multiple\" in the Voucher Number field."},
+                    {"title": "Formula Tool 6", "shots": ["p5s2.png"], "instruction": "Connect to the True anchor and generate a flag column named Flag_Generic_Voucher. Set the value to 1."},
+                    {"title": "Select Tool", "shots": ["p5s3.png"], "instruction": "Finalize the output stream for this branch. Keep only RecordID and Flag_Generic_Voucher. Ensure your flag is set to a numeric type (e.g., Int16)."},
+                    {"title": "Phase 5 Checkpoint", "shots": ["p5cp.png"], "instruction": "Group these tools into a container named Phase 5: Generic Voucher. Verify your layout matches the final checkpoint below."}
+                ]
+            },
+            {
+                "id": "phase6", "label": "Phase 6", "title": "Master Join and Risk Scoring",
+                "steps": [
+                    {"title": "Join Multiple Tool", "shots": ["p6s1.png", "p6s1-1.png"], "instruction": "The dataset from Phase 1, 2, 3, 4, 5 (specifically) will be joined based on recordID. Use the built-in Select tool functionality within the Join Multiple configuration to deselect all duplicate Input_#_RecordID columns, leaving only one clean RecordID alongside your flags."},
+                    {"title": "Data Cleansing Tool", "shots": ["p6s2.png"], "instruction": "Replace any Null values in your newly joined flag columns with zeros."},
+                    {"title": "Formula Tool 7", "shots": ["p6s3.png"], "instruction": "Calculate the percentage Composite_Risk_Score using the weighted values: Split Payment = 40%, Duplicate = 30%, DV Contract = 20%, Generic Voucher = 10%."},
+                    {"title": "Phase 6 Checkpoint", "shots": ["p6cp.png"], "instruction": "Group these tools into a container named Phase 6: Master Join. Verify your layout matches the final checkpoint below."}
+                ]
+            },
+            {
+                "id": "phase7", "label": "Phase 7", "title": "Audit Reporting",
+                "steps": [
+                    {"title": "Task 1: Sort Tool", "shots": ["p7s1.png"], "instruction": "Objective: Answer Question 1 on the Output Report. Sort the dataset to prioritize the highest risk score and highest amount per Year."},
+                    {"title": "Task 1: Sample Tool", "shots": ["p7s2.png"], "instruction": "Sample the top record per year to identify the top risk flag for 2025."},
+                    {"title": "Task 2: Filter Tool", "shots": ["p7s3.png"], "instruction": "Objective: Answer Question 2 on the Output Report. Filter the dataset for LLCs with amounts over $1,000,000 in 2025 and a risk score of 0.70 or higher."},
+                    {"title": "Task 2: Summarize Tool", "shots": ["p7s4.png"], "instruction": "Count the results to answer the audit question."},
+                    {"title": "Task 3: Summarize Tool", "shots": ["p7s5.png"], "instruction": "Objective: Answer Question 3 on the Output Report. Summarize the data to find the total sum of risk scores per vendor."},
+                    {"title": "Task 3: Sort Tool", "shots": ["p7s6.png"], "instruction": "Sort by the newly created Sum_Composite_Risk_Score in Descending order."},
+                    {"title": "Task 3: Sample Tool", "shots": ["p7s7.png"], "instruction": "Extract the First 1 row to find the vendor with the most consistent high-risk flags."},
+                    {"title": "Phase 7 Checkpoint", "shots": ["p7cp.png"], "instruction": "Group these reporting tools into a container named Phase 7: Reporting. Verify your layout matches the final checkpoint below."}
+                ]
+            },
+            {
+                "id": "phase8", "label": "Phase 8", "title": "Open-Ended Data Exploration",
+                "steps": [
+                    {"title": "Task 4: Custom Branch", "shots": ["p8s1.png"], "instruction": "Objective: Answer Question 4 on the Output Report. Create your own analytical branch using at least 3 tools from the Master Dataset to extract new insights."},
+                    {"title": "Complete Project Checkpoint", "shots": ["full_project_cp.png"], "instruction": "Verify your entire Continuous Audit Engine matches the final master checkpoint."}
+                ]
+            }
+        ];
+
+        const THEME_MAP = {
+            "phase1": { bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-200", icon: "database" },
+            "phase2": { bg: "bg-purple-50", text: "text-purple-700", border: "border-purple-200", icon: "split-square-horizontal" },
+            "phase3": { bg: "bg-pink-50", text: "text-pink-700", border: "border-pink-200", icon: "copy" },
+            "phase4": { bg: "bg-red-50", text: "text-red-700", border: "border-red-200", icon: "file-warning" },
+            "phase5": { bg: "bg-orange-50", text: "text-orange-700", border: "border-orange-200", icon: "file-search" },
+            "phase6": { bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-200", icon: "network" },
+            "phase7": { bg: "bg-indigo-50", text: "text-indigo-700", border: "border-indigo-200", icon: "bar-chart-3" },
+            "phase8": { bg: "bg-cyan-50", text: "text-cyan-700", border: "border-cyan-200", icon: "microscope" }
+        };
+
+        const container = document.getElementById('audit-output');
+        const correctionCountLabel = document.getElementById('correctionCount');
+        const correctionBadge = document.getElementById('correctionBadge');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        SECTIONS.forEach((section, sIndex) => {
+            const theme = THEME_MAP[section.id] || THEME_MAP["phase1"];
+            
+            let sectionHtml = `
+                <div class="mb-12 bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden">
+                    <div class="px-8 py-6 ${theme.bg} border-b ${theme.border} flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm ${theme.border} border">
+                            <i data-lucide="${theme.icon}" class="w-6 h-6 ${theme.text}"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-fredoka text-2xl font-bold text-slate-800">${section.title}</h2>
+                            <p class="text-sm font-semibold ${theme.text} uppercase tracking-wider">${section.label} Overview</p>
+                        </div>
+                    </div>
+                    <div class="p-8 space-y-8 bg-slate-50">
+            `;
+
+            if (section.steps && section.steps.length > 0) {
+                section.steps.forEach((step, index) => {
+                    if (step.shots && step.shots.length > 0) {
+                        step.shots.forEach((fileName, fileIndex) => {
+                            const uniqueStepLabel = `Step ${index + 1}${step.shots.length > 1 ? String.fromCharCode(97 + fileIndex) : ''}`;
+                            sectionHtml += buildRow(section.label, uniqueStepLabel, step.title, fileName, theme, step.instruction);
+                        });
+                    } else {
+                         sectionHtml += `
+                            <div class="flex flex-col md:flex-row bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden opacity-60">
+                                <div class="w-full md:w-1/3 p-6 bg-slate-50 border-b md:border-b-0 md:border-r border-slate-100">
+                                    <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Step ${index + 1}</div>
+                                    <h3 class="font-bold text-lg mb-2 text-slate-500">${step.title}</h3>
+                                </div>
+                                <div class="w-full md:w-2/3 p-6 flex items-center justify-center bg-slate-100/50 text-slate-400 font-bold italic border-dashed border-2 border-slate-200 m-4 rounded-xl">
+                                    No images assigned to this step.
+                                </div>
+                            </div>
+                         `;
+                    }
+                });
+            } else {
+                sectionHtml += `<p class="text-slate-500 italic font-semibold">No steps found for this section.</p>`;
+            }
+
+            sectionHtml += `</div></div>`;
+            container.innerHTML += sectionHtml;
+        });
+
+        function buildRow(partLabel, stepLabel, title, fileName, theme, instruction) {
+            return `
+                <div class="flex flex-col lg:flex-row bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow group-card">
+                    <div class="w-full lg:w-1/3 p-6 ${theme.bg} border-b lg:border-b-0 lg:border-r ${theme.border} flex flex-col justify-between">
+                        <div>
+                            <div class="inline-block px-3 py-1 rounded-full bg-white shadow-sm border ${theme.border} text-xs font-bold uppercase tracking-wider ${theme.text} mb-4">
+                                ${stepLabel}
+                            </div>
+                            <h3 class="font-bold text-xl mb-3 text-slate-800 leading-snug">${title}</h3>
+                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">${instruction}</p>
+                            
+                            <div class="bg-white/60 border ${theme.border} p-3 rounded-xl mb-6 shadow-sm">
+                                <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Current Assignment:</span>
+                                <code class="${theme.text} font-bold text-sm bg-white px-2 py-1 rounded border border-white/40 shadow-sm block w-fit">${fileName}</code>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-inner transition-colors focus-within:border-brand-300 focus-within:ring-2 focus-within:ring-brand-50">
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                    <i data-lucide="image-minus" class="w-3 h-3"></i> Image Correction
+                                </label>
+                                <input type="text" placeholder="Enter correct filename..." 
+                                       class="correction-input w-full p-2.5 border border-slate-200 rounded-lg focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none font-mono text-sm text-slate-700 bg-slate-50 focus:bg-white transition-all"
+                                       data-part="${partLabel}" 
+                                       data-step="${stepLabel}"
+                                       data-current="${fileName}">
+                            </div>
+
+                            <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-inner transition-colors focus-within:border-brand-300 focus-within:ring-2 focus-within:ring-brand-50">
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                    <i data-lucide="message-square" class="w-3 h-3"></i> Instructional Feedback
+                                </label>
+                                <textarea placeholder="Add/reduce explanation or notes for this step..." 
+                                          class="feedback-input w-full p-2.5 border border-slate-200 rounded-lg focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none text-sm text-slate-700 bg-slate-50 focus:bg-white transition-all resize-y min-h-[80px]"
+                                          data-part="${partLabel}" 
+                                          data-step="${stepLabel}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-2/3 p-8 bg-slate-50 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-grid-slate-100/[0.04] bg-[bottom_1px_center] dark:bg-grid-slate-700/[0.04] dark:bg-bottom"></div>
+                        <img src="img/${fileName}" alt="${fileName}" class="max-w-full max-h-[400px] object-contain rounded-xl border border-slate-200 shadow-sm relative z-10 transition-transform duration-300 hover:scale-[1.02]" 
+                             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center text-rose-500 p-8 border-2 border-dashed border-rose-200 rounded-xl bg-rose-50/50 w-full relative z-10\\'><i data-lucide=\\'image-off\\' class=\\'w-8 h-8 mb-3 text-rose-400\\'></i><span class=\\'font-bold mb-1\\'>Missing Asset</span><code class=\\'text-xs text-rose-600 bg-rose-100 px-2 py-1 rounded\\'>img/${fileName}</code></div>'; lucide.createIcons();">
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize Icons after DOM manipulation
+        lucide.createIcons();
+
+        // Update counter logic checking BOTH image input and feedback text area
+        document.addEventListener('input', function(e) {
+            if(e.target.classList.contains('correction-input') || e.target.classList.contains('feedback-input')) {
+                let activeCount = 0;
+                
+                document.querySelectorAll('.group-card').forEach(card => {
+                    const imgVal = card.querySelector('.correction-input')?.value.trim() || '';
+                    const textVal = card.querySelector('.feedback-input')?.value.trim() || '';
+                    
+                    if(imgVal !== '' || textVal !== '') {
+                        activeCount++;
+                    }
+                });
+
+                correctionCountLabel.textContent = `${activeCount} step${activeCount === 1 ? '' : 's'} flagged for correction`;
+                
+                if(activeCount > 0) {
+                    correctionCountLabel.classList.add('text-brand-600');
+                    correctionCountLabel.classList.remove('text-slate-600');
+                    correctionBadge.classList.remove('bg-slate-100', 'text-slate-500');
+                    correctionBadge.classList.add('bg-brand-100', 'text-brand-600');
+                } else {
+                    correctionCountLabel.classList.remove('text-brand-600');
+                    correctionCountLabel.classList.add('text-slate-600');
+                    correctionBadge.classList.add('bg-slate-100', 'text-slate-500');
+                    correctionBadge.classList.remove('bg-brand-100', 'text-brand-600');
+                }
+            }
+        });
+
+        // Download Logic handling both image changes and feedback
+        downloadBtn.addEventListener('click', function() {
+            const cards = document.querySelectorAll('.group-card');
+            const corrections = [];
+
+            cards.forEach(card => {
+                const imgInput = card.querySelector('.correction-input');
+                const feedbackInput = card.querySelector('.feedback-input');
+                
+                const imgVal = imgInput.value.trim();
+                const feedbackVal = feedbackInput.value.trim();
+                
+                if (imgVal !== '' || feedbackVal !== '') {
+                    const part = imgInput.dataset.part;
+                    const step = imgInput.dataset.step;
+                    const current = imgInput.dataset.current;
+                    
+                    let note = `[${part}] ${step}:\n`;
+                    if (imgVal !== '') {
+                        note += `  - Image Target Change: \`${current}\` -> \`${imgVal}\`\n`;
+                    }
+                    if (feedbackVal !== '') {
+                        note += `  - Instructional Feedback: ${feedbackVal}\n`;
+                    }
+                    corrections.push(note);
+                }
+            });
+
+            if (corrections.length === 0) {
+                alert("No corrections or feedback have been entered yet. Please type in any of the input boxes to generate a report.");
+                return;
+            }
+
+            let reportText = "=================================================\n";
+            reportText += "CHICAGO AUDIT - FEEDBACK & CORRECTION REPORT\n";
+            reportText += `Generated on: ${new Date().toLocaleString()}\n`;
+            reportText += `Total Steps Flagged: ${corrections.length}\n`;
+            reportText += "=================================================\n\n";
+            reportText += corrections.join('\n');
+            
+            const blob = new Blob([reportText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Chicago_Audit_Feedback_Report.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+    </script>
+</body>
+</html>

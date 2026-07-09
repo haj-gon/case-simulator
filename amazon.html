@@ -156,7 +156,6 @@
     .start-btn { background: var(--green); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
     .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
 
-    /* Main App Container */
     .app-container { max-width: 1500px; margin: 0 auto; padding: 32px 24px; display: none; flex-direction: column; gap: 32px; position: relative; z-index: 1; }
     
     .hero { background: var(--ink); color: white; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden; justify-content: space-between; border: 4px solid var(--ink);}
@@ -175,7 +174,7 @@
     .bg-blue { background: var(--blue); }
     .bg-green { background: var(--green); }
     .bg-amber { background: var(--amber); }
-    .bg-purple { background: var(--red); } /* Changed to red for legal durability map */
+    .bg-purple { background: var(--red); }
 
     /* Modals */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
@@ -195,7 +194,6 @@
     .panel { background: var(--panel); border: 4px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 32px; }
     .panel-title { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 1.4rem; font-weight: 900; color: var(--ink); }
 
-    /* Scenarios Grid & Levels */
     .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
     .scenario-card { border: 3px solid var(--ink); border-radius: 16px; padding: 24px; background: white; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform 0.1s, box-shadow 0.1s; }
     .scenario-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--ink); }
@@ -219,7 +217,6 @@
     .badge-neg { background: var(--red); color: white; }
     .badge-neu { background: white; color: var(--ink); }
     
-    /* Ensure active option badges stand out properly */
     .option-btn.active .badge-pos { background: white; color: var(--green); box-shadow: none; }
     .option-btn.active .badge-neg { background: var(--ink); color: white; box-shadow: none; }
     .option-btn.active .badge-neu { box-shadow: none; }
@@ -277,7 +274,6 @@
     .chat-msg.right .chat-header { justify-content: flex-end; flex-direction: row-reverse; }
     .chat-name { font-weight: 900; color: var(--ink); font-size: 1.15rem; }
     
-    /* Specific Group Colors for Badges */
     .chat-role { font-size: 0.75rem; text-transform: uppercase; font-weight: 900; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 8px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
     
     .msg-aws .chat-role { background: var(--amber); color: var(--ink); }
@@ -575,8 +571,8 @@
     if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
   });
 
-  // State
-  let selectedOptions = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0, s7: 0, s8: 0 }; 
+  // State - Starting with null values so nothing is pre-selected
+  let selectedOptions = { s1: null, s2: null, s3: null, s4: null, s5: null, s6: null, s7: null, s8: null }; 
   let currentPhase = 1;
   let generatedRows = [];
   let chatIndex = 0;
@@ -604,7 +600,6 @@
     });
   });
 
-  // --- Revised Balanced Scenarios (3 Choices Each) ---
   const scenarios = [
     {
       id: "s1", tag: "Zoning History", icon: "book-open",
@@ -748,8 +743,11 @@
   function getAggregate() {
     const total = { fiscal: 0, trust: 0, gateway: 0, legal: 0 };
     scenarios.forEach(s => {
-      const choice = s.options[selectedOptions[s.id] || 0];
-      Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
+      // Only aggregate if an option has been selected
+      if (selectedOptions[s.id] !== null && selectedOptions[s.id] !== undefined) {
+        const choice = s.options[selectedOptions[s.id]];
+        Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
+      }
     });
     return total;
   }
@@ -791,6 +789,14 @@
 
   document.getElementById('phaseActionBtn')?.addEventListener('click', () => {
     if (currentPhase === 1) {
+      
+      // Ensure the user has selected at least one option for all 8 scenarios
+      const allSelected = Object.values(selectedOptions).every(val => val !== null);
+      if (!allSelected) {
+          alert("Please select an option for all 8 Policy Docket items before finalizing the permit.");
+          return;
+      }
+
       currentPhase = 2;
       const btn = document.getElementById('phaseActionBtn');
       btn.innerHTML = '<i data-lucide="check-check" style="stroke-width: 3;"></i> Proceed to Durability Stress Test';
@@ -818,7 +824,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // --- Monte Carlo Generator Logic ---
   function generateDataset() {
     const size = 1000; 
     const agg = getAggregate();
@@ -910,7 +915,6 @@
 
   document.getElementById('generateBtn')?.addEventListener('click', generateDataset);
 
-  // --- Town Hall Chat Logic ---
   const chatScript = [
     { type: 'msg-aws', name: 'AWS Executive', role: 'Data Center Rep', img: 'https://i.pravatar.cc/150?img=59', text: "Good evening. We are thrilled to bring $550 million to Warrenton. Look at Hermiston and Umatilla, OR—they announced they were 'open for business' and we minted a new middle class! We foster a regional tech ecosystem, drive business for local contractors, and provide the compute power needed to optimize global climate decarbonization." },
     { type: 'msg-ngo', name: 'Citizens for Fauquier County', role: 'Preservation Advocate', img: 'https://i.pravatar.cc/150?img=44', text: "Global decarbonization? What about the unpermitted gas turbines xAI used in Memphis? We will not let you bring environmental racism and toxic emissions to our fence-line communities like they did in Boxtown, just so you can bypass standard taxes with these 'fees-in-lieu'!" },

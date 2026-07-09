@@ -156,7 +156,6 @@
     .start-btn { background: var(--blue); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
     .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
 
-    /* Main App Container */
     .app-container { max-width: 1500px; margin: 0 auto; padding: 32px 24px; display: none; flex-direction: column; gap: 32px; position: relative; z-index: 1; }
     
     .hero { background: var(--ink); color: white; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden; justify-content: space-between; border: 4px solid var(--ink);}
@@ -176,7 +175,7 @@
     .bg-blue { background: var(--blue); }
     .bg-green { background: var(--green); }
     .bg-amber { background: var(--amber); }
-    .bg-purple { background: var(--red); } /* Used for Regulatory */
+    .bg-purple { background: var(--red); } 
 
     /* Modals */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
@@ -196,7 +195,6 @@
     .panel { background: var(--panel); border: 4px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 32px; }
     .panel-title { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 1.4rem; font-weight: 900; color: var(--ink); }
 
-    /* Scenarios Grid & Levels */
     .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
     .scenario-card { border: 3px solid var(--ink); border-radius: 16px; padding: 24px; background: white; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform 0.1s, box-shadow 0.1s; }
     .scenario-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--ink); }
@@ -204,7 +202,6 @@
     .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
     .scenario-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 900; color: var(--ink); background: var(--amber); padding: 6px 12px; border-radius: 8px; align-self: flex-start; text-transform: uppercase; letter-spacing: 0.05em; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
     
-    /* Advisor Buttons Gamified */
     .advisor-btn { background: var(--purple); color: white; border: 3px solid var(--ink); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.1s; box-shadow: 2px 2px 0px var(--ink); text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Nunito', sans-serif;}
     .advisor-btn:active { transform: translateY(2px); box-shadow: 0px 0px 0px var(--ink); }
     .advisor-btn i { animation: pulseSoft 2s infinite; stroke-width: 3;}
@@ -212,7 +209,6 @@
     .scenario-card h3 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.3; font-weight: 900; color: var(--ink); }
     .scenario-card p { font-size: 1rem; font-weight: 700; color: var(--muted); margin: 0 0 20px; line-height: 1.5; }
 
-    /* Advisor Panels Gamified */
     .advisor-panel { display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; opacity: 0; transform: translateY(-10px); }
     .advisor-panel.active { display: grid; animation: magicReveal 0.3s ease-out forwards; }
     @keyframes magicReveal { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -223,7 +219,6 @@
     .adv-esg { border-top: 6px solid var(--green); }
     .adv-esg strong { color: var(--green); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; border-bottom: 3px solid var(--ink); padding-bottom: 8px;}
 
-    /* Option Previews */
     .option-list { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
     .option-btn { padding: 16px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.1s; display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif;}
     .option-btn:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); }
@@ -239,12 +234,10 @@
     .badge-neg { background: var(--red); color: white; }
     .badge-neu { background: white; color: var(--ink); }
     
-    /* Ensure active option badges stand out properly */
     .option-btn.active .badge-pos { background: white; color: var(--green); box-shadow: none; }
     .option-btn.active .badge-neg { background: var(--ink); color: white; box-shadow: none; }
     .option-btn.active .badge-neu { box-shadow: none; }
 
-    /* Tabs Navigation */
     .tabs-container { margin-top: 32px; background: white; border: 4px solid var(--ink); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
     .tabs-header { display: flex; background: #cbd5e1; border-bottom: 4px solid var(--ink); overflow-x: auto; gap: 0; }
     .tab-btn { flex: 1; padding: 16px 12px; background: transparent; border: none; border-right: 4px solid var(--ink); color: var(--ink); font-weight: 900; font-size: 1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; font-family: 'Nunito', sans-serif;}
@@ -261,7 +254,6 @@
     .btn-primary { background: var(--blue); color: white; border: 3px solid var(--ink); padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
     .btn-primary:active { transform: translateY(4px); box-shadow: none; }
 
-    /* Visual Dashboard Enhancements (Charts + Scatter) */
     .scatter-container { position: relative; width: 100%; height: 450px; background: #f8fafc; border: 4px solid var(--ink); border-radius: 16px; overflow: hidden; box-shadow: inset 0 4px 8px rgba(0,0,0,0.1); }
     .quad-top-right { position: absolute; top:0; left:50%; right:0; bottom:50%; background: rgba(16, 185, 129, 0.08); } 
     .quad-bottom-right { position: absolute; top:50%; left:50%; right:0; bottom:0; background: rgba(239, 68, 68, 0.08); } 
@@ -285,7 +277,7 @@
     .scatter-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); transform: translate(-50%, -50%); opacity: 0.85; z-index: 10; transition: all 0.2s; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
     .scatter-dot:hover { width: 20px; height: 20px; background: var(--amber); opacity: 1; z-index: 20; cursor: crosshair; }
 
-    /* --- Town Hall Chat Styles --- */
+    /* Town Hall Chat Styles */
     .chat-container { display: flex; flex-direction: column; gap: 24px; background: #cbd5e1; border: 4px solid var(--line); border-radius: 16px; padding: 32px; min-height: 400px; max-height: 600px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);}
     .chat-msg { display: flex; gap: 16px; opacity: 0; transform: translateY(15px); animation: fadeUp 0.4s ease-out forwards; max-width: 85%; }
     .chat-msg.right { align-self: flex-end; flex-direction: row-reverse; }
@@ -297,7 +289,6 @@
     .chat-msg.right .chat-header { justify-content: flex-end; flex-direction: row-reverse; }
     .chat-name { font-weight: 900; color: var(--ink); font-size: 1.15rem; }
     
-    /* Specific Group Colors for Badges */
     .chat-role { font-size: 0.75rem; text-transform: uppercase; font-weight: 900; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 8px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
     
     .msg-aws .chat-role { background: var(--amber); color: var(--ink); }
@@ -595,8 +586,8 @@
     if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
   });
 
-  // State
-  let selectedOptions = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0, s6: 0, s7: 0, s8: 0 }; 
+  // State: Initialize as an empty object so no options are pre-selected
+  let selectedOptions = {}; 
   let currentPhase = 1;
   let generatedRows = [];
   let chatIndex = 0;
@@ -631,7 +622,7 @@
     }
   }
 
-  // --- Revised Balanced Scenarios with Advisor Perspectives ---
+  // --- Scenarios Data ---
   const scenarios = [
     {
       id: "s1", tag: "Site Selection", icon: "map-pin",
@@ -728,7 +719,7 @@
       options: [
         { name: "Assume Standard Real Estate Risk", summary: "Refuse to post any special bonds, treating the site like any other commercial warehouse. This keeps your upfront capital completely free for further expansion, but leaves the town feeling deeply vulnerable to corporate abandonment.", effects: { fiscal: 15, trust: -25, gateway: -10, legal: -15 } },
         { name: "Establish Partial Escrow Fund", summary: "Agree to incrementally fund an escrow account over a decade to cover basic demolition costs. This demonstrates moderate corporate responsibility without requiring a massive, punitive upfront cash deposit.", effects: { fiscal: 0, trust: 10, gateway: 5, legal: 10 } },
-        { name: "Provide Full Upfront Bond", summary: "Lock away millions in a full decommissioning bond before breaking ground. This completely guarantees the land will be restored to nature, perfectly honoring integral ecology, but heavily restricts your division's immediate cash flow.", effects: { fiscal: -15, trust: 25, gateway: 15, legal: 20 } }
+        { name: "Provide Full Upfront Bond", summary: "Lock away millions in a full decommissioning bond before breaking ground. This completely guarantees the land will be restored to nature, perfectly honors integral ecology, but heavily restricts your division's immediate cash flow.", effects: { fiscal: -15, trust: 25, gateway: 15, legal: 20 } }
       ]
     },
     {
@@ -790,6 +781,7 @@
       const list = card.querySelector('.option-list');
       s.options.forEach((op, idx) => {
         const btn = document.createElement('button');
+        // Only apply 'active' if this exact index was selected
         btn.className = 'option-btn' + (selectedOptions[s.id] === idx ? ' active' : '');
         
         let impactHtml = '';
@@ -824,8 +816,11 @@
   function getAggregate() {
     const total = { fiscal: 0, trust: 0, gateway: 0, legal: 0 };
     scenarios.forEach(s => {
-      const choice = s.options[selectedOptions[s.id] || 0];
-      Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
+      // Only add to the total if the user has actually made a selection for this scenario
+      if (selectedOptions[s.id] !== undefined) {
+          const choice = s.options[selectedOptions[s.id]];
+          Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
+      }
     });
     return total;
   }
@@ -867,6 +862,15 @@
 
   document.getElementById('phaseActionBtn')?.addEventListener('click', () => {
     if (currentPhase === 1) {
+      // Validation: Ensure all 8 scenarios have a selection
+      const totalSelected = Object.keys(selectedOptions).length;
+      if (totalSelected < scenarios.length) {
+          // Alert user using standard confirm/alert replacement logic (just using native alert for simplicity here, 
+          // or we can use a custom modal if preferred, but a simple alert works fine for quick validation)
+          alert(`Please select an option for all ${scenarios.length} strategic domains. You have currently selected ${totalSelected}.`);
+          return;
+      }
+
       currentPhase = 2;
       const btn = document.getElementById('phaseActionBtn');
       btn.innerHTML = '<i data-lucide="check-check" style="stroke-width: 3;"></i> Proceed to Market Stress Test';
@@ -894,7 +898,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // --- Monte Carlo Generator Logic ---
   function generateDataset() {
     const size = 1000; 
     const agg = getAggregate();
@@ -986,7 +989,6 @@
 
   document.getElementById('generateBtn')?.addEventListener('click', generateDataset);
 
-  // --- Town Hall Chat Logic ---
   const chatScript = [
     { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "Good evening. AWS is thrilled to bring $550 million to Warrenton. If we can execute this build quickly, we will mint a new middle class here! We provide the compute power needed to optimize global climate decarbonization. We want to be partners in that growth." },
     { type: 'msg-ngo', name: 'Citizens for Fauquier', role: 'Preservation Advocate', img: 'https://i.pravatar.cc/150?img=44', text: "Global decarbonization? What about the unpermitted gas turbines used in other AI sites? We will not let you bring environmental racism and toxic emissions to our fence-line communities just so you can maximize shareholder value!" },

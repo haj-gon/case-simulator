@@ -8,6 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
+  <!-- Gamified Theme Config -->
   <script>
       tailwind.config = {
           theme: {
@@ -91,11 +92,13 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      padding-bottom: 70px; /* Give room for fixed ticker at bottom */
     }
 
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
     @keyframes pulseSoft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     @keyframes scorePop { 0% { transform: scale(1); } 50% { transform: scale(1.15); color: var(--blue); } 100% { transform: scale(1); } }
+    @keyframes tickerScroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     
     .stagger-1 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
     .stagger-2 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
@@ -155,6 +158,51 @@
     .start-btn { background: var(--blue); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
     .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
 
+    /* Fixed News Ticker */
+    .news-ticker-wrap {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--ink);
+      color: white;
+      padding: 10px 24px;
+      border-top: 4px solid white;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-label {
+      background: var(--red);
+      color: white;
+      font-weight: 900;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 2px solid white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      z-index: 2;
+    }
+    .ticker-content {
+      flex-grow: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .ticker-text {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      animation: tickerScroll 15s linear infinite;
+      color: #93c5fd;
+    }
+
     .app-container { max-width: 1500px; margin: 0 auto; padding: 32px 24px; display: none; flex-direction: column; gap: 32px; position: relative; z-index: 1; }
     
     .hero { background: var(--ink); color: white; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden; justify-content: space-between; border: 4px solid var(--ink);}
@@ -177,7 +225,7 @@
     .bg-purple { background: var(--red); } 
 
     /* Modals */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
     .modal-overlay.active { display: flex; opacity: 1; }
     .modal-content { background: white; border-radius: 20px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 32px; box-shadow: var(--shadow-lg); border: 4px solid var(--ink); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
     .modal-overlay.active .modal-content { transform: scale(1); }
@@ -186,6 +234,11 @@
     
     .btn-outline { background: white; border: 3px solid var(--ink); color: var(--ink); padding: 10px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 900; cursor: pointer; transition: all 0.1s; display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); font-family: 'Nunito', sans-serif; }
     .btn-outline:active { background: #f1f5f9; transform: translateY(2px); box-shadow: none; }
+
+    .glossary-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 24px; }
+    .glossary-item { background: #f8fafc; border: 3px solid var(--ink); padding: 16px; border-radius: 12px; }
+    .glossary-item h4 { margin: 0 0 8px 0; color: var(--blue); font-weight: 900; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+    .glossary-item p { margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--ink); line-height: 1.5; }
 
     .main-workspace { display: grid; grid-template-columns: 340px 1fr; gap: 32px; align-items: start; }
     .sidebar { position: sticky; top: 32px; display: flex; flex-direction: column; gap: 24px; }
@@ -252,6 +305,42 @@
     .btn-primary { background: var(--blue); color: white; border: 3px solid var(--ink); padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
     .btn-primary:active { transform: translateY(4px); box-shadow: none; }
 
+    .achievement-box {
+      border: 3px solid var(--amber);
+      background: #fffbeb;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: var(--shadow);
+      display: none; 
+    }
+    .achievement-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .achievement-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      border: 3px solid var(--ink);
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      animation: fadeUp 0.4s ease-out forwards;
+    }
+    .achievement-badge .icon-wrap {
+      background: var(--amber);
+      color: var(--ink);
+      padding: 8px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+    }
+    .achievement-text strong { display: block; font-size: 1rem; color: var(--ink); font-weight: 900; }
+    .achievement-text span { font-size: 0.85rem; color: var(--muted); font-weight: 700; }
+
     .scatter-container { position: relative; width: 100%; height: 450px; background: #f8fafc; border: 4px solid var(--ink); border-radius: 16px; overflow: hidden; box-shadow: inset 0 4px 8px rgba(0,0,0,0.1); }
     .quad-top-right { position: absolute; top:0; left:50%; right:0; bottom:50%; background: rgba(16, 185, 129, 0.08); } 
     .quad-bottom-right { position: absolute; top:50%; left:50%; right:0; bottom:0; background: rgba(239, 68, 68, 0.08); } 
@@ -299,7 +388,7 @@
     .chat-controls { display: flex; justify-content: center; margin-top: 32px; border-top: 4px solid var(--line); padding-top: 32px; }
 
     @media (max-width: 1024px) { .main-workspace { grid-template-columns: 1fr; } .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } }
-    @media (max-width: 768px) { .sidebar { grid-template-columns: 1fr; } .hero-content-wrap { flex-direction: column; text-align: center; } .landing-header h1 { font-size: 2rem; } .hero { flex-direction: column; align-items: stretch; } .chat-msg { max-width: 100%; } }
+    @media (max-width: 768px) { .sidebar { grid-template-columns: 1fr; } .hero-content-wrap { flex-direction: column; text-align: center; } .landing-header h1 { font-size: 2rem; } .hero { flex-direction: column; align-items: stretch; } .chat-msg { max-width: 100%; } .news-ticker-wrap { padding: 10px; } }
   </style>
 </head>
 <body>
@@ -342,6 +431,19 @@
     <div style="background: #fef2f2; padding: 20px; border-radius: 12px; border: 3px solid var(--red); box-shadow: 4px 4px 0px var(--red);">
       <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--red); font-weight: 900;"><i data-lucide="scale" style="width: 20px; height: 20px; stroke-width: 3;"></i> Regulatory Compliance</h3>
       <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures protection against litigation, FOIA delays, and zoning appeals. Collaborating with town planners and accepting regulatory limits increases stability. Pushing legal boundaries risks costly project injunctions.</p>
+    </div>
+  </div>
+</div>
+
+<div id="glossaryModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="close-modal" id="closeGlossaryModal"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
+    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="briefcase" style="color: var(--amber); width: 32px; height: 32px;"></i> Corporate Playbook (Glossary)</h2>
+    
+    <p style="font-size: 1.1rem; font-weight: 700; color: var(--muted); margin-bottom: 24px;">Use this reference guide to understand the complex industry terminology and corporate metrics used throughout your strategic decisions.</p>
+
+    <div class="glossary-grid" id="glossaryContent">
+      <!-- Injected by JS -->
     </div>
   </div>
 </div>
@@ -389,6 +491,14 @@
         <button id="startBtn" class="start-btn"><i data-lucide="briefcase" style="width:24px; height:24px; display:inline-block; vertical-align:text-bottom; margin-right:8px; stroke-width: 3;"></i> Initiate Strategy Session</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- FIXED BOTTOM TICKER -->
+<div class="news-ticker-wrap" id="tickerWrap" style="display:none;">
+  <div class="ticker-label"><i data-lucide="bar-chart-2" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Market Feed</div>
+  <div class="ticker-content">
+    <div class="ticker-text" id="newsTickerText">Awaiting strategic decisions. Market anticipating AWS infrastructure roadmap for the upcoming quarter...</div>
   </div>
 </div>
 
@@ -444,10 +554,13 @@
           </div>
         </div>
       </div>
+      
+      <button id="openGlossaryBtn" class="btn-outline" style="width: 100%; justify-content: center; padding: 16px; font-size: 1.1rem; background: var(--amber); color: var(--ink);">
+        <i data-lucide="book-open" style="stroke-width: 3;"></i> View Corporate Playbook
+      </button>
     </aside>
 
     <div class="content-area">
-      
       <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
         <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="compass" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Strategy Docket</h2>
         <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 strategic domains. <strong>Every choice represents a valid, holistic trade-off between maximizing shareholder value through rapid scale and honoring the principles of integral ecology within the host community.</strong> Consult your advisors for competing perspectives.</p>
@@ -520,6 +633,13 @@
             <div id="scatterDots"></div>
           </div>
           
+          <!-- NEW: Achievements Panel -->
+          <div id="achievementsPanel" class="achievement-box">
+            <h3 style="margin:0; font-size: 1.4rem; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 8px;"><i data-lucide="award" style="color: var(--amber); stroke-width:3;"></i> Executive Performance Review</h3>
+            <p style="margin: 8px 0 0 0; color: var(--muted); font-weight: 700; font-size: 0.95rem;">Based on your strategic portfolio, the Board has awarded you the following honors:</p>
+            <div id="achievementGrid" class="achievement-grid"></div>
+          </div>
+
           <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 32px;">
             <p style="font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 8px;">Prepare to Face the Public.</p>
             <p style="color: var(--muted); font-weight: 800; margin-bottom: 24px; font-size: 1.1rem;">The strategic outcome is clear. Now you must present your plan to the community leaders whose home you are entering.</p>
@@ -582,7 +702,7 @@
     }
   }
 
-  // Score Modal Listeners
+  // Modals & Notifications
   document.getElementById('openScoreModalBtn')?.addEventListener('click', () => {
     document.getElementById('scoreModal')?.classList.add('active');
   });
@@ -593,7 +713,42 @@
     if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
   });
 
-  // Custom Alert Message Modal Listeners
+  // Glossary Logic
+  document.getElementById('openGlossaryBtn')?.addEventListener('click', () => {
+    document.getElementById('glossaryModal')?.classList.add('active');
+  });
+  document.getElementById('closeGlossaryModal')?.addEventListener('click', () => {
+    document.getElementById('glossaryModal')?.classList.remove('active');
+  });
+  document.getElementById('glossaryModal')?.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('glossaryModal')) document.getElementById('glossaryModal').classList.remove('active');
+  });
+
+  const glossaryData = [
+    { term: "PPA (Power Purchase Agreement)", icon: "zap", def: "A long-term contract to buy renewable energy. Tech giants use PPAs to offset their massive data center energy draw and meet corporate ESG (Environmental, Social, Governance) pledges." },
+    { term: "Closed-Loop Immersion Cooling", icon: "droplet", def: "An advanced cooling tech where servers are submerged in a non-conductive liquid. It uses almost zero local water compared to evaporative systems, but is incredibly expensive and complex to maintain at scale." },
+    { term: "FOIA (Freedom of Information Act)", icon: "file-search", def: "Laws allowing citizens to view government emails. Activists use FOIAs to uncover corporate NDAs or secret deals struck between mayors and data center developers." },
+    { term: "CBA (Community Benefits Agreement)", icon: "handshake", def: "A contract where a developer agrees to fund local amenities (affordable housing, schools) in exchange for the town approving their zoning permit." },
+    { term: "Stranded Asset", icon: "trash-2", def: "A financial term for property that has become useless or obsolete. Towns fear that if AI technology shifts, giant concrete data centers will be abandoned, becoming 'stranded assets' blighting the landscape." },
+    { term: "Vested Rights", icon: "shield", def: "A legal status where a developer gains a permanent right to build according to old zoning laws, preventing the town from retroactively changing the rules to stop the project." }
+  ];
+
+  function renderGlossary() {
+    const container = document.getElementById('glossaryContent');
+    if(!container) return;
+    container.innerHTML = '';
+    glossaryData.forEach(item => {
+      container.innerHTML += `
+        <div class="glossary-item">
+          <h4><i data-lucide="${item.icon}" style="width:20px; height:20px; stroke-width:3;"></i> ${item.term}</h4>
+          <p>${item.def}</p>
+        </div>
+      `;
+    });
+  }
+  renderGlossary();
+
+  // Custom Alert Message Box
   function showMessage(title, text, icon="info", iconColor="var(--blue)") {
       document.getElementById('messageBoxTitle').textContent = title;
       document.getElementById('messageBoxBody').innerHTML = text;
@@ -622,6 +777,7 @@
   document.getElementById('startBtn')?.addEventListener('click', () => {
     document.getElementById('landingPage').style.display = 'none';
     document.getElementById('appContainer').style.display = 'flex';
+    document.getElementById('tickerWrap').style.display = 'flex'; // Show ticker when app starts
     if (typeof lucide !== 'undefined') lucide.createIcons();
   });
 
@@ -769,6 +925,37 @@
     }
   ];
 
+  const tickerResponses = [
+    "AWS STOCK RESPONDS POSITIVELY TO REGIONAL DEPLOYMENT UPDATES...",
+    "LOCAL SHAREHOLDERS MONITORING ONGOING ZONING NEGOTIATIONS...",
+    "COMPETITORS WATCH CLOSELY AS AWS FINALIZES INFRASTRUCTURE STRATEGY...",
+    "ENVIRONMENTAL WATCHDOGS PUBLISH CRITIQUE OF RECENT ENERGY POLICIES...",
+    "SUPPLY CHAIN PARTNERS ANTICIPATE MAJOR PROCUREMENT ORDERS...",
+    "REGULATORY AUTHORITIES PREPARE TO REVIEW SPECIAL USE PERMIT...",
+    "PUBLIC RELATIONS TEAM DRAFTS RESPONSES TO LOCAL PUSHBACK...",
+    "ENERGY ANALYSTS PREDICT SHIFT IN REGIONAL GRID DEMANDS..."
+  ];
+
+  function updateTicker(scenarioId, optionIdx) {
+    const tickerEl = document.getElementById('newsTickerText');
+    if (!tickerEl) return;
+    
+    const effect = scenarios.find(s => s.id === scenarioId).options[optionIdx].effects;
+    
+    let text = "";
+    if (effect.fiscal > 15) text = "MARKET ALERT: AWS analysts project massive ROI spike following aggressive deployment maneuver...";
+    else if (effect.trust < -15) text = "PR CRISIS: Citizens threaten organized boycott as AWS bypasses local transparency demands...";
+    else if (effect.gateway > 15) text = "ESG UPDATE: Sustainability groups praise AWS for groundbreaking commitment to integral ecology...";
+    else if (effect.legal < -15) text = "LEGAL WARNING: Corporate counsel anticipates severe zoning appeals following recent hardline stance...";
+    else text = "MARKET UPDATE: " + tickerResponses[Math.floor(Math.random() * tickerResponses.length)];
+
+    // Reset CSS animation
+    tickerEl.style.animation = 'none';
+    tickerEl.offsetHeight; /* trigger reflow */
+    tickerEl.style.animation = null; 
+    tickerEl.textContent = text;
+  }
+
   const scenarioGrid = document.getElementById('scenarioGrid');
 
   function getBadgeClass(val) {
@@ -837,6 +1024,7 @@
               delete selectedOptions[s.id]; // deselect if clicked again
           } else {
               selectedOptions[s.id] = idx; // select newly
+              updateTicker(s.id, idx);
           }
           renderScenarios();
           updateAll();
@@ -949,6 +1137,7 @@
     }
     
     renderDashboard(); 
+    checkAchievements(agg); // Run achievement checks
     
     const btn = document.getElementById('generateBtn');
     if(btn) {
@@ -957,6 +1146,47 @@
         if (typeof lucide !== 'undefined') lucide.createIcons();
         setTimeout(() => { document.getElementById('proceedMatrixWrapper').style.display = 'block'; }, 1000);
     }
+  }
+
+  function checkAchievements(agg) {
+    const panel = document.getElementById('achievementsPanel');
+    const grid = document.getElementById('achievementGrid');
+    if(!panel || !grid) return;
+    
+    grid.innerHTML = '';
+    let hasAchievements = false;
+
+    // Mapping: fiscal = Speed/ROI, trust = Trust, gateway = ESG, legal = Compliance
+    const badges = [
+      { condition: agg.fiscal >= 40, title: "Market Dominator", desc: "Achieved unprecedented speed-to-market and profit margins.", icon: "zap" },
+      { condition: agg.trust >= 40, title: "The Diplomat", desc: "Secured absolute public trust and social license to operate.", icon: "shield-check" },
+      { condition: agg.gateway >= 40, title: "The Green Pioneer", desc: "Built a flagship model for corporate integral ecology and ESG.", icon: "leaf" },
+      { condition: agg.legal >= 30, title: "Bulletproof Compliance", desc: "Navigated zoning law flawlessly, avoiding all injunctions.", icon: "scale" },
+      { condition: agg.trust <= -30, title: "Public Enemy No. 1", desc: "Sparked massive boycotts due to toxic community relations.", icon: "alert-triangle" },
+      { condition: agg.fiscal <= -20, title: "Shareholder Disappointment", desc: "Over-compromised margins, threatening project financial viability.", icon: "trending-down" }
+    ];
+
+    badges.forEach(b => {
+      if(b.condition) {
+        hasAchievements = true;
+        grid.innerHTML += `
+          <div class="achievement-badge">
+            <div class="icon-wrap"><i data-lucide="${b.icon}" style="width:24px; height:24px; stroke-width:3;"></i></div>
+            <div class="achievement-text">
+              <strong>${b.title}</strong>
+              <span>${b.desc}</span>
+            </div>
+          </div>
+        `;
+      }
+    });
+
+    if (hasAchievements) {
+      panel.style.display = 'block';
+    } else {
+      panel.style.display = 'none';
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
   function renderDashboard() {
@@ -1068,7 +1298,6 @@
      document.getElementById('roleplayGuidance').style.display = 'block';
      finishChatBtn.style.display = 'none';
      if (typeof lucide !== 'undefined') lucide.createIcons();
-     // Scroll down gently to reveal the instructions
      setTimeout(() => {
        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
      }, 100);

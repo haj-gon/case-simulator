@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gateway Under Pressure: Warrenton Data Center Decision Lab</title>
+  <title>Project Gateway: AI Strategy & Leadership Lab</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -92,6 +92,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      padding-bottom: 70px; /* Give room for fixed ticker at bottom */
     }
 
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -154,17 +155,22 @@
 
     .player-entry { display: flex; flex-direction: column; gap: 16px; background: white; padding: 32px; border-radius: 16px; text-align: center; border: 4px solid var(--ink); box-shadow: var(--shadow); }
     
+    .start-btn { background: var(--blue); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
+    .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
     .start-btn { background: var(--green); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
     .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
 
     .news-ticker-wrap {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
       background: var(--ink);
       color: white;
-      padding: 12px 24px;
-      border-radius: var(--radius);
-      border: 4px solid white;
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 24px;
+      padding: 10px 24px;
+      border-top: 4px solid white;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
       gap: 16px;
@@ -207,7 +213,8 @@
     .hero p { margin: 0; font-size: 1.1rem; color: #cbd5e1; max-width: 800px; font-weight: 700;}
 
     .kpi-stack { display: flex; flex-direction: column; gap: 16px; }
-    .kpi-card { background: white; border-radius: var(--radius); padding: 16px 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; border: 3px solid var(--line); position: relative; width: 100%; }
+    .kpi-card { background: white; border-radius: var(--radius); padding: 16px 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; border: 3px solid var(--line); position: relative; width: 100%; transition: transform 0.2s;}
+    .kpi-card:hover { transform: translateX(4px); box-shadow: var(--shadow-sm); }
     .kpi-icon { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; border: 3px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
     .kpi-info h4 { margin: 0 0 4px; font-size: 0.85rem; text-transform: uppercase; font-weight: 900; color: var(--muted); display: flex; align-items: center; gap: 6px; }
     .kpi-info .value { font-size: 2rem; font-weight: 900; color: var(--ink); line-height: 1; transition: color 0.3s ease; font-family: 'JetBrains Mono', monospace; }
@@ -216,10 +223,10 @@
     .bg-blue { background: var(--blue); }
     .bg-green { background: var(--green); }
     .bg-amber { background: var(--amber); }
-    .bg-purple { background: var(--red); }
+    .bg-purple { background: var(--red); } 
 
     /* Modals */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
     .modal-overlay.active { display: flex; opacity: 1; }
     .modal-content { background: white; border-radius: 20px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 32px; box-shadow: var(--shadow-lg); border: 4px solid var(--ink); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
     .modal-overlay.active .modal-content { transform: scale(1); }
@@ -234,7 +241,6 @@
     .glossary-item h4 { margin: 0 0 8px 0; color: var(--blue); font-weight: 900; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
     .glossary-item p { margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--ink); line-height: 1.5; }
 
-    /* Main Grid */
     .main-workspace { display: grid; grid-template-columns: 340px 1fr; gap: 32px; align-items: start; }
     .sidebar { position: sticky; top: 32px; display: flex; flex-direction: column; gap: 24px; }
     
@@ -244,15 +250,31 @@
     .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
     .scenario-card { border: 3px solid var(--ink); border-radius: 16px; padding: 24px; background: white; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform 0.1s, box-shadow 0.1s; }
     .scenario-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--ink); }
-    .scenario-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 900; color: var(--ink); background: var(--amber); padding: 6px 12px; border-radius: 8px; margin-bottom: 16px; align-self: flex-start; text-transform: uppercase; letter-spacing: 0.05em; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    
+    .card-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .scenario-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 900; color: var(--ink); background: var(--amber); padding: 6px 12px; border-radius: 8px; align-self: flex-start; text-transform: uppercase; letter-spacing: 0.05em; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    
+    .advisor-btn { background: var(--purple); color: white; border: 3px solid var(--ink); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.1s; box-shadow: 2px 2px 0px var(--ink); text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Nunito', sans-serif;}
+    .advisor-btn:active { transform: translateY(2px); box-shadow: 0px 0px 0px var(--ink); }
+    .advisor-btn i { animation: pulseSoft 2s infinite; stroke-width: 3;}
+
     .scenario-card h3 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.3; font-weight: 900; color: var(--ink); }
     .scenario-card p { font-size: 1rem; font-weight: 700; color: var(--muted); margin: 0 0 20px; line-height: 1.5; }
 
-    /* Option Previews */
+    .advisor-panel { display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; opacity: 0; transform: translateY(-10px); }
+    .advisor-panel.active { display: grid; animation: magicReveal 0.3s ease-out forwards; }
+    @keyframes magicReveal { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
+    
+    .adv-card { padding: 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 800; border: 3px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); background: white; color: var(--ink); }
+    .adv-strat { border-top: 6px solid var(--blue); }
+    .adv-strat strong { color: var(--blue); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; border-bottom: 3px solid var(--ink); padding-bottom: 8px;}
+    .adv-esg { border-top: 6px solid var(--green); }
+    .adv-esg strong { color: var(--green); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; border-bottom: 3px solid var(--ink); padding-bottom: 8px;}
+
     .option-list { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
     .option-btn { padding: 16px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.1s; display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif;}
     .option-btn:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); }
-    .option-btn.active { background: var(--green); border-color: var(--ink); box-shadow: 0px 0px 0px var(--ink); transform: translateY(2px); }
+    .option-btn.active { background: var(--blue); border-color: var(--ink); box-shadow: 0px 0px 0px var(--ink); transform: translateY(2px); }
     .option-text strong { display: block; font-size: 1.05rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; }
     .option-btn.active .option-text strong { color: white; }
     .option-text span { font-size: 0.9rem; font-weight: 700; color: var(--muted); display: block; line-height: 1.4; }
@@ -268,7 +290,6 @@
     .option-btn.active .badge-neg { background: var(--ink); color: white; box-shadow: none; }
     .option-btn.active .badge-neu { box-shadow: none; }
 
-    /* Tabs Navigation */
     .tabs-container { margin-top: 32px; background: white; border: 4px solid var(--ink); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
     .tabs-header { display: flex; background: #cbd5e1; border-bottom: 4px solid var(--ink); overflow-x: auto; gap: 0; }
     .tab-btn { flex: 1; padding: 16px 12px; background: transparent; border: none; border-right: 4px solid var(--ink); color: var(--ink); font-weight: 900; font-size: 1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; font-family: 'Nunito', sans-serif;}
@@ -292,7 +313,7 @@
       padding: 24px;
       margin-top: 24px;
       box-shadow: var(--shadow);
-      display: none; /* hidden until results are generated */
+      display: none; 
     }
     .achievement-grid {
       display: flex;
@@ -321,7 +342,6 @@
     .achievement-text strong { display: block; font-size: 1rem; color: var(--ink); font-weight: 900; }
     .achievement-text span { font-size: 0.85rem; color: var(--muted); font-weight: 700; }
 
-    /* Visual Dashboard Enhancements (Charts + Scatter) */
     .scatter-container { position: relative; width: 100%; height: 450px; background: #f8fafc; border: 4px solid var(--ink); border-radius: 16px; overflow: hidden; box-shadow: inset 0 4px 8px rgba(0,0,0,0.1); }
     .quad-top-right { position: absolute; top:0; left:50%; right:0; bottom:50%; background: rgba(16, 185, 129, 0.08); } 
     .quad-bottom-right { position: absolute; top:50%; left:50%; right:0; bottom:0; background: rgba(239, 68, 68, 0.08); } 
@@ -345,7 +365,6 @@
     .scatter-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); transform: translate(-50%, -50%); opacity: 0.85; z-index: 10; transition: all 0.2s; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
     .scatter-dot:hover { width: 20px; height: 20px; background: var(--amber); opacity: 1; z-index: 20; cursor: crosshair; }
 
-    /* --- Town Hall Chat Styles --- */
     .chat-container { display: flex; flex-direction: column; gap: 24px; background: #cbd5e1; border: 4px solid var(--line); border-radius: 16px; padding: 32px; min-height: 400px; max-height: 600px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);}
     .chat-msg { display: flex; gap: 16px; opacity: 0; transform: translateY(15px); animation: fadeUp 0.4s ease-out forwards; max-width: 85%; }
     .chat-msg.right { align-self: flex-end; flex-direction: row-reverse; }
@@ -370,7 +389,7 @@
     .chat-controls { display: flex; justify-content: center; margin-top: 32px; border-top: 4px solid var(--line); padding-top: 32px; }
 
     @media (max-width: 1024px) { .main-workspace { grid-template-columns: 1fr; } .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } }
-    @media (max-width: 768px) { .sidebar { grid-template-columns: 1fr; } .hero-content-wrap { flex-direction: column; text-align: center; } .landing-header h1 { font-size: 2rem; } .hero { flex-direction: column; align-items: stretch; } .chat-msg { max-width: 100%; } .news-ticker-wrap { flex-direction: column; align-items: stretch; text-align: center;} .ticker-content { display: none; } }
+    @media (max-width: 768px) { .sidebar { grid-template-columns: 1fr; } .hero-content-wrap { flex-direction: column; text-align: center; } .landing-header h1 { font-size: 2rem; } .hero { flex-direction: column; align-items: stretch; } .chat-msg { max-width: 100%; } .news-ticker-wrap { padding: 10px; } }
   </style>
 </head>
 <body>
@@ -388,31 +407,31 @@
 <div id="scoreModal" class="modal-overlay">
   <div class="modal-content">
     <button class="close-modal" id="closeScoreModal"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
-    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="book-open" style="color: var(--blue); width: 32px; height: 32px;"></i> Decision KPIs</h2>
+    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="bar-chart" style="color: var(--blue); width: 32px; height: 32px;"></i> Corporate KPIs</h2>
     
     <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">
-      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; font-weight: 900;"><i data-lucide="info" style="width: 20px; height: 20px; color: var(--blue);"></i> Evaluating the Project</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700; color: var(--muted);">As the Town Council, your job is to analyze this hyperscale project based on four distinct axes reflecting the community's primary concerns and the public record. Every decision is a valid trade-off between growth and preservation.</p>
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; font-weight: 900;"><i data-lucide="info" style="width: 20px; height: 20px; color: var(--blue);"></i> Leading the Expansion</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700; color: var(--muted);">As the AWS AI Division Leader, you must rapidly scale infrastructure while managing complex local resistance. Your decisions balance the pressure for financial returns with corporate ESG (Environmental, Social, and Governance) commitments.</p>
     </div>
 
     <div style="background: #eff6ff; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--blue); box-shadow: 4px 4px 0px var(--blue);">
-      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--blue); font-weight: 900;"><i data-lucide="dollar-sign" style="width: 20px; height: 20px; stroke-width: 3;"></i> Fiscal Stability</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Tracks the estimated $550M corporate investment, massive tax windfalls, secondary job spillovers, and potential funding for Community Benefit Agreements. High scores indicate a well-funded municipal budget; low scores indicate deficit risk or opportunity costs.</p>
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--blue); font-weight: 900;"><i data-lucide="zap" style="width: 20px; height: 20px; stroke-width: 3;"></i> Deployment Speed & ROI</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures how fast you can build the data center and the operational margins it produces. Standardized builds and utilizing existing fossil-fuel grids maximize this score. Bespoke redesigns and expensive renewables lower it.</p>
     </div>
 
     <div style="background: #fffbeb; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--amber); box-shadow: 4px 4px 0px var(--amber);">
-      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--amber); font-weight: 900;"><i data-lucide="users" style="width: 20px; height: 20px; stroke-width: 3;"></i> Public Trust / Legitimacy</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures institutional confidence. Transparency, responsive processes, and active community engagement improve this score. NDAs, perceived backdoor deals, and closed records degrade it.</p>
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--amber); font-weight: 900;"><i data-lucide="shield-check" style="width: 20px; height: 20px; stroke-width: 3;"></i> Stakeholder Trust</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Represents your "Social License to Operate." Transparency, robust Community Benefit Agreements (CBAs), and active listening improve your brand reputation. Strict NDAs and bypassing community concerns trigger backlash.</p>
     </div>
 
     <div style="background: #ecfdf5; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--green); box-shadow: 4px 4px 0px var(--green);">
-      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--green); font-weight: 900;"><i data-lucide="map" style="width: 20px; height: 20px; stroke-width: 3;"></i> Gateway Compatibility</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Reflects the physical impact on Warrenton's scenic character and the mitigation of environmental racism. Evaluates constraints on emissions, noise, massing limits, and water utilization against the global need for decarbonization infrastructure.</p>
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--green); font-weight: 900;"><i data-lucide="leaf" style="width: 20px; height: 20px; stroke-width: 3;"></i> Env. Stewardship</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Reflects your alignment with integral ecology and corporate ESG goals. Mandating clean energy, implementing closed-loop water systems, and protecting local landscapes drive this score higher. Exploiting local resources drives it down.</p>
     </div>
 
     <div style="background: #fef2f2; padding: 20px; border-radius: 12px; border: 3px solid var(--red); box-shadow: 4px 4px 0px var(--red);">
-      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--red); font-weight: 900;"><i data-lucide="scale" style="width: 20px; height: 20px; stroke-width: 3;"></i> Legal Durability</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures the Town's exposure to appeals, FOIA litigation, and vested-rights battles. Actions that overstep zoning authority or deny procedural rights drastically lower this score.</p>
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--red); font-weight: 900;"><i data-lucide="scale" style="width: 20px; height: 20px; stroke-width: 3;"></i> Regulatory Compliance</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures protection against litigation, FOIA delays, and zoning appeals. Collaborating with town planners and accepting regulatory limits increases stability. Pushing legal boundaries risks costly project injunctions.</p>
     </div>
   </div>
 </div>
@@ -420,9 +439,9 @@
 <div id="glossaryModal" class="modal-overlay">
   <div class="modal-content">
     <button class="close-modal" id="closeGlossaryModal"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
-    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="briefcase" style="color: var(--amber); width: 32px; height: 32px;"></i> Policy Briefcase (Glossary)</h2>
+    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="briefcase" style="color: var(--amber); width: 32px; height: 32px;"></i> Corporate Playbook (Glossary)</h2>
     
-    <p style="font-size: 1.1rem; font-weight: 700; color: var(--muted); margin-bottom: 24px;">Use this reference guide to understand the complex urban planning and tech terminology used throughout the simulation.</p>
+    <p style="font-size: 1.1rem; font-weight: 700; color: var(--muted); margin-bottom: 24px;">Use this reference guide to understand the complex industry terminology and corporate metrics used throughout your strategic decisions.</p>
 
     <div class="glossary-grid" id="glossaryContent">
       <!-- Injected by JS -->
@@ -433,39 +452,39 @@
 <div id="landingPage" class="landing-container">
   <div class="landing-card">
     <div class="landing-header">
-      <i data-lucide="landmark" style="width: 80px; height: 80px; margin-bottom: 24px; stroke-width: 1.5;"></i>
-      <h1>Gateway Under Pressure</h1>
-      <p>Data Center Decision Lab</p>
+      <i data-lucide="server" style="width: 80px; height: 80px; margin-bottom: 24px; stroke-width: 1.5;"></i>
+      <h1>Project Gateway: Strategic Leadership</h1>
+      <p>AI Infrastructure Expansion Decision Lab</p>
     </div>
     
     <div class="landing-body">
       <div class="objectives-box">
-        <h3><i data-lucide="leaf" style="color: var(--green); stroke-width: 3;"></i> Disruption, AI, and Care for Our Common Home</h3>
-        <p style="margin-bottom: 12px; font-weight: 700; color: var(--muted);">A low hum emerges from a vast, windowless facility, devouring energy and water with a voracious appetite. Like vampires of folklore, these mechanical behemoths only enter a town if explicitly invited inside. Enticed by explosive economic growth, local governments across the U.S. are opening their doors to hyperscale AI data centers. Yet, this rapid proliferation places unprecedented strain on local resources. The average data center now covers 224 acres—a 144% increase since 2022.</p>
-        <p style="margin-bottom: 0; font-weight: 800; color: var(--ink);">As Pope Francis warned in <em>Laudato Si’</em>, we must "care for our common home" against unchecked technological growth. Through the lens of integral ecology, you must navigate the tension between global AI advancement, local economic windfalls, and profound environmental stewardship. Will you allow AI to act as a catalyst for human flourishing, or a detriment to our shared environment?</p>
+        <h3><i data-lucide="cpu" style="color: var(--blue); stroke-width: 3;"></i> Disruption, AI, and Care for Our Common Home</h3>
+        <p style="margin-bottom: 12px; font-weight: 700; color: var(--muted);">A low hum emerges from a vast, windowless facility, devouring energy and water with a voracious appetite. Like vampires of folklore, these mechanical behemoths only enter a town if explicitly invited inside. As the leader of AWS’s AI expansion, you are driving explosive global technological growth. You must rapidly scale your hyperscale data centers—now averaging 224 acres per site—to win the generative AI race.</p>
+        <p style="margin-bottom: 0; font-weight: 800; color: var(--ink);">However, this proliferation places unprecedented strain on local resources. Recalling the principles of <em>Laudato Si’</em>, you face the moral and strategic dilemma of integral ecology. How do you balance the relentless corporate pressure for speed and ROI against profound environmental stewardship and the demands of local communities? Will your leadership model extraction, or a sustainable partnership?</p>
       </div>
 
-      <h3 style="margin-top: 0; text-align: center; margin-bottom: 24px; font-size: 1.6rem; font-weight: 900;">Simulation Sequence</h3>
+      <h3 style="margin-top: 0; text-align: center; margin-bottom: 24px; font-size: 1.6rem; font-weight: 900;">Executive Simulation Sequence</h3>
       <div class="phase-grid">
         <div class="phase-step">
           <span class="step-badge">Step 1</span>
-          <h4>The Council Vote</h4>
-          <p>Navigate 8 critical policy dilemmas regarding zoning, NDAs, CBAs vs fees-in-lieu, noise, and water.</p>
+          <h4>The Strategic Direction</h4>
+          <p>Navigate 8 critical corporate dilemmas regarding design, NDAs, energy sourcing, and community relations.</p>
         </div>
         <div class="phase-step">
           <span class="step-badge">Step 2</span>
           <h4>Impact Analysis</h4>
-          <p>Review the exact numerical impact of your policies on Fiscal Stability and Public Trust.</p>
+          <p>Review the exact numerical impact of your strategy on Corporate ROI and ESG metrics.</p>
         </div>
         <div class="phase-step">
           <span class="step-badge">Step 3</span>
-          <h4>Stress Test</h4>
-          <p>Run a 1,000-day simulation to test the legal durability and social resilience of your decision.</p>
+          <h4>Market Stress Test</h4>
+          <p>Run a 1,000-day simulation to test the regulatory durability and public resilience of your project.</p>
         </div>
         <div class="phase-step">
           <span class="step-badge">Step 4</span>
-          <h4>Town Hall Debate</h4>
-          <p>Enter the live mock negotiation with AWS, advocacy groups, planners, and dissenters.</p>
+          <h4>Stakeholder Summit</h4>
+          <p>Enter the live mock negotiation where you must defend your strategy to the community.</p>
         </div>
       </div>
 
@@ -476,24 +495,23 @@
   </div>
 </div>
 
-<div id="appContainer" class="app-container">
-  
-  <!-- NEW: Live Breaking News Ticker -->
-  <div class="news-ticker-wrap stagger-1">
-    <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
-    <div class="ticker-content">
-      <div class="ticker-text" id="newsTickerText">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
-    </div>
+<!-- NEW: Live Breaking News Ticker -->
+<div class="news-ticker-wrap" id="tickerWrap" style="display:none;">
+  <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
+  <div class="ticker-content">
+    <div class="ticker-text" id="newsTickerText">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
   </div>
+</div>
 
+<div id="appContainer" class="app-container">
   <header class="hero stagger-1">
     <div class="hero-content-wrap">
       <div class="hero-icon">
-        <i data-lucide="landmark" style="width: 48px; height: 48px; stroke-width: 2;"></i>
+        <i data-lucide="server" style="width: 48px; height: 48px; stroke-width: 2;"></i>
       </div>
       <div>
-        <h1>The Council Vote: AI and Warrenton’s Future</h1>
-        <p>A/B test the conditions to balance global technological progress and tax revenue against gateway compatibility and legal durability.</p>
+        <h1>The Board Vote: AWS and Warrenton’s Future</h1>
+        <p>A/B test your infrastructure strategy to balance rapid deployment and profit margins against ESG goals and public trust.</p>
       </div>
     </div>
     <button class="btn-outline" id="openScoreModalBtn">
@@ -504,51 +522,49 @@
   <main class="main-workspace stagger-2">
     <aside class="sidebar">
       <div class="panel" style="background: white;">
-        <h2 class="panel-title" style="border-bottom: none; margin-bottom: 24px;"><i data-lucide="bar-chart-2" style="stroke-width: 3; color: var(--blue);"></i> Town Scorecard</h2>
+        <h2 class="panel-title" style="border-bottom: none; margin-bottom: 24px;"><i data-lucide="pie-chart" style="stroke-width: 3; color: var(--blue);"></i> Corporate Scorecard</h2>
         
         <div class="kpi-stack">
           <div class="kpi-card">
-            <div class="kpi-icon bg-blue"><i data-lucide="dollar-sign" style="stroke-width: 3;"></i></div>
+            <div class="kpi-icon bg-blue"><i data-lucide="zap" style="stroke-width: 3;"></i></div>
             <div class="kpi-info">
-              <h4>Fiscal Stability</h4>
+              <h4>Deployment Speed & ROI</h4>
               <div class="value" id="finScore">0</div>
             </div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-icon bg-amber"><i data-lucide="users" style="stroke-width: 3;"></i></div>
+            <div class="kpi-icon bg-amber"><i data-lucide="shield-check" style="stroke-width: 3;"></i></div>
             <div class="kpi-info">
-              <h4>Public Trust</h4>
+              <h4>Stakeholder Trust</h4>
               <div class="value" id="socScore">0</div>
             </div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-icon bg-green"><i data-lucide="map" style="stroke-width: 3;"></i></div>
+            <div class="kpi-icon bg-green"><i data-lucide="leaf" style="stroke-width: 3;"></i></div>
             <div class="kpi-info">
-              <h4>Gateway Compatibility</h4>
+              <h4>Env. Stewardship</h4>
               <div class="value" id="natScore">0</div>
             </div>
           </div>
           <div class="kpi-card">
             <div class="kpi-icon bg-purple"><i data-lucide="scale" style="stroke-width: 3;"></i></div>
             <div class="kpi-info">
-              <h4>Legal Durability</h4>
+              <h4>Regulatory Compliance</h4>
               <div class="value" id="legalScore">0</div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- NEW: Glossary Button added to sidebar -->
+      
       <button id="openGlossaryBtn" class="btn-outline" style="width: 100%; justify-content: center; padding: 16px; font-size: 1.1rem; background: var(--amber); color: var(--ink);">
-        <i data-lucide="briefcase" style="stroke-width: 3;"></i> View Policy Glossary
+        <i data-lucide="book-open" style="stroke-width: 3;"></i> View Corporate Playbook
       </button>
-
     </aside>
 
     <div class="content-area">
       <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
-        <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="file-text" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Policy Docket</h2>
-        <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 policy domains based on the actual public record. <strong>Every choice represents a valid, balanced trade-off between economic revitalization and preserving local character.</strong></p>
+        <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="compass" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Strategy Docket</h2>
+        <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 strategic domains. <strong>Every choice represents a valid, holistic trade-off between maximizing shareholder value through rapid scale and honoring the principles of integral ecology within the host community.</strong> Consult your advisors for competing perspectives.</p>
         <div class="scenario-grid" id="scenarioGrid"></div>
       </div>
 
@@ -557,22 +573,22 @@
           <button class="tab-btn active" data-tab="overview" id="tabBtnOverview"><i data-lucide="activity" style="stroke-width: 3;"></i> 1. Impact</button>
           <button class="tab-btn locked" data-tab="dataset" id="tabBtnDataset"><i data-lucide="cloud-lightning" style="stroke-width: 3;"></i> 2. Stress Test</button>
           <button class="tab-btn locked" data-tab="dashboard" id="tabBtnDashboard"><i data-lucide="scatter-chart" style="stroke-width: 3;"></i> 3. Results</button>
-          <button class="tab-btn locked" data-tab="townhall" id="tabBtnTownhall"><i data-lucide="mic" style="stroke-width: 3;"></i> 4. Town Hall</button>
+          <button class="tab-btn locked" data-tab="townhall" id="tabBtnTownhall"><i data-lucide="mic" style="stroke-width: 3;"></i> 4. Stakeholder Summit</button>
         </div>
 
         <div class="tab-content active" id="overview">
           <div style="display: grid; grid-template-columns: 1fr; gap: 32px;">
             <div style="text-align: center; border-bottom: 3px dashed var(--ink); padding-bottom: 40px; padding-top: 16px;">
-              <p style="margin: 0 0 20px 0; color: var(--ink); font-weight: 900; font-size: 1.4rem;">Ready to finalize the Special Use Permit?</p>
-              <button id="phaseActionBtn" class="btn-success" style="max-width: 400px; margin: 0 auto;"><i data-lucide="lock" style="stroke-width: 3;"></i> Lock Council Votes & View Impact</button>
+              <p style="margin: 0 0 20px 0; color: var(--ink); font-weight: 900; font-size: 1.4rem;">Ready to finalize the Infrastructure Strategy?</p>
+              <button id="phaseActionBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--blue);"><i data-lucide="lock" style="stroke-width: 3;"></i> Lock Strategy & View Impact</button>
             </div>
           </div>
         </div>
 
         <div class="tab-content" id="dataset">
           <div style="background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; margin-bottom: 32px; box-shadow: var(--shadow);">
-            <strong style="display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 900;"><i data-lucide="cpu" style="width: 28px; height: 28px; color: var(--blue);"></i> Durability Stress Test Engine</strong>
-            <p style="margin: 12px 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--muted);">This engine runs 1,000 simulated days using your finalized policies. It injects random FOIA requests, infrastructure appeals, and citizen lawsuits to see if Warrenton's decision survives legally and politically.</p>
+            <strong style="display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 900;"><i data-lucide="cpu" style="width: 28px; height: 28px; color: var(--amber);"></i> Market Volatility Stress Test</strong>
+            <p style="margin: 12px 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--muted);">This engine runs 1,000 simulated days using your finalized strategy. It injects random FOIA lawsuits, supply chain delays, PR crises, and regulatory appeals to see if your project survives.</p>
           </div>
           
           <div style="display: flex; gap: 16px; margin-bottom: 32px;">
@@ -586,14 +602,14 @@
 
         <div class="tab-content" id="dashboard">
           <div id="scatterEvalBox" style="margin-bottom: 32px; padding: 24px; border-radius: 16px; border: 4px solid var(--ink); background: white; box-shadow: var(--shadow);">
-             <h4 id="scatterEvalTitle" style="margin: 0 0 12px 0; font-size: 1.4rem; font-weight: 900; display: flex; align-items: center; gap: 12px;">Analyzing Institutional Integrity...</h4>
+             <h4 id="scatterEvalTitle" style="margin: 0 0 12px 0; font-size: 1.4rem; font-weight: 900; display: flex; align-items: center; gap: 12px;">Analyzing Corporate Integrity...</h4>
              <p id="scatterEvalDesc" style="margin: 0; font-size: 1.1rem; line-height: 1.5; font-weight: 700; color: var(--muted);"></p>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
             <div>
-              <h3 style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900;"><i data-lucide="scatter-chart" style="color: var(--blue); stroke-width: 3;"></i> The Failure Matrix</h3>
-              <p style="margin: 8px 0 0 0; color: var(--ink); font-size: 1rem; font-weight: 800;">Distribution of 1,000 days: Daily Tax Yield vs. Legal/Social Stability.</p>
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900;"><i data-lucide="scatter-chart" style="color: var(--blue); stroke-width: 3;"></i> The Corporate Matrix</h3>
+              <p style="margin: 8px 0 0 0; color: var(--ink); font-size: 1rem; font-weight: 800;">Distribution of 1,000 days: ROI/Speed vs. Stakeholder/Regulatory Trust.</p>
             </div>
           </div>
 
@@ -605,37 +621,37 @@
             
             <div class="axis-y"></div>
             <div class="axis-x"></div>
-            <div class="ax-label ax-top">+ Legal & Trust (Safe)</div>
-            <div class="ax-label ax-bottom">- Lawsuits & Recalls</div>
-            <div class="ax-label ax-right">High Tax Yield +</div>
-            <div class="ax-label ax-left">- Opportunity Cost / Deficit</div>
+            <div class="ax-label ax-top">+ Brand Trust & Compliance</div>
+            <div class="ax-label ax-bottom">- Lawsuits & PR Crises</div>
+            <div class="ax-label ax-right">High ROI & Speed +</div>
+            <div class="ax-label ax-left">- Delayed Deployment / High Cost</div>
 
-            <div class="quad-label ql-tr">Sustainable Mandate<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Taxes secured, low legal risk</span></div>
-            <div class="quad-label ql-br">Political Crisis<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Money secured, FOIA/Appeals triggered</span></div>
-            <div class="quad-label ql-tl">Over-Regulation<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Town safe, but developer withdraws</span></div>
-            <div class="quad-label ql-bl">Total Failure<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Deficits and Vested Rights Battles</span></div>
+            <div class="quad-label ql-tr">Sustainable Market Leadership<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Fast deployment, high ESG alignment</span></div>
+            <div class="quad-label ql-br">Reputational Crisis<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">High ROI, but active boycotts & lawsuits</span></div>
+            <div class="quad-label ql-tl">Over-Compromised Margin<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Beloved by town, but highly unprofitable</span></div>
+            <div class="quad-label ql-bl">Strategic Failure<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">No ROI and blocked by regulators</span></div>
             
             <div id="scatterDots"></div>
           </div>
           
           <!-- NEW: Achievements Panel -->
           <div id="achievementsPanel" class="achievement-box">
-            <h3 style="margin:0; font-size: 1.4rem; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 8px;"><i data-lucide="award" style="color: var(--amber); stroke-width:3;"></i> Mayor's Achievements Unlocked</h3>
-            <p style="margin: 8px 0 0 0; color: var(--muted); font-weight: 700; font-size: 0.95rem;">Based on your policy choices, you have earned the following titles during your term in office:</p>
+            <h3 style="margin:0; font-size: 1.4rem; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 8px;"><i data-lucide="award" style="color: var(--amber); stroke-width:3;"></i> Executive Performance Review</h3>
+            <p style="margin: 8px 0 0 0; color: var(--muted); font-weight: 700; font-size: 0.95rem;">Based on your strategic portfolio, the Board has awarded you the following honors:</p>
             <div id="achievementGrid" class="achievement-grid"></div>
           </div>
 
           <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 32px;">
-            <p style="font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 8px;">Prepare for the Public.</p>
-            <p style="color: var(--muted); font-weight: 800; margin-bottom: 24px; font-size: 1.1rem;">The impact is clear. Now face the stakeholders who will argue these precise points.</p>
-            <button id="goToTownHallBtn" class="btn-success" style="background:var(--purple); margin: 0 auto; max-width: 400px; font-size: 1.2rem;"><i data-lucide="mic" style="stroke-width: 3;"></i> Enter Town Hall Debate</button>
+            <p style="font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 8px;">Prepare to Face the Public.</p>
+            <p style="color: var(--muted); font-weight: 800; margin-bottom: 24px; font-size: 1.1rem;">The strategic outcome is clear. Now you must present your plan to the community leaders whose home you are entering.</p>
+            <button id="goToTownHallBtn" class="btn-success" style="background:var(--purple); margin: 0 auto; max-width: 400px; font-size: 1.2rem;"><i data-lucide="users" style="stroke-width: 3;"></i> Enter Stakeholder Summit</button>
           </div>
         </div>
 
         <div class="tab-content" id="townhall">
           <div style="margin-bottom: 32px; background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; box-shadow: var(--shadow);">
             <h3 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 12px; font-size: 1.8rem; font-weight: 900;"><i data-lucide="users" style="color: var(--purple); width: 32px; height: 32px; stroke-width: 3;"></i> Live Town Hall Forum</h3>
-            <p style="color: var(--muted); font-size: 1.1rem; margin: 0; font-weight: 800;">Watch the stakeholder perspectives unfold based on the realities of the Warrenton case study. Read their arguments carefully before beginning the classroom roleplay.</p>
+            <p style="color: var(--muted); font-size: 1.1rem; margin: 0; font-weight: 800;">Observe the local reactions as your team presents the expansion plan. Understand the deep, valid concerns of these stakeholders before you begin the live classroom negotiation.</p>
           </div>
 
           <div class="chat-container" id="chatContainer">
@@ -643,29 +659,29 @@
 
           <div class="chat-controls">
             <button id="nextMsgBtn" class="btn-primary" style="display:flex; align-items:center; gap:8px; font-size: 1.2rem; padding: 16px 32px; background: var(--blue);"><i data-lucide="message-circle" style="stroke-width: 3;"></i> Next Speaker</button>
-            <button id="finishChatBtn" class="btn-success" style="display:none; max-width: 400px; font-size: 1.2rem; padding: 16px 32px; background: var(--green);"><i data-lucide="gavel" style="stroke-width: 3;"></i> Reveal Roleplay Instructions</button>
+            <button id="finishChatBtn" class="btn-success" style="display:none; max-width: 400px; font-size: 1.2rem; padding: 16px 32px; background: var(--green);"><i data-lucide="briefcase" style="stroke-width: 3;"></i> Reveal Corporate Instructions</button>
           </div>
 
           <div id="roleplayGuidance" style="display: none; margin-top: 40px; padding: 32px; border: 4px solid var(--purple); border-radius: 16px; background: white; box-shadow: var(--shadow-lg); animation: fadeUp 0.5s ease-out forwards;">
-            <h3 style="margin-top: 0; color: var(--purple); display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 900;"><i data-lucide="clipboard-list" style="stroke-width: 3; width: 28px; height: 28px;"></i> Live Roleplay Instructions</h3>
-            <p style="font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 24px;">The simulated chat above mirrors the actual public hearings where stakeholders clashed over fiscal windfalls, NDAs, and environmental racism. Now it is your turn to negotiate SUP-22-3.</p>
+            <h3 style="margin-top: 0; color: var(--purple); display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 900;"><i data-lucide="clipboard-list" style="stroke-width: 3; width: 28px; height: 28px;"></i> Executive Roleplay Instructions</h3>
+            <p style="font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 24px;">The simulated chat mirrors the intense public resistance data centers face regarding environmental racism, opacity, and resource drain. You must now negotiate your Special Use Permit (SUP).</p>
             
             <ul style="font-size: 1.05rem; font-weight: 700; color: var(--muted); padding-left: 24px; line-height: 1.8; margin-bottom: 32px;">
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 1: Breakout (10 mins)</strong> - Divide into assigned groups. Identify the metrics you cannot compromise on based on the case record.
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 1: Executive Huddle (10 mins)</strong> - Divide into assigned stakeholder groups. As the AWS Leadership Team, you must identify which margins you can compress to win public approval.
                 <ul style="list-style-type: circle; margin-top: 8px; margin-bottom: 16px; color: var(--muted); font-size: 0.95rem;">
-                  <li><em>Town Council Majority:</em> Secure the $900k revenue while mitigating enough harm to survive the next election. Decide if you will accept fee-in-lieu payments or negotiate CBAs.</li>
-                  <li><em>AWS / Data Services:</em> Resist burdensome clean-energy mandates and infrastructure costs (like undergrounding). Push for direct fee-in-lieu tax structures and emphasize your role in global decarbonization.</li>
-                  <li><em>Citizens / Preservation Advocates:</em> Demand algorithmic restraint, standard property taxes for schools, and zero fossil-fuel emissions to prevent environmental racism at the fence-line. Use the threat of FOIA litigation.</li>
-                  <li><em>Town Planners / Utilities:</em> Enforce zoning logic and prevent regional grid strain and aquifer depletion from local decisions.</li>
+                  <li><em>AWS / Data Services (You):</em> Fight for standard industrial designs and immediate grid access. Try to offer direct fee-in-lieu payments to bypass complex school funding. Emphasize your role in global decarbonization modeling.</li>
+                  <li><em>Town Council Majority:</em> Demanding a massive revenue win but need political cover. They want a robust Community Benefit Agreement.</li>
+                  <li><em>Citizens / Preservation Advocates:</em> Demanding algorithmic restraint and zero fossil-fuel emissions to prevent fence-line pollution. They will threaten FOIA litigation if NDAs remain.</li>
+                  <li><em>Town Planners / Utilities:</em> Focused strictly on preventing regional grid strain, enforcing zoning aesthetics, and preventing aquifer depletion.</li>
                 </ul>
               </li>
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 2: Opening Statements (10 mins)</strong> - Each group gets 2 minutes to present their non-negotiable demands to the room.</li>
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 3: Open Negotiation (25 mins)</strong> - The Council moderates. Debate the core conditions: NDAs, Gas Turbines/Emissions, CBAs vs Fees-in-Lieu, and Noise testing.</li>
-              <li><strong class="text-game-dark">Step 4: The Final Vote (10 mins)</strong> - The Town Council formally votes on the finalized SUP conditions.</li>
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 2: Opening Statements (10 mins)</strong> - Each group gets 2 minutes. As AWS, set the tone: Are you aggressive disrupters or collaborative partners?</li>
+              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 3: Open Negotiation (25 mins)</strong> - Debate the core conditions: NDAs, Gas Turbines/Emissions, Architectural Caps, and Water Usage.</li>
+              <li><strong class="text-game-dark">Step 4: The Final Vote (10 mins)</strong> - The Town Council votes. Will your project be approved, or have you failed to secure your social license to operate?</li>
             </ul>
             
             <div style="text-align: center; font-size: 1.4rem; font-weight: 900; color: var(--ink); border-top: 4px dashed var(--purple); padding-top: 24px;">
-              Close your laptops. The floor is now open!
+              Close your laptops. The boardroom is now open!
             </div>
           </div>
         </div>
@@ -698,7 +714,7 @@
     if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
   });
 
-  // NEW Glossary Logic
+  // Glossary Logic
   document.getElementById('openGlossaryBtn')?.addEventListener('click', () => {
     document.getElementById('glossaryModal')?.classList.add('active');
   });
@@ -708,6 +724,30 @@
   document.getElementById('glossaryModal')?.addEventListener('click', (e) => {
     if (e.target === document.getElementById('glossaryModal')) document.getElementById('glossaryModal').classList.remove('active');
   });
+
+  const glossaryData = [
+    { term: "PPA (Power Purchase Agreement)", icon: "zap", def: "A long-term contract to buy renewable energy. Tech giants use PPAs to offset their massive data center energy draw and meet corporate ESG (Environmental, Social, Governance) pledges." },
+    { term: "Closed-Loop Immersion Cooling", icon: "droplet", def: "An advanced cooling tech where servers are submerged in a non-conductive liquid. It uses almost zero local water compared to evaporative systems, but is incredibly expensive and complex to maintain at scale." },
+    { term: "FOIA (Freedom of Information Act)", icon: "file-search", def: "Laws allowing citizens to view government emails. Activists use FOIAs to uncover corporate NDAs or secret deals struck between mayors and data center developers." },
+    { term: "CBA (Community Benefits Agreement)", icon: "handshake", def: "A contract where a developer agrees to fund local amenities (affordable housing, schools) in exchange for the town approving their zoning permit." },
+    { term: "Stranded Asset", icon: "trash-2", def: "A financial term for property that has become useless or obsolete. Towns fear that if AI technology shifts, giant concrete data centers will be abandoned, becoming 'stranded assets' blighting the landscape." },
+    { term: "Vested Rights", icon: "shield", def: "A legal status where a developer gains a permanent right to build according to old zoning laws, preventing the town from retroactively changing the rules to stop the project." }
+  ];
+
+  function renderGlossary() {
+    const container = document.getElementById('glossaryContent');
+    if(!container) return;
+    container.innerHTML = '';
+    glossaryData.forEach(item => {
+      container.innerHTML += `
+        <div class="glossary-item">
+          <h4><i data-lucide="${item.icon}" style="width:20px; height:20px; stroke-width:3;"></i> ${item.term}</h4>
+          <p>${item.def}</p>
+        </div>
+      `;
+    });
+  }
+  renderGlossary();
 
   // Custom Alert Message Box
   function showMessage(title, text, icon="info", iconColor="var(--blue)") {
@@ -729,8 +769,8 @@
   document.getElementById('closeMessageBox')?.addEventListener('click', hideMessage);
   document.getElementById('messageBoxOkBtn')?.addEventListener('click', hideMessage);
 
-  // State - Starting with null values so nothing is pre-selected
-  let selectedOptions = { s1: null, s2: null, s3: null, s4: null, s5: null, s6: null, s7: null, s8: null }; 
+  // State
+  let selectedOptions = {}; 
   let currentPhase = 1;
   let generatedRows = [];
   let chatIndex = 0;
@@ -740,6 +780,7 @@
     const bgBlobs = document.getElementById('bgBlobs');
     if (bgBlobs) bgBlobs.style.display = 'none'; 
     document.getElementById('appContainer').style.display = 'flex';
+    document.getElementById('tickerWrap').style.display = 'flex'; // Show ticker when app starts
     if (typeof lucide !== 'undefined') lucide.createIcons();
   });
 
@@ -762,139 +803,155 @@
     });
   });
 
-  const glossaryData = [
-    { term: "Hyperscale Data Center", icon: "server", def: "Massive business-critical facilities designed to support robust, scalable applications. They often span hundreds of acres and consume power equivalent to small cities, primarily driven by AI and cloud computing demands." },
-    { term: "FOIA (Freedom of Information Act)", icon: "file-search", def: "Laws that grant the public access to government records. In local tech politics, citizens often use FOIA requests to uncover emails, NDAs, or secret negotiations between town councils and tech giants." },
-    { term: "CBA (Community Benefits Agreement)", icon: "handshake", def: "A legally binding contract negotiated between a developer and community groups (or local government). It requires the developer to fund specific amenities (e.g., affordable housing, STEM programs) in exchange for project approval." },
-    { term: "Fee-in-Lieu", icon: "coins", def: "A payment made by a developer to a local government 'in lieu' of providing standard taxes or required infrastructure. Towns often prefer this because it goes straight to the municipal budget, bypassing school district allocations." },
-    { term: "Vested Rights", icon: "shield", def: "A legal concept where a developer gains a permanent right to build a project because they have already invested significant money under the existing zoning laws. Towns face massive lawsuits if they try to change rules on a 'vested' project." },
-    { term: "Closed-Loop / Evaporative Cooling", icon: "droplets", def: "Evaporative cooling uses vast amounts of local water to chill servers and releases it as vapor. Closed-loop systems recirculate the same water or use air, saving local aquifers but significantly increasing the facility's power draw and physical size." }
-  ];
-
-  function renderGlossary() {
-    const container = document.getElementById('glossaryContent');
-    if(!container) return;
-    container.innerHTML = '';
-    glossaryData.forEach(item => {
-      container.innerHTML += `
-        <div class="glossary-item">
-          <h4><i data-lucide="${item.icon}" style="width:20px; height:20px; stroke-width:3;"></i> ${item.term}</h4>
-          <p>${item.def}</p>
-        </div>
-      `;
-    });
+  function toggleAdvisor(scenarioId) {
+    const panel = document.getElementById(`advisor-${scenarioId}`);
+    if (panel.classList.contains('active')) {
+      panel.classList.remove('active');
+    } else {
+      panel.classList.add('active');
+    }
   }
-  renderGlossary();
 
   const scenarios = [
     {
-      id: "s1", tag: "Zoning History", icon: "book-open",
-      title: "The 2021 Zoning Text Amendment",
-      desc: "The site has been industrially zoned since 1970. You must decide whether to leverage this zoning to catalyze a major technological transition, carefully phase its integration, or restrict it to prioritize historical preservation.",
+      id: "s1", tag: "Site Selection", icon: "map-pin",
+      title: "The Zoning & Annexation Push",
+      desc: "Warrenton's gateway site offers ideal fiber access, but faces pushback over historic preservation. How aggressively do you leverage old industrial zoning vs. adapting to community resistance?",
+      advisors: {
+        strat: "Time-to-market is the only metric that matters in the AI race. Push your vested rights hard. The legal friction costs are a fraction of the lost revenue from delayed compute deployment.",
+        esg: "Forcing a build against the community's will destroys our social license to operate. A phased deployment mitigates extreme backlash while keeping us in the game for the long haul."
+      },
       options: [
-        { name: "Phased Industrial Integration", summary: "Allow development but strictly cap the square footage and scale for the first five years. This secures moderate initial tax revenue and jobs while preserving community buffers, though it frustrates developers seeking immediate, unconstrained hyperscale expansion.", effects: { fiscal: 10, trust: 5, gateway: 5, legal: -5 } },
-        { name: "Prioritize Historic Preservation", summary: "Treat the hyperscale use as fundamentally incompatible to protect the gateway's historic character and rural identity. This prevents industrialization but risks losing an anchor investor, alienating regional job markets, and forfeiting transformative school funding.", effects: { fiscal: -20, trust: 20, gateway: 15, legal: -20 } },
-        { name: "Embrace the Tech Boom", summary: "Fully annex land to signal the town is 'open for business.' This secures a massive $550M investment, mints a new middle class through high-paying tech careers, and provides immense tax revenues to fund local public schools.", effects: { fiscal: 20, trust: -10, gateway: -10, legal: 10 } }
+        { name: "Negotiate Phased Deployment", summary: "Agree to build only half the proposed square footage initially, scaling up over 5 years. This builds good faith and manages community shock, but temporarily throttles your AI compute capacity and delays full operational margins.", effects: { fiscal: 5, trust: 15, gateway: 10, legal: 5 } },
+        { name: "Assert Vested Rights", summary: "Aggressively push the legal limits of 1970s industrial zoning. This guarantees rapid $550M deployment and maximizes initial ROI, but it immediately alienates local preservation groups and risks severe reputational damage.", effects: { fiscal: 20, trust: -15, gateway: -10, legal: -10 } },
+        { name: "Relocate to Distant Brownfield", summary: "Abandon the prime gateway location for a distant, pre-industrialized zone. This embodies absolute environmental stewardship and wins massive public praise, but involves extreme fiber routing costs and severely delays project launch.", effects: { fiscal: -20, trust: 25, gateway: 20, legal: 15 } }
       ]
     },
     {
-      id: "s2", tag: "Process", icon: "eye",
-      title: "Transparency & NDA Protocols",
-      desc: "Critics allege back-door meetings and filed FOIA requests for 3,000+ withheld emails. Do you rely on standard corporate confidentiality to secure the deal, seek a middle-ground disclosure, or mandate full openness?",
+      id: "s2", tag: "Information Control", icon: "eye-off",
+      title: "Transparency & NDA Strategy",
+      desc: "Critics are demanding to see 3,000+ withheld emails via FOIA. How much of your proprietary expansion strategy are you willing to expose to maintain your 'Social License'?",
+      advisors: {
+        strat: "Information asymmetry is a massive competitive advantage. Strict NDAs prevent rivals from undercutting our power agreements. Hold the line; the public's curiosity doesn't override corporate IP.",
+        esg: "The era of the 'black box' data center is dead. Continually stonewalling FOIA requests breeds toxic conspiracy theories. Releasing targeted ESG summaries builds critical trust without compromising core IP."
+      },
       options: [
-        { name: "Mandate Full Disclosure", summary: "Release all internal records to restore public trust and ensure absolute democratic legitimacy. While this prevents accusations of backdoor deals, it risks chilling future tech investments, significantly delaying revenue streams, and frustrating developer operations.", effects: { fiscal: -15, trust: 30, gateway: 0, legal: 15 } },
-        { name: "Targeted Public Summaries", summary: "Require developers to release comprehensive environmental and fiscal impact summaries while shielding proprietary server blueprints. This balances public awareness with corporate security, though it leaves transparency advocates highly suspicious and developers mildly constrained.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 5 } },
-        { name: "Maintain Executive NDAs", summary: "Protect proprietary corporate data essential for the rapid deployment of global tech infrastructure. Shielding negotiations prevents competitors from stalling the project, securing the immediate regional tax base and expediting local economic integration.", effects: { fiscal: 15, trust: -30, gateway: 0, legal: -15 } }
+        { name: "Open Book Transparency", summary: "Declassify project negotiations and invite citizens to review power/water modeling. This fosters incredible community trust and democratic legitimacy, but entirely exposes your deployment playbook to rival tech giants.", effects: { fiscal: -15, trust: 30, gateway: 0, legal: 15 } },
+        { name: "Enforce Strict NDAs", summary: "Refuse to release details to protect vital corporate IP and prevent competitor sabotage. This ensures operational speed and protects vendor contracts, but fuels toxic conspiracy theories of 'backdoor deals' among town residents.", effects: { fiscal: 15, trust: -30, gateway: 0, legal: -15 } },
+        { name: "Publish Targeted ESG Summaries", summary: "Release generalized environmental impact reports while keeping server blueprints hidden. This strategic compromise somewhat placates reasonable planners, but transparency advocates will still view it as corporate greenwashing.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 5 } }
       ]
     },
     {
-      id: "s3", tag: "Aesthetics", icon: "layout",
-      title: "Gateway Design Standards",
-      desc: "AWS wants a standard industrial build for rapid deployment. Planners and citizens demand compatibility with historic Warrenton: brick facades, heavy landscaping, and strict height limits.",
+      id: "s3", tag: "Design & Build", icon: "box",
+      title: "Facility Architectural Standards",
+      desc: "Your mandate is to build fast and cheap. The town wants a bespoke building with 37-foot height caps, brick facades, and massive landscaping buffers.",
+      advisors: {
+        strat: "Bespoke architecture breaks our global supply chain model. Stick to the standard shell. Every dollar spent on decorative brick is a dollar stolen from advanced GPU investment.",
+        esg: "Aesthetic hostility breeds regulatory hostility. Investing in comprehensive green buffers and facade treatments is a cheap insurance policy against future anti-data-center zoning bans."
+      },
       options: [
-        { name: "Standard Industrial Design", summary: "Approve a standard build to minimize developer friction and expedite the municipal tax windfall. This allows for the rapid activation of local supplier networks—benefiting concrete layers, fencers, and businesses that thrive on construction booms.", effects: { fiscal: 20, trust: -20, gateway: -30, legal: 0 } },
-        { name: "Mandate 37ft Cap & Brick", summary: "Preserve the historic visual character of the gateway and naturally limit acoustic disruption through strict aesthetic rules. However, imposing strict architectural mandates creates massive redesign costs that threaten the project's overall financial viability and timeline.", effects: { fiscal: -15, trust: 15, gateway: 30, legal: 5 } },
-        { name: "Hybrid Green Infrastructure", summary: "Require living green walls and extensive berms to mask the facility without altering the fundamental building dimensions. This somewhat softens the visual impact and noise for residents, but imposes moderate, unstandardized maintenance costs on the developer.", effects: { fiscal: 0, trust: 5, gateway: 15, legal: 5 } }
+        { name: "Invest in Hybrid Green Buffers", summary: "Maintain your standard building dimensions but invest millions in advanced living green walls and noise-canceling berms. This mitigates acoustic and visual pollution without requiring a total mechanical redesign inside the plant.", effects: { fiscal: -5, trust: 10, gateway: 15, legal: 5 } },
+        { name: "Adopt Bespoke Historic Compliance", summary: "Fully capitulate to the town: lower the roofline, use genuine brick, and redesign cooling stacks. This beautifully preserves the historic gateway, but drastically increases capital expenditures and completely breaks your deployment schedule.", effects: { fiscal: -25, trust: 20, gateway: 30, legal: 10 } },
+        { name: "Standard Hyperscale Shell", summary: "Deploy your global standard warehouse design. This enables maximum speed-to-market and lowest construction overhead, but creates a towering, noisy eyesore that violates the town's sense of historic aesthetic.", effects: { fiscal: 25, trust: -25, gateway: -30, legal: -5 } }
       ]
     },
     {
-      id: "s4", tag: "Env. Justice", icon: "alert-triangle",
-      title: "Power Sourcing & Emissions",
-      desc: "To meet immediate power needs, developers often rely on gas turbines or extended coal plants. How will the town balance immediate grid reliability against fence-line pollution and long-term sustainability?",
+      id: "s4", tag: "Power & Ethics", icon: "zap",
+      title: "Energy Procurement Strategy",
+      desc: "Your AI workloads require massive power immediately. Do you tie into the existing, fossil-heavy grid, or take responsibility for the environmental justice impacts of your energy draw?",
+      advisors: {
+        strat: "We need gigawatts yesterday. Plug into whatever grid capacity is available. Let the utility companies and state regulators solve the macro energy transition—our job is compute.",
+        esg: "Training models on expanded coal power is a PR nightmare waiting to happen. Co-funding substation upgrades or committing to renewables ensures long-term viability and aligns with integral ecology."
+      },
       options: [
-        { name: "Mandate Grid Upgrade Subsidies", summary: "Force the developer to co-fund regional substation upgrades to handle their immense load alongside standard fossil fuels. This stabilizes the local grid for residents, but creates complex legal contracts and slightly reduces the developer's immediate profit margins.", effects: { fiscal: 5, trust: 5, gateway: -5, legal: 15 } },
-        { name: "Allow Flexible Power Sourcing", summary: "Permit flexible power sourcing to ensure immediate grid reliability. This powers AI systems capable of global climate modeling, generates a local utility contracting boom, and prevents delays in the facility's highly lucrative operational timeline.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -10 } },
-        { name: "Require Clean Energy Matching", summary: "Follow the Lancaster model by requiring 100% renewable energy offsets to protect frontline communities from emissions. This ensures environmental justice but heavily burdens the developer, limits facility uptime, and slows overall profitability.", effects: { fiscal: -15, trust: 25, gateway: 20, legal: 5 } }
+        { name: "Mandate 100% Renewable Matching", summary: "Delay full operations until you can sign power purchase agreements (PPAs) that offset your footprint with regional wind/solar. This champions integral ecology and ESG goals, but severely hinders your ability to scale AI compute immediately.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 5 } },
+        { name: "Utilize Default Grid (Fossil-Heavy)", summary: "Plug into the existing local utility, securing immediate power to train vital AI models. While this ensures operational continuity, it may force local coal plants to stay open longer, exposing fence-line communities to toxic emissions.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -10 } },
+        { name: "Co-Fund Substation Upgrades", summary: "Use corporate funds to upgrade the local utility infrastructure so your massive draw doesn't destabilize residential power grids. This prevents local brownouts but requires complex legal agreements and impacts your bottom line.", effects: { fiscal: -5, trust: 15, gateway: 5, legal: 10 } }
       ]
     },
     {
-      id: "s5", tag: "Tax Policy", icon: "landmark",
-      title: "Revenue Allocation & Benefits",
-      desc: "Developers frequently offer nontax 'fees-in-lieu' for immediate town cash, but this bypasses school districts. How will you structure the massive incoming tax windfall for maximum community benefit?",
+      id: "s5", tag: "Corporate Giving", icon: "landmark",
+      title: "Community Benefit Structuring",
+      desc: "Local governments are demanding to share in your financial windfall. How do you structure your payments to the town?",
+      advisors: {
+        strat: "Direct fee-in-lieu is clean, predictable, and buys immediate political cover from the Mayor's office. Avoid complex, multi-year obligations that entangle us with local school boards.",
+        esg: "Bypassing schools is political suicide for our brand. A comprehensive CBA integrates us into the community fabric, turning local residents into advocates rather than adversaries."
+      },
       options: [
-        { name: "Negotiate Robust CBAs", summary: "Legally bind the developer to fund specific community projects like affordable housing and STEM grants. This ensures broad, equitable community enrichment, but complicates the approval process and risks driving the developer to a cheaper county.", effects: { fiscal: -5, trust: 30, gateway: 5, legal: 5 } },
-        { name: "Accept Direct Fee-in-Lieu", summary: "Create an immediate, concentrated municipal budget surge. This provides the town council with flexible, unbureaucratic capital to rapidly build civic infrastructure and manage rapid growth, bypassing complex school district funding formulas entirely.", effects: { fiscal: 30, trust: -20, gateway: 0, legal: -15 } },
-        { name: "Apply Standard Commercial Taxes", summary: "Reject special agreements and apply standard industrial tax rates. This ensures a predictable, legally unassailable revenue stream that automatically funds school districts, but it sacrifices the potential for a massive, targeted municipal cash injection.", effects: { fiscal: 10, trust: 10, gateway: 0, legal: 25 } }
+        { name: "Accept Standard Tax Schedule", summary: "Submit to standard industrial real estate and equipment taxes. This is predictable, legally safe, and automatically filters money to local schools, though it lacks the PR impact of a headline-grabbing corporate grant.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 20 } },
+        { name: "Negotiate Comprehensive CBA", summary: "Fund a complex Community Benefit Agreement, building local STEM centers and a $60M affordable housing trust. This drives unparalleled social flourishing and public goodwill, but commits your division to massive, ongoing civic liabilities.", effects: { fiscal: -15, trust: 35, gateway: 5, legal: 5 } },
+        { name: "Offer Direct Fee-in-Lieu", summary: "Write a large, direct check to the Town Council in exchange for bypassing standard local taxes. This ensures your costs are fixed and gives the Mayor immediate capital, but enrages citizens because it bypasses the public school system.", effects: { fiscal: 25, trust: -25, gateway: 0, legal: -15 } }
       ]
     },
     {
-      id: "s6", tag: "Resources", icon: "droplet",
-      title: "Water-Use Restrictions",
-      desc: "Data centers can consume massive amounts of water. The town must determine the limits on standard evaporative cooling systems versus forcing the developer into unproven technologies or seasonal caps.",
+      id: "s6", tag: "Resource Impact", icon: "droplet",
+      title: "Water Conservation Protocols",
+      desc: "Data centers can act like a 'giant soda straw' on local aquifers. Planners want limits on your highly efficient evaporative cooling systems.",
+      advisors: {
+        strat: "Evaporative cooling is the industry standard for a reason: it maximizes hardware efficiency at the lowest cost. Do not experiment with expensive, unproven immersion tech at this scale.",
+        esg: "Water is the next great climate conflict. Proactive seasonal throttling shows we are responsible stewards of the local aquifer, preserving our operational license during drought years."
+      },
       options: [
-        { name: "Mandate Closed-Loop Systems", summary: "Protect the local aquifer from rapid depletion and ensure long-term regional water security. While environmentally sound, it forces expensive technological shifts that could significantly delay or deter the facility's local economic gains.", effects: { fiscal: -15, trust: 20, gateway: 25, legal: 0 } },
-        { name: "Permit Evaporative Cooling", summary: "Utilize highly efficient, standard cooling technology that keeps the facility economically competitive on a global scale. This guarantees the ongoing municipal tax stream and avoids forcing the developer into unproven, expensive mechanical redesigns.", effects: { fiscal: 20, trust: -25, gateway: -25, legal: -5 } },
-        { name: "Enforce Seasonal Water Caps", summary: "Allow standard cooling but mandate severe usage restrictions during summer drought months. This protects the local aquifer during critical periods while allowing standard tech, though it forces the data center to throttle compute power during peaks.", effects: { fiscal: 5, trust: 10, gateway: 10, legal: 5 } }
+        { name: "Mandate Closed-Loop Immersion", summary: "Redesign the facility for advanced closed-loop immersion cooling. This boasts near-zero water waste and perfectly honors environmental stewardship, but it is incredibly expensive, unproven at this scale, and risks major hardware failures.", effects: { fiscal: -25, trust: 25, gateway: 30, legal: 0 } },
+        { name: "Deploy Standard Evaporative Cooling", summary: "Use your most cost-effective and energy-efficient cooling technology. This keeps operating margins high and servers cool, but continuously drains millions of gallons from the local watershed, infuriating environmentalists.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -5 } },
+        { name: "Implement Dynamic Seasonal Throttling", summary: "Agree to throttle AI compute workloads and switch cooling methods during summer droughts. This protects the local water table during vulnerable months, but reduces your system reliability and upsets corporate clients.", effects: { fiscal: -5, trust: 15, gateway: 15, legal: 5 } }
       ]
     },
     {
-      id: "s7", tag: "Lifecycle", icon: "trash-2",
-      title: "Decommissioning Conditions",
-      desc: "What happens if technology changes and the building is abandoned in 15 years? Citizens want a bonded guarantee the site will be cleared, while developers want standard real estate risk profiles.",
+      id: "s7", tag: "Long-Term Liability", icon: "trash-2",
+      title: "End-of-Life Decommissioning",
+      desc: "Citizens fear the facility will become an abandoned, blighted concrete shell if AI technology changes rapidly in 15 years.",
+      advisors: {
+        strat: "Capital shouldn't be trapped in a municipal bond for 15 years. Assume standard real estate risk. If tech shifts, we sell the shell and move on.",
+        esg: "Pledging a full upfront bond guarantees we don't leave a stranded asset. It completely neutralizes the most potent environmental argument against us: that we are a boom-and-bust parasite."
+      },
       options: [
-        { name: "Require Full Decommissioning Bond", summary: "Guarantee the site won't become a stranded asset or a blighted industrial shell if technology shifts rapidly. While it protects the town physically, requiring a steep upfront financial bond strongly deters future hyperscale builders.", effects: { fiscal: -10, trust: 25, gateway: 15, legal: 20 } },
-        { name: "Establish Partial Escrow Fund", summary: "Require a moderate, incremental fund built over ten years to cover basic demolition if abandoned. This provides a safety net for the town without an aggressive upfront financial hurdle, though it may not cover full site remediation.", effects: { fiscal: 5, trust: 10, gateway: 5, legal: 10 } },
-        { name: "Assume Standard Commercial Risk", summary: "Signal the town is highly business-friendly, encouraging a clustered tech ecosystem that continually upgrades servers. It assumes ongoing growth will organically replace aging infrastructure without preemptive, hostile regulatory burdens on the developer.", effects: { fiscal: 15, trust: -20, gateway: -10, legal: -15 } }
+        { name: "Provide Full Upfront Bond", summary: "Lock away millions in a full decommissioning bond before breaking ground. This completely guarantees the land will be restored to nature, perfectly honors integral ecology, but heavily restricts your division's immediate cash flow.", effects: { fiscal: -15, trust: 25, gateway: 15, legal: 20 } },
+        { name: "Establish Partial Escrow Fund", summary: "Agree to incrementally fund an escrow account over a decade to cover basic demolition costs. This demonstrates moderate corporate responsibility without requiring a massive, punitive upfront cash deposit.", effects: { fiscal: 0, trust: 10, gateway: 5, legal: 10 } },
+        { name: "Assume Standard Real Estate Risk", summary: "Refuse to post any special bonds, treating the site like any other commercial warehouse. This keeps your upfront capital completely free for further expansion, but leaves the town feeling deeply vulnerable to corporate abandonment.", effects: { fiscal: 15, trust: -25, gateway: -10, legal: -15 } }
       ]
     },
     {
-      id: "s8", tag: "Strategy", icon: "git-commit",
-      title: "Post-Approval Policy",
-      desc: "If approved, how does the town handle future data center applications in Industrial zones to prevent serial development while maintaining a strong tech tax base?",
+      id: "s8", tag: "Market Expansion", icon: "git-commit",
+      title: "Regional Scaling Strategy",
+      desc: "As the AI leader, you want this facility to be the first of many. The town, fearful of endless sprawl, wants to limit future development.",
+      advisors: {
+        strat: "Never cap your own growth. Demand unlimited pathways. If this region proves viable, we need to blanket it with infrastructure to maintain absolute market dominance.",
+        esg: "Endless sprawl triggers statewide legislative moratoriums. Committing to a single flagship site or a regional cap protects the brand, satisfies the locals, and secures this specific high-value asset."
+      },
       options: [
-        { name: "Implement Zone-Specific Caps", summary: "Allow future development but strictly limit it to specific, pre-approved industrial acreage limits. This balances ongoing tech investment with controlled municipal growth, though it caps the ultimate economic ceiling and frustrates developers.", effects: { fiscal: 10, trust: 10, gateway: 10, legal: 15 } },
-        { name: "Initiate Ban on Future Builds", summary: "Protect the town's rural identity from becoming a permanent industrial corridor. This decisively prevents serial data center development and regional infrastructure strain, but permanently locks the municipality out of the digital economy's wealth.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 10 } },
-        { name: "Retain SUP Pathway for Growth", summary: "Embrace the AI boom to permanently transition the town into a prosperous tech hub. This strategy funds local public goods indefinitely through future builds, accepting manageable growing pains like rising housing demand as acceptable.", effects: { fiscal: 25, trust: -30, gateway: -20, legal: -10 } }
+        { name: "Agree to Regional Megawatt Caps", summary: "Voluntarily agree that AWS will not exceed a specific megawatt footprint in the county. This compromise allows for measured growth while guaranteeing residents the town won't become an endless industrial park.", effects: { fiscal: 5, trust: 15, gateway: 10, legal: 10 } },
+        { name: "Commit to a Single Flagship Site", summary: "Sign a binding agreement that this will be AWS's only data center in Warrenton. This permanently protects the town's rural identity and secures local admiration, but severely kneecaps your ability to scale regional infrastructure.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 15 } },
+        { name: "Demand Unlimited SUP Pathways", summary: "Lobby heavily to keep the town open for endless future data center applications. This ensures you can indefinitely expand your regional footprint to meet AI demand, but sparks a ferocious 'anti-sprawl' political resistance.", effects: { fiscal: 25, trust: -35, gateway: -20, legal: -15 } }
       ]
     }
   ];
 
   const tickerResponses = [
-    "TECH GIANT STUNNED BY NEW COUNCIL DEMANDS...",
-    "WARRENTON CITIZENS CHEER LATEST POLICY SHIFT...",
-    "LOCAL CONTRACTORS ANTICIPATE MASSIVE HIRING BOOM...",
-    "ENVIRONMENTAL GROUPS FILE PRELIMINARY INJUNCTION OVER EMISSIONS...",
-    "TOWN BUDGET EXPECTS HISTORIC SURPLUS FOLLOWING RECENT VOTE...",
-    "HISTORIC SOCIETY CALLS COUNCIL DECISION 'A DISASTER FOR THE GATEWAY'...",
-    "SCHOOL DISTRICT WATCHES CAREFULLY AS TAX REVENUE HANGS IN BALANCE...",
-    "REGIONAL UTILITY WARNS OF 'UNPRECEDENTED GRID STRAIN'..."
+    "AWS STOCK RESPONDS POSITIVELY TO REGIONAL DEPLOYMENT UPDATES...",
+    "LOCAL SHAREHOLDERS MONITORING ONGOING ZONING NEGOTIATIONS...",
+    "COMPETITORS WATCH CLOSELY AS AWS FINALIZES INFRASTRUCTURE STRATEGY...",
+    "ENVIRONMENTAL WATCHDOGS PUBLISH CRITIQUE OF RECENT ENERGY POLICIES...",
+    "SUPPLY CHAIN PARTNERS ANTICIPATE MAJOR PROCUREMENT ORDERS...",
+    "REGULATORY AUTHORITIES PREPARE TO REVIEW SPECIAL USE PERMIT...",
+    "PUBLIC RELATIONS TEAM DRAFTS RESPONSES TO LOCAL PUSHBACK...",
+    "ENERGY ANALYSTS PREDICT SHIFT IN REGIONAL GRID DEMANDS..."
   ];
-  
+
   function updateTicker(scenarioId, optionIdx) {
     const tickerEl = document.getElementById('newsTickerText');
     if (!tickerEl) return;
     
-    // Pick a random dramatic headline to make it feel alive, or map based on option effect
     const effect = scenarios.find(s => s.id === scenarioId).options[optionIdx].effects;
     
     let text = "";
-    if (effect.fiscal > 15) text = "BREAKING: Wall Street analysts upgrade local municipal bond rating as massive tax windfall expected...";
-    else if (effect.trust < -15) text = "BREAKING: Outraged citizens draft petition for Mayor's recall following controversial decision...";
-    else if (effect.gateway > 15) text = "BREAKING: Preservationists secure major victory for local aesthetic integrity...";
-    else if (effect.legal < -15) text = "BREAKING: Legal experts warn Town is heavily exposed to developer litigation...";
-    else text = "BREAKING: " + tickerResponses[Math.floor(Math.random() * tickerResponses.length)];
+    if (effect.fiscal > 15) text = "MARKET ALERT: AWS analysts project massive ROI spike following aggressive deployment maneuver...";
+    else if (effect.trust < -15) text = "PR CRISIS: Citizens threaten organized boycott as AWS bypasses local transparency demands...";
+    else if (effect.gateway > 15) text = "ESG UPDATE: Sustainability groups praise AWS for groundbreaking commitment to integral ecology...";
+    else if (effect.legal < -15) text = "LEGAL WARNING: Corporate counsel anticipates severe zoning appeals following recent hardline stance...";
+    else text = "MARKET UPDATE: " + tickerResponses[Math.floor(Math.random() * tickerResponses.length)];
 
-    // Reset animation
+    // Reset CSS animation
     tickerEl.style.animation = 'none';
     tickerEl.offsetHeight; /* trigger reflow */
     tickerEl.style.animation = null; 
@@ -918,9 +975,26 @@
       card.className = 'scenario-card';
       
       card.innerHTML = `
-        <div class="scenario-tag"><i data-lucide="${s.icon}" style="width:16px; height:16px; stroke-width: 3;"></i> ${s.tag}</div>
+        <div class="card-header-top">
+          <div class="scenario-tag"><i data-lucide="${s.icon}" style="width:16px; height:16px; stroke-width: 3;"></i> ${s.tag}</div>
+          <button class="advisor-btn" onclick="toggleAdvisor('${s.id}')">
+            <i data-lucide="sparkles" style="width:16px; height:16px;"></i> Consult Advisors
+          </button>
+        </div>
         <h3>${s.title}</h3>
         <p>${s.desc}</p>
+        
+        <div class="advisor-panel" id="advisor-${s.id}">
+          <div class="adv-card adv-strat">
+            <strong><i data-lucide="trending-up" style="width:18px;height:18px;"></i> Strategy Consultant</strong>
+            ${s.advisors.strat}
+          </div>
+          <div class="adv-card adv-esg">
+            <strong><i data-lucide="scale" style="width:18px;height:18px;"></i> ESG & Ethics Board</strong>
+            ${s.advisors.esg}
+          </div>
+        </div>
+
         <div class="option-list"></div>
       `;
       
@@ -931,9 +1005,9 @@
         
         let impactHtml = '';
         if (currentPhase === 2) {
-            const fB = `<span class="impact-badge ${getBadgeClass(op.effects.fiscal)}"><i data-lucide="dollar-sign" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.fiscal > 0 ? '+':''}${op.effects.fiscal}</span>`;
-            const tB = `<span class="impact-badge ${getBadgeClass(op.effects.trust)}"><i data-lucide="users" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.trust > 0 ? '+':''}${op.effects.trust}</span>`;
-            const gB = `<span class="impact-badge ${getBadgeClass(op.effects.gateway)}"><i data-lucide="map" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.gateway > 0 ? '+':''}${op.effects.gateway}</span>`;
+            const fB = `<span class="impact-badge ${getBadgeClass(op.effects.fiscal)}"><i data-lucide="zap" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.fiscal > 0 ? '+':''}${op.effects.fiscal}</span>`;
+            const tB = `<span class="impact-badge ${getBadgeClass(op.effects.trust)}"><i data-lucide="shield-check" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.trust > 0 ? '+':''}${op.effects.trust}</span>`;
+            const gB = `<span class="impact-badge ${getBadgeClass(op.effects.gateway)}"><i data-lucide="leaf" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.gateway > 0 ? '+':''}${op.effects.gateway}</span>`;
             const lB = `<span class="impact-badge ${getBadgeClass(op.effects.legal)}"><i data-lucide="scale" style="width:14px;height:14px;stroke-width:3;"></i>${op.effects.legal > 0 ? '+':''}${op.effects.legal}</span>`;
             impactHtml = `<div class="impact-preview">${fB}${tB}${gB}${lB}</div>`;
         }
@@ -945,18 +1019,19 @@
           </div>
           ${impactHtml}
         `;
+        
+        // Toggle selection logic
         btn.addEventListener('click', () => {
-          // Deselect if already selected, otherwise select new index
           if (selectedOptions[s.id] === idx) {
-            selectedOptions[s.id] = null;
+              delete selectedOptions[s.id]; // deselect if clicked again
           } else {
-            selectedOptions[s.id] = idx;
-            // NEW: Call the ticker update
-            updateTicker(s.id, idx);
+              selectedOptions[s.id] = idx; // select newly
+              updateTicker(s.id, idx);
           }
           renderScenarios();
           updateAll();
         });
+        
         list.appendChild(btn);
       });
       scenarioGrid.appendChild(card);
@@ -968,10 +1043,9 @@
   function getAggregate() {
     const total = { fiscal: 0, trust: 0, gateway: 0, legal: 0 };
     scenarios.forEach(s => {
-      // Only aggregate if an option has been selected
-      if (selectedOptions[s.id] !== null && selectedOptions[s.id] !== undefined) {
-        const choice = s.options[selectedOptions[s.id]];
-        Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
+      if (selectedOptions[s.id] !== undefined) {
+          const choice = s.options[selectedOptions[s.id]];
+          Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
       }
     });
     return total;
@@ -1012,41 +1086,40 @@
     animateValue('legalScore', total.legal);
   }
 
+  // Phase Transition Controls
   document.getElementById('phaseActionBtn')?.addEventListener('click', () => {
     if (currentPhase === 1) {
-      
-      // Ensure the user has selected at least one option for all 8 scenarios
-      const allSelected = Object.values(selectedOptions).every(val => val !== null);
-      if (!allSelected) {
-          showMessage("Incomplete Docket", "Please select an option for all 8 Policy Docket items before finalizing the permit.", "alert-circle", "var(--amber)");
+      const totalSelected = Object.keys(selectedOptions).length;
+      if (totalSelected < scenarios.length) {
+          showMessage("Incomplete Strategy", `Please select an option for all ${scenarios.length} strategic domains. You have currently selected ${totalSelected}.`, "alert-circle", "var(--amber)");
           return;
       }
 
       currentPhase = 2;
       const btn = document.getElementById('phaseActionBtn');
-      btn.innerHTML = '<i data-lucide="arrow-right" style="stroke-width: 3;"></i> Proceed to Durability Stress Test';
+      btn.innerHTML = '<i data-lucide="check-check" style="stroke-width: 3;"></i> Proceed to Market Stress Test';
       
       renderScenarios();
-      showMessage("Impact Metrics Unlocked!", "You can now see the exact trade-offs on the Town Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.", "unlock", "var(--green)");
-      window.scrollTo({ top: 0, behavior: 'smooth' }); // Stay at the top for this reveal
+      showMessage("Impact Metrics Unlocked!", "You can now see the exact trade-offs on your Corporate Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.", "unlock", "var(--green)");
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
     } else if (currentPhase === 2) {
       document.getElementById('tabBtnDataset').classList.remove('locked');
       switchTab('dataset');
-      scrollToTabs(); // Smoothly slide down to the active tab area
+      scrollToTabs(); // Navigate and anchor locally
     }
   });
 
   document.getElementById('goToMatrixBtn')?.addEventListener('click', () => {
       document.getElementById('tabBtnDashboard').classList.remove('locked');
       switchTab('dashboard');
-      scrollToTabs();
+      scrollToTabs(); // Navigate and anchor locally
   });
 
   document.getElementById('goToTownHallBtn')?.addEventListener('click', () => {
       document.getElementById('tabBtnTownhall').classList.remove('locked');
       switchTab('townhall');
-      scrollToTabs();
+      scrollToTabs(); // Navigate and anchor locally
   });
 
   function generateDataset() {
@@ -1058,15 +1131,15 @@
     generatedRows = [];
 
     for (let i = 1; i <= size; i++) {
-      const litigationVolatility = randNormal() * 20; 
+      const volatility = randNormal() * 20; 
       const dailyFiscal = Math.round(agg.fiscal + (randNormal() * 15));
-      const legalSocialStability = Math.round((agg.legal + agg.trust) / 2 + (litigationVolatility * (agg.legal < 0 ? -1.5 : 0.5)));
+      const regulatoryStability = Math.round((agg.legal + agg.trust) / 2 + (volatility * (agg.legal < 0 ? -1.5 : 0.5)));
 
-      generatedRows.push({ day: i, fiscal: dailyFiscal, stability: legalSocialStability });
+      generatedRows.push({ day: i, fiscal: dailyFiscal, stability: regulatoryStability });
     }
     
     renderDashboard(); 
-    checkAchievements(agg); // NEW: Run achievement logic
+    checkAchievements(agg); // Run achievement checks
     
     const btn = document.getElementById('generateBtn');
     if(btn) {
@@ -1077,7 +1150,6 @@
     }
   }
 
-  // NEW: Achievements Logic
   function checkAchievements(agg) {
     const panel = document.getElementById('achievementsPanel');
     const grid = document.getElementById('achievementGrid');
@@ -1086,13 +1158,14 @@
     grid.innerHTML = '';
     let hasAchievements = false;
 
+    // Mapping: fiscal = Speed/ROI, trust = Trust, gateway = ESG, legal = Compliance
     const badges = [
-      { condition: agg.fiscal >= 40, title: "The Rainmaker", desc: "Secured historic, generational wealth for the municipal budget.", icon: "dollar-sign" },
-      { condition: agg.trust >= 40, title: "The People's Champ", desc: "Maintained pristine public trust through ultimate transparency.", icon: "users" },
-      { condition: agg.gateway >= 40, title: "The Preservationist", desc: "Forced the tech giant to bend to Warrenton's historic character.", icon: "tree-pine" },
-      { condition: agg.legal >= 30, title: "Ironclad", desc: "Created a legally bulletproof zoning decision.", icon: "shield-check" },
-      { condition: agg.trust <= -30, title: "Recall Target", desc: "Alienated the entire citizen base through secrecy and broken promises.", icon: "alert-triangle" },
-      { condition: agg.fiscal <= -20, title: "Opportunity Lost", desc: "Regulated the developer so hard the town lost the financial windfall.", icon: "trending-down" }
+      { condition: agg.fiscal >= 40, title: "Market Dominator", desc: "Achieved unprecedented speed-to-market and profit margins.", icon: "zap" },
+      { condition: agg.trust >= 40, title: "The Diplomat", desc: "Secured absolute public trust and social license to operate.", icon: "shield-check" },
+      { condition: agg.gateway >= 40, title: "The Green Pioneer", desc: "Built a flagship model for corporate integral ecology and ESG.", icon: "leaf" },
+      { condition: agg.legal >= 30, title: "Bulletproof Compliance", desc: "Navigated zoning law flawlessly, avoiding all injunctions.", icon: "scale" },
+      { condition: agg.trust <= -30, title: "Public Enemy No. 1", desc: "Sparked massive boycotts due to toxic community relations.", icon: "alert-triangle" },
+      { condition: agg.fiscal <= -20, title: "Shareholder Disappointment", desc: "Over-compromised margins, threatening project financial viability.", icon: "trending-down" }
     ];
 
     badges.forEach(b => {
@@ -1131,23 +1204,23 @@
     const evalBox = document.getElementById('scatterEvalBox');
 
     if (avgF >= 0 && avgS >= 0) {
-      evalTitle.innerHTML = '<i data-lucide="check-circle" style="color:var(--green); stroke-width:3;"></i> Sustainable Mandate Achieved';
-      evalDesc.innerHTML = `Your conditions secured the tax revenue while maintaining enough procedural legitimacy to avoid debilitating FOIA lawsuits and aesthetic degradation.`;
+      evalTitle.innerHTML = '<i data-lucide="check-circle" style="color:var(--green); stroke-width:3;"></i> Sustainable Market Leadership';
+      evalDesc.innerHTML = `Your strategy successfully deployed infrastructure rapidly while maintaining enough ESG alignment and procedural legitimacy to avoid debilitating FOIA lawsuits and brand damage.`;
       evalBox.style.borderColor = 'var(--green)';
       evalBox.style.background = '#ecfdf5';
     } else if (avgF >= 0 && avgS < 0) {
-      evalTitle.innerHTML = '<i data-lucide="alert-triangle" style="color:var(--amber); stroke-width:3;"></i> Fiscal Win, Political Crisis';
-      evalDesc.innerHTML = `You secured the money (Avg Tax Yield <strong style="color:var(--green)">+${avgF.toFixed(1)}</strong>), but by failing to mandate transparency and strict gateway protections, you triggered a massive FOIA lawsuit in the Court of Appeals.`;
+      evalTitle.innerHTML = '<i data-lucide="alert-triangle" style="color:var(--amber); stroke-width:3;"></i> Reputational Crisis';
+      evalDesc.innerHTML = `You secured fast ROI (Avg Speed/Margin <strong style="color:var(--green)">+${avgF.toFixed(1)}</strong>), but by ignoring ESG goals and transparency, you triggered a massive PR crisis, local boycotts, and a regulatory injunction that may halt construction.`;
       evalBox.style.borderColor = 'var(--amber)';
       evalBox.style.background = '#fffbeb';
     } else if (avgF < 0 && avgS >= 0) {
-      evalTitle.innerHTML = '<i data-lucide="info" style="color:var(--blue); stroke-width:3;"></i> Over-Regulated Safety';
-      evalDesc.innerHTML = `The gateway view is perfectly safe and trust is high (Stability: <strong>+${avgS.toFixed(1)}</strong>), but the massive burdens placed on the developer threaten the project's viability, creating municipal opportunity costs.`;
+      evalTitle.innerHTML = '<i data-lucide="info" style="color:var(--blue); stroke-width:3;"></i> Over-Compromised Margin';
+      evalDesc.innerHTML = `The town loves you and your ESG score is stellar (Stability: <strong>+${avgS.toFixed(1)}</strong>). However, the massive burdens, delays, and redesigns you accepted threaten the project's financial viability, angering your shareholders.`;
       evalBox.style.borderColor = 'var(--blue)';
       evalBox.style.background = '#eff6ff';
     } else {
-      evalTitle.innerHTML = '<i data-lucide="x-circle" style="color:var(--red); stroke-width:3;"></i> Catastrophic Strategic Deficit';
-      evalDesc.innerHTML = `You managed to lose the financial upside while still triggering vested rights battles and citizen outrage. You have severely damaged the Town's regulatory authority.`;
+      evalTitle.innerHTML = '<i data-lucide="x-circle" style="color:var(--red); stroke-width:3;"></i> Strategic Failure';
+      evalDesc.innerHTML = `You compromised operational speed while still triggering regulatory battles and citizen outrage. You have severely damaged AWS's ability to expand in this region.`;
       evalBox.style.borderColor = 'var(--red)';
       evalBox.style.background = '#fef2f2';
     }
@@ -1173,7 +1246,7 @@
         dot.className = 'scatter-dot';
         dot.style.left = `${xPos}%`;
         dot.style.top = `${yPos}%`;
-        dot.title = `Day ${r.day} | Fiscal Yield: ${r.fiscal} | Legal/Social Stability: ${r.stability}`;
+        dot.title = `Day ${r.day} | ROI Impact: ${r.fiscal} | Trust/Regulatory Stability: ${r.stability}`;
         
         scatterDots.appendChild(dot);
       }
@@ -1183,14 +1256,14 @@
   document.getElementById('generateBtn')?.addEventListener('click', generateDataset);
 
   const chatScript = [
-    { type: 'msg-aws', name: 'AWS Executive', role: 'Data Center Rep', img: 'https://i.pravatar.cc/150?img=59', text: "Good evening. We are thrilled to bring $550 million to Warrenton. Look at Hermiston and Umatilla, OR—they announced they were 'open for business' and we minted a new middle class! We foster a regional tech ecosystem, drive business for local contractors, and provide the compute power needed to optimize global climate decarbonization." },
-    { type: 'msg-ngo', name: 'Citizens for Fauquier County', role: 'Preservation Advocate', img: 'https://i.pravatar.cc/150?img=44', text: "Global decarbonization? What about the unpermitted gas turbines xAI used in Memphis? We will not let you bring environmental racism and toxic emissions to our fence-line communities like they did in Boxtown, just so you can bypass standard taxes with these 'fees-in-lieu'!" },
-    { type: 'msg-staff', name: 'Town Planner', role: 'Zoning Administrator', img: 'https://i.pravatar.cc/150?img=32', text: "To clarify for the record, the Planning Commission recommended denial of this SUP based on inadequate information regarding noise, utility routing, and the 'giant soda straw' depletion of our local aquifer." },
-    { type: 'msg-biz', name: 'Local Business Owner', role: 'Tax Base Advocate', img: 'https://i.pravatar.cc/150?img=11', text: "Listen, our town desperately needs this revenue. In Oregon, Amazon employee gatherings alone pay a bar owner's rent in two days. And look at Henrico County and New Albany—they successfully used data center CBAs to fund STEM centers and $60 million in affordable housing! We can't turn this away." },
-    { type: 'msg-util', name: 'Utility Rep', role: 'Regional Infrastructure', img: 'https://i.pravatar.cc/150?img=41', text: "We still need to discuss power. If AWS doesn't agree to a Lancaster, PA style clean-energy agreement or mitigate their local load, we will have to keep the regional coal plant open, raising residential utility bills for everyone to subsidize their AI energy demand." },
-    { type: 'msg-council', name: 'Mayor', role: 'Town Council Majority', img: 'https://i.pravatar.cc/150?img=68', isRight: true, text: "We hear the speakers tonight. AWS, you have to agree to the 37-foot height cap, the brick facade, and we need a concrete Community Benefits Agreement to fund local schools, or we simply can't pass this politically without being voted out." },
-    { type: 'msg-aws', name: 'AWS Executive', role: 'Data Center Rep', img: 'https://i.pravatar.cc/150?img=59', text: "We have already made major concessions on the architecture. If you deny this or force unviable infrastructure and clean-energy costs on us, remember our vested rights based on the 2021 zoning amendment." },
-    { type: 'msg-dissent', name: 'Council Dissenter', role: 'Town Council Minority', img: 'https://i.pravatar.cc/150?img=12', isRight: true, text: "I'm voting no. The Oregon boom also priced out blue-collar workers, driving up housing and childcare costs for an industry that provides very few permanent jobs compared to its massive physical footprint. It's an extractive boom-and-bust cycle we cannot afford." }
+    { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "Good evening. AWS is thrilled to bring $550 million to Warrenton. If we can execute this build quickly, we will mint a new middle class here! We provide the compute power needed to optimize global climate decarbonization. We want to be partners in that growth." },
+    { type: 'msg-ngo', name: 'Citizens for Fauquier', role: 'Preservation Advocate', img: 'https://i.pravatar.cc/150?img=44', text: "Global decarbonization? What about the unpermitted gas turbines used in other AI sites? We will not let you bring environmental racism and toxic emissions to our fence-line communities just so you can maximize shareholder value!" },
+    { type: 'msg-staff', name: 'Town Planner', role: 'Zoning Administrator', img: 'https://i.pravatar.cc/150?img=32', text: "To clarify for the record, the Planning Commission still needs assurances on the 'giant soda straw' depletion of our local aquifer if you use standard evaporative cooling." },
+    { type: 'msg-biz', name: 'Local Business Owner', role: 'Tax Base Advocate', img: 'https://i.pravatar.cc/150?img=11', text: "Listen, our town desperately needs this revenue. In Oregon, tech employee gatherings alone pay local rent. And look at New Albany—they successfully used data center CBAs to fund STEM centers. We need AWS here, but they need to pay their fair share." },
+    { type: 'msg-util', name: 'Utility Rep', role: 'Regional Infrastructure', img: 'https://i.pravatar.cc/150?img=41', text: "If AWS doesn't agree to fund regional grid upgrades or offset their load, we will have to keep the regional coal plant open. Residential utility bills will rise for everyone to subsidize their AI energy demand." },
+    { type: 'msg-council', name: 'Mayor', role: 'Town Council Majority', img: 'https://i.pravatar.cc/150?img=68', text: "We hear everyone tonight. AWS, you have to agree to strict visual caps, and we need a concrete Community Benefits Agreement to fund local schools, or we simply can't pass this politically without being voted out." },
+    { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "We respect the town's vision, but imposing unviable infrastructure costs or severe architectural delays threatens the project entirely. We have a timeline to meet global AI demand. If Warrenton isn't open for business, another county will be." },
+    { type: 'msg-dissent', name: 'Council Dissenter', role: 'Town Council Minority', img: 'https://i.pravatar.cc/150?img=12', text: "I say let them leave! It's an extractive boom-and-bust cycle. You're demanding access to our water and land while hiding your blueprints behind NDAs. That is not 'integral ecology'—it's corporate bullying." }
   ];
 
   const chatContainer = document.getElementById('chatContainer');
@@ -1227,7 +1300,6 @@
      document.getElementById('roleplayGuidance').style.display = 'block';
      finishChatBtn.style.display = 'none';
      if (typeof lucide !== 'undefined') lucide.createIcons();
-     // Scroll down gently to reveal the instructions
      setTimeout(() => {
        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
      }, 100);

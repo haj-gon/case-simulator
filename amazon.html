@@ -292,6 +292,16 @@
 </head>
 <body>
 
+<div id="messageBoxOverlay" class="modal-overlay">
+  <div class="modal-content" style="max-width: 500px; text-align: center; padding: 40px;">
+    <button class="close-modal" id="closeMessageBox"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
+    <i id="msgBoxIcon" data-lucide="info" style="width: 48px; height: 48px; color: var(--blue); margin: 0 auto 16px;"></i>
+    <h2 id="messageBoxTitle" style="margin-top: 0; color: var(--ink); font-weight: 900; font-size: 1.8rem; margin-bottom: 16px;">Notice</h2>
+    <p id="messageBoxBody" style="font-size: 1.1rem; font-weight: 700; color: var(--muted); margin-bottom: 24px;"></p>
+    <button id="messageBoxOkBtn" class="btn-primary" style="margin: 0 auto;"><i data-lucide="check" style="stroke-width: 3;"></i> Acknowledge</button>
+  </div>
+</div>
+
 <div id="scoreModal" class="modal-overlay">
   <div class="modal-content">
     <button class="close-modal" id="closeScoreModal"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
@@ -425,7 +435,6 @@
     </aside>
 
     <div class="content-area">
-      
       <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
         <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="file-text" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Policy Docket</h2>
         <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 policy domains based on the actual public record. <strong>Every choice represents a valid, balanced trade-off between economic revitalization and preserving local character.</strong></p>
@@ -560,7 +569,7 @@
     }
   }
 
-  // Modals
+  // Modals & Notifications
   document.getElementById('openScoreModalBtn')?.addEventListener('click', () => {
     document.getElementById('scoreModal')?.classList.add('active');
   });
@@ -570,6 +579,26 @@
   document.getElementById('scoreModal')?.addEventListener('click', (e) => {
     if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
   });
+
+  // Custom Alert Message Box
+  function showMessage(title, text, icon="info", iconColor="var(--blue)") {
+      document.getElementById('messageBoxTitle').textContent = title;
+      document.getElementById('messageBoxBody').innerHTML = text;
+      
+      const iconEl = document.getElementById('msgBoxIcon');
+      iconEl.setAttribute('data-lucide', icon);
+      iconEl.style.color = iconColor;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      document.getElementById('messageBoxOverlay').classList.add('active');
+  }
+
+  function hideMessage() {
+      document.getElementById('messageBoxOverlay').classList.remove('active');
+  }
+
+  document.getElementById('closeMessageBox')?.addEventListener('click', hideMessage);
+  document.getElementById('messageBoxOkBtn')?.addEventListener('click', hideMessage);
 
   // State - Starting with null values so nothing is pre-selected
   let selectedOptions = { s1: null, s2: null, s3: null, s4: null, s5: null, s6: null, s7: null, s8: null }; 
@@ -592,6 +621,10 @@
     document.getElementById(tabId).classList.add('active');
   }
 
+  function scrollToTabs() {
+    document.querySelector('.tabs-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (!btn.classList.contains('locked')) {
@@ -600,15 +633,16 @@
     });
   });
 
+  // The scenarios are shuffled so that index 0 is not always profit, index 2 is not always preservation, etc.
   const scenarios = [
     {
       id: "s1", tag: "Zoning History", icon: "book-open",
       title: "The 2021 Zoning Text Amendment",
       desc: "The site has been industrially zoned since 1970. You must decide whether to leverage this zoning to catalyze a major technological transition, carefully phase its integration, or restrict it to prioritize historical preservation.",
       options: [
-        { name: "Embrace the Tech Boom", summary: "Fully annex land to signal the town is 'open for business.' This secures a massive $550M investment, mints a new middle class through high-paying tech careers, and provides immense tax revenues to fund local public schools.", effects: { fiscal: 20, trust: -10, gateway: -10, legal: 10 } },
         { name: "Phased Industrial Integration", summary: "Allow development but strictly cap the square footage and scale for the first five years. This secures moderate initial tax revenue and jobs while preserving community buffers, though it frustrates developers seeking immediate, unconstrained hyperscale expansion.", effects: { fiscal: 10, trust: 5, gateway: 5, legal: -5 } },
-        { name: "Prioritize Historic Preservation", summary: "Treat the hyperscale use as fundamentally incompatible to protect the gateway's historic character and rural identity. This prevents industrialization but risks losing an anchor investor, alienating regional job markets, and forfeiting transformative school funding.", effects: { fiscal: -20, trust: 20, gateway: 15, legal: -20 } }
+        { name: "Prioritize Historic Preservation", summary: "Treat the hyperscale use as fundamentally incompatible to protect the gateway's historic character and rural identity. This prevents industrialization but risks losing an anchor investor, alienating regional job markets, and forfeiting transformative school funding.", effects: { fiscal: -20, trust: 20, gateway: 15, legal: -20 } },
+        { name: "Embrace the Tech Boom", summary: "Fully annex land to signal the town is 'open for business.' This secures a massive $550M investment, mints a new middle class through high-paying tech careers, and provides immense tax revenues to fund local public schools.", effects: { fiscal: 20, trust: -10, gateway: -10, legal: 10 } }
       ]
     },
     {
@@ -616,9 +650,9 @@
       title: "Transparency & NDA Protocols",
       desc: "Critics allege back-door meetings and filed FOIA requests for 3,000+ withheld emails. Do you rely on standard corporate confidentiality to secure the deal, seek a middle-ground disclosure, or mandate full openness?",
       options: [
-        { name: "Maintain Executive NDAs", summary: "Protect proprietary corporate data essential for the rapid deployment of global tech infrastructure. Shielding negotiations prevents competitors from stalling the project, securing the immediate regional tax base and expediting local economic integration.", effects: { fiscal: 15, trust: -30, gateway: 0, legal: -15 } },
+        { name: "Mandate Full Disclosure", summary: "Release all internal records to restore public trust and ensure absolute democratic legitimacy. While this prevents accusations of backdoor deals, it risks chilling future tech investments, significantly delaying revenue streams, and frustrating developer operations.", effects: { fiscal: -15, trust: 30, gateway: 0, legal: 15 } },
         { name: "Targeted Public Summaries", summary: "Require developers to release comprehensive environmental and fiscal impact summaries while shielding proprietary server blueprints. This balances public awareness with corporate security, though it leaves transparency advocates highly suspicious and developers mildly constrained.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 5 } },
-        { name: "Mandate Full Disclosure", summary: "Release all internal records to restore public trust and ensure absolute democratic legitimacy. While this prevents accusations of backdoor deals, it risks chilling future tech investments, significantly delaying revenue streams, and frustrating developer operations.", effects: { fiscal: -15, trust: 30, gateway: 0, legal: 15 } }
+        { name: "Maintain Executive NDAs", summary: "Protect proprietary corporate data essential for the rapid deployment of global tech infrastructure. Shielding negotiations prevents competitors from stalling the project, securing the immediate regional tax base and expediting local economic integration.", effects: { fiscal: 15, trust: -30, gateway: 0, legal: -15 } }
       ]
     },
     {
@@ -627,8 +661,8 @@
       desc: "AWS wants a standard industrial build for rapid deployment. Planners and citizens demand compatibility with historic Warrenton: brick facades, heavy landscaping, and strict height limits.",
       options: [
         { name: "Standard Industrial Design", summary: "Approve a standard build to minimize developer friction and expedite the municipal tax windfall. This allows for the rapid activation of local supplier networks—benefiting concrete layers, fencers, and businesses that thrive on construction booms.", effects: { fiscal: 20, trust: -20, gateway: -30, legal: 0 } },
-        { name: "Hybrid Green Infrastructure", summary: "Require living green walls and extensive berms to mask the facility without altering the fundamental building dimensions. This somewhat softens the visual impact and noise for residents, but imposes moderate, unstandardized maintenance costs on the developer.", effects: { fiscal: 0, trust: 5, gateway: 15, legal: 5 } },
-        { name: "Mandate 37ft Cap & Brick", summary: "Preserve the historic visual character of the gateway and naturally limit acoustic disruption through strict aesthetic rules. However, imposing strict architectural mandates creates massive redesign costs that threaten the project's overall financial viability and timeline.", effects: { fiscal: -15, trust: 15, gateway: 30, legal: 5 } }
+        { name: "Mandate 37ft Cap & Brick", summary: "Preserve the historic visual character of the gateway and naturally limit acoustic disruption through strict aesthetic rules. However, imposing strict architectural mandates creates massive redesign costs that threaten the project's overall financial viability and timeline.", effects: { fiscal: -15, trust: 15, gateway: 30, legal: 5 } },
+        { name: "Hybrid Green Infrastructure", summary: "Require living green walls and extensive berms to mask the facility without altering the fundamental building dimensions. This somewhat softens the visual impact and noise for residents, but imposes moderate, unstandardized maintenance costs on the developer.", effects: { fiscal: 0, trust: 5, gateway: 15, legal: 5 } }
       ]
     },
     {
@@ -636,8 +670,8 @@
       title: "Power Sourcing & Emissions",
       desc: "To meet immediate power needs, developers often rely on gas turbines or extended coal plants. How will the town balance immediate grid reliability against fence-line pollution and long-term sustainability?",
       options: [
-        { name: "Allow Flexible Power Sourcing", summary: "Permit flexible power sourcing to ensure immediate grid reliability. This powers AI systems capable of global climate modeling, generates a local utility contracting boom, and prevents delays in the facility's highly lucrative operational timeline.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -10 } },
         { name: "Mandate Grid Upgrade Subsidies", summary: "Force the developer to co-fund regional substation upgrades to handle their immense load alongside standard fossil fuels. This stabilizes the local grid for residents, but creates complex legal contracts and slightly reduces the developer's immediate profit margins.", effects: { fiscal: 5, trust: 5, gateway: -5, legal: 15 } },
+        { name: "Allow Flexible Power Sourcing", summary: "Permit flexible power sourcing to ensure immediate grid reliability. This powers AI systems capable of global climate modeling, generates a local utility contracting boom, and prevents delays in the facility's highly lucrative operational timeline.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -10 } },
         { name: "Require Clean Energy Matching", summary: "Follow the Lancaster model by requiring 100% renewable energy offsets to protect frontline communities from emissions. This ensures environmental justice but heavily burdens the developer, limits facility uptime, and slows overall profitability.", effects: { fiscal: -15, trust: 25, gateway: 20, legal: 5 } }
       ]
     },
@@ -646,9 +680,9 @@
       title: "Revenue Allocation & Benefits",
       desc: "Developers frequently offer nontax 'fees-in-lieu' for immediate town cash, but this bypasses school districts. How will you structure the massive incoming tax windfall for maximum community benefit?",
       options: [
+        { name: "Negotiate Robust CBAs", summary: "Legally bind the developer to fund specific community projects like affordable housing and STEM grants. This ensures broad, equitable community enrichment, but complicates the approval process and risks driving the developer to a cheaper county.", effects: { fiscal: -5, trust: 30, gateway: 5, legal: 5 } },
         { name: "Accept Direct Fee-in-Lieu", summary: "Create an immediate, concentrated municipal budget surge. This provides the town council with flexible, unbureaucratic capital to rapidly build civic infrastructure and manage rapid growth, bypassing complex school district funding formulas entirely.", effects: { fiscal: 30, trust: -20, gateway: 0, legal: -15 } },
-        { name: "Apply Standard Commercial Taxes", summary: "Reject special agreements and apply standard industrial tax rates. This ensures a predictable, legally unassailable revenue stream that automatically funds school districts, but it sacrifices the potential for a massive, targeted municipal cash injection.", effects: { fiscal: 10, trust: 10, gateway: 0, legal: 25 } },
-        { name: "Negotiate Robust CBAs", summary: "Legally bind the developer to fund specific community projects like affordable housing and STEM grants. This ensures broad, equitable community enrichment, but complicates the approval process and risks driving the developer to a cheaper county.", effects: { fiscal: -5, trust: 30, gateway: 5, legal: 5 } }
+        { name: "Apply Standard Commercial Taxes", summary: "Reject special agreements and apply standard industrial tax rates. This ensures a predictable, legally unassailable revenue stream that automatically funds school districts, but it sacrifices the potential for a massive, targeted municipal cash injection.", effects: { fiscal: 10, trust: 10, gateway: 0, legal: 25 } }
       ]
     },
     {
@@ -656,9 +690,9 @@
       title: "Water-Use Restrictions",
       desc: "Data centers can consume massive amounts of water. The town must determine the limits on standard evaporative cooling systems versus forcing the developer into unproven technologies or seasonal caps.",
       options: [
+        { name: "Mandate Closed-Loop Systems", summary: "Protect the local aquifer from rapid depletion and ensure long-term regional water security. While environmentally sound, it forces expensive technological shifts that could significantly delay or deter the facility's local economic gains.", effects: { fiscal: -15, trust: 20, gateway: 25, legal: 0 } },
         { name: "Permit Evaporative Cooling", summary: "Utilize highly efficient, standard cooling technology that keeps the facility economically competitive on a global scale. This guarantees the ongoing municipal tax stream and avoids forcing the developer into unproven, expensive mechanical redesigns.", effects: { fiscal: 20, trust: -25, gateway: -25, legal: -5 } },
-        { name: "Enforce Seasonal Water Caps", summary: "Allow standard cooling but mandate severe usage restrictions during summer drought months. This protects the local aquifer during critical periods while allowing standard tech, though it forces the data center to throttle compute power during peaks.", effects: { fiscal: 5, trust: 10, gateway: 10, legal: 5 } },
-        { name: "Mandate Closed-Loop Systems", summary: "Protect the local aquifer from rapid depletion and ensure long-term regional water security. While environmentally sound, it forces expensive technological shifts that could significantly delay or deter the facility's local economic gains.", effects: { fiscal: -15, trust: 20, gateway: 25, legal: 0 } }
+        { name: "Enforce Seasonal Water Caps", summary: "Allow standard cooling but mandate severe usage restrictions during summer drought months. This protects the local aquifer during critical periods while allowing standard tech, though it forces the data center to throttle compute power during peaks.", effects: { fiscal: 5, trust: 10, gateway: 10, legal: 5 } }
       ]
     },
     {
@@ -666,9 +700,9 @@
       title: "Decommissioning Conditions",
       desc: "What happens if technology changes and the building is abandoned in 15 years? Citizens want a bonded guarantee the site will be cleared, while developers want standard real estate risk profiles.",
       options: [
-        { name: "Assume Standard Commercial Risk", summary: "Signal the town is highly business-friendly, encouraging a clustered tech ecosystem that continually upgrades servers. It assumes ongoing growth will organically replace aging infrastructure without preemptive, hostile regulatory burdens on the developer.", effects: { fiscal: 15, trust: -20, gateway: -10, legal: -15 } },
+        { name: "Require Full Decommissioning Bond", summary: "Guarantee the site won't become a stranded asset or a blighted industrial shell if technology shifts rapidly. While it protects the town physically, requiring a steep upfront financial bond strongly deters future hyperscale builders.", effects: { fiscal: -10, trust: 25, gateway: 15, legal: 20 } },
         { name: "Establish Partial Escrow Fund", summary: "Require a moderate, incremental fund built over ten years to cover basic demolition if abandoned. This provides a safety net for the town without an aggressive upfront financial hurdle, though it may not cover full site remediation.", effects: { fiscal: 5, trust: 10, gateway: 5, legal: 10 } },
-        { name: "Require Full Decommissioning Bond", summary: "Guarantee the site won't become a stranded asset or a blighted industrial shell if technology shifts rapidly. While it protects the town physically, requiring a steep upfront financial bond strongly deters future hyperscale builders.", effects: { fiscal: -10, trust: 25, gateway: 15, legal: 20 } }
+        { name: "Assume Standard Commercial Risk", summary: "Signal the town is highly business-friendly, encouraging a clustered tech ecosystem that continually upgrades servers. It assumes ongoing growth will organically replace aging infrastructure without preemptive, hostile regulatory burdens on the developer.", effects: { fiscal: 15, trust: -20, gateway: -10, legal: -15 } }
       ]
     },
     {
@@ -676,9 +710,9 @@
       title: "Post-Approval Policy",
       desc: "If approved, how does the town handle future data center applications in Industrial zones to prevent serial development while maintaining a strong tech tax base?",
       options: [
-        { name: "Retain SUP Pathway for Growth", summary: "Embrace the AI boom to permanently transition the town into a prosperous tech hub. This strategy funds local public goods indefinitely through future builds, accepting manageable growing pains like rising housing demand as acceptable.", effects: { fiscal: 25, trust: -30, gateway: -20, legal: -10 } },
         { name: "Implement Zone-Specific Caps", summary: "Allow future development but strictly limit it to specific, pre-approved industrial acreage limits. This balances ongoing tech investment with controlled municipal growth, though it caps the ultimate economic ceiling and frustrates developers.", effects: { fiscal: 10, trust: 10, gateway: 10, legal: 15 } },
-        { name: "Initiate Ban on Future Builds", summary: "Protect the town's rural identity from becoming a permanent industrial corridor. This decisively prevents serial data center development and regional infrastructure strain, but permanently locks the municipality out of the digital economy's wealth.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 10 } }
+        { name: "Initiate Ban on Future Builds", summary: "Protect the town's rural identity from becoming a permanent industrial corridor. This decisively prevents serial data center development and regional infrastructure strain, but permanently locks the municipality out of the digital economy's wealth.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 10 } },
+        { name: "Retain SUP Pathway for Growth", summary: "Embrace the AI boom to permanently transition the town into a prosperous tech hub. This strategy funds local public goods indefinitely through future builds, accepting manageable growing pains like rising housing demand as acceptable.", effects: { fiscal: 25, trust: -30, gateway: -20, legal: -10 } }
       ]
     }
   ];
@@ -728,7 +762,12 @@
           ${impactHtml}
         `;
         btn.addEventListener('click', () => {
-          selectedOptions[s.id] = idx;
+          // Deselect if already selected, otherwise select new index
+          if (selectedOptions[s.id] === idx) {
+            selectedOptions[s.id] = null;
+          } else {
+            selectedOptions[s.id] = idx;
+          }
           renderScenarios();
           updateAll();
         });
@@ -793,35 +832,35 @@
       // Ensure the user has selected at least one option for all 8 scenarios
       const allSelected = Object.values(selectedOptions).every(val => val !== null);
       if (!allSelected) {
-          alert("Please select an option for all 8 Policy Docket items before finalizing the permit.");
+          showMessage("Incomplete Docket", "Please select an option for all 8 Policy Docket items before finalizing the permit.", "alert-circle", "var(--amber)");
           return;
       }
 
       currentPhase = 2;
       const btn = document.getElementById('phaseActionBtn');
-      btn.innerHTML = '<i data-lucide="check-check" style="stroke-width: 3;"></i> Proceed to Durability Stress Test';
+      btn.innerHTML = '<i data-lucide="arrow-right" style="stroke-width: 3;"></i> Proceed to Durability Stress Test';
       
       renderScenarios();
-      alert("Impact Metrics unlocked! You can now see the exact trade-offs on the Town Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.");
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showMessage("Impact Metrics Unlocked!", "You can now see the exact trade-offs on the Town Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.", "unlock", "var(--green)");
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Stay at the top for this reveal
 
     } else if (currentPhase === 2) {
       document.getElementById('tabBtnDataset').classList.remove('locked');
       switchTab('dataset');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTabs(); // Smoothly slide down to the active tab area
     }
   });
 
   document.getElementById('goToMatrixBtn')?.addEventListener('click', () => {
       document.getElementById('tabBtnDashboard').classList.remove('locked');
       switchTab('dashboard');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTabs();
   });
 
   document.getElementById('goToTownHallBtn')?.addEventListener('click', () => {
       document.getElementById('tabBtnTownhall').classList.remove('locked');
       switchTab('townhall');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTabs();
   });
 
   function generateDataset() {

@@ -8,7 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
-  <!-- Gamified Theme Config -->
   <script>
       tailwind.config = {
           theme: {
@@ -188,7 +187,6 @@
     .btn-outline { background: white; border: 3px solid var(--ink); color: var(--ink); padding: 10px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 900; cursor: pointer; transition: all 0.1s; display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); font-family: 'Nunito', sans-serif; }
     .btn-outline:active { background: #f1f5f9; transform: translateY(2px); box-shadow: none; }
 
-    /* Main Grid */
     .main-workspace { display: grid; grid-template-columns: 340px 1fr; gap: 32px; align-items: start; }
     .sidebar { position: sticky; top: 32px; display: flex; flex-direction: column; gap: 24px; }
     
@@ -277,7 +275,6 @@
     .scatter-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); transform: translate(-50%, -50%); opacity: 0.85; z-index: 10; transition: all 0.2s; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
     .scatter-dot:hover { width: 20px; height: 20px; background: var(--amber); opacity: 1; z-index: 20; cursor: crosshair; }
 
-    /* Town Hall Chat Styles */
     .chat-container { display: flex; flex-direction: column; gap: 24px; background: #cbd5e1; border: 4px solid var(--line); border-radius: 16px; padding: 32px; min-height: 400px; max-height: 600px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);}
     .chat-msg { display: flex; gap: 16px; opacity: 0; transform: translateY(15px); animation: fadeUp 0.4s ease-out forwards; max-width: 85%; }
     .chat-msg.right { align-self: flex-end; flex-direction: row-reverse; }
@@ -306,6 +303,16 @@
   </style>
 </head>
 <body>
+
+<div id="messageBoxOverlay" class="modal-overlay">
+  <div class="modal-content" style="max-width: 500px; text-align: center; padding: 40px;">
+    <button class="close-modal" id="closeMessageBox"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
+    <i id="msgBoxIcon" data-lucide="info" style="width: 48px; height: 48px; color: var(--blue); margin: 0 auto 16px;"></i>
+    <h2 id="messageBoxTitle" style="margin-top: 0; color: var(--ink); font-weight: 900; font-size: 1.8rem; margin-bottom: 16px;">Notice</h2>
+    <p id="messageBoxBody" style="font-size: 1.1rem; font-weight: 700; color: var(--muted); margin-bottom: 24px;"></p>
+    <button id="messageBoxOkBtn" class="btn-primary" style="margin: 0 auto;"><i data-lucide="check" style="stroke-width: 3;"></i> Acknowledge</button>
+  </div>
+</div>
 
 <div id="scoreModal" class="modal-overlay">
   <div class="modal-content">
@@ -575,7 +582,7 @@
     }
   }
 
-  // Modals
+  // Score Modal Listeners
   document.getElementById('openScoreModalBtn')?.addEventListener('click', () => {
     document.getElementById('scoreModal')?.classList.add('active');
   });
@@ -586,7 +593,27 @@
     if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
   });
 
-  // State: Initialize as an empty object so no options are pre-selected
+  // Custom Alert Message Modal Listeners
+  function showMessage(title, text, icon="info", iconColor="var(--blue)") {
+      document.getElementById('messageBoxTitle').textContent = title;
+      document.getElementById('messageBoxBody').innerHTML = text;
+      
+      const iconEl = document.getElementById('msgBoxIcon');
+      iconEl.setAttribute('data-lucide', icon);
+      iconEl.style.color = iconColor;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      document.getElementById('messageBoxOverlay').classList.add('active');
+  }
+
+  function hideMessage() {
+      document.getElementById('messageBoxOverlay').classList.remove('active');
+  }
+
+  document.getElementById('closeMessageBox')?.addEventListener('click', hideMessage);
+  document.getElementById('messageBoxOkBtn')?.addEventListener('click', hideMessage);
+
+  // State
   let selectedOptions = {}; 
   let currentPhase = 1;
   let generatedRows = [];
@@ -598,11 +625,16 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
   });
 
+  // Tab & Scroll Navigation Control
   function switchTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
     document.getElementById(tabId).classList.add('active');
+  }
+
+  function scrollToTabs() {
+    document.querySelector('.tabs-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -622,7 +654,6 @@
     }
   }
 
-  // --- Scenarios Data ---
   const scenarios = [
     {
       id: "s1", tag: "Site Selection", icon: "map-pin",
@@ -633,8 +664,8 @@
         esg: "Forcing a build against the community's will destroys our social license to operate. A phased deployment mitigates extreme backlash while keeping us in the game for the long haul."
       },
       options: [
-        { name: "Assert Vested Rights", summary: "Aggressively push the legal limits of 1970s industrial zoning. This guarantees rapid $550M deployment and maximizes initial ROI, but it immediately alienates local preservation groups and risks severe reputational damage.", effects: { fiscal: 20, trust: -15, gateway: -10, legal: -10 } },
         { name: "Negotiate Phased Deployment", summary: "Agree to build only half the proposed square footage initially, scaling up over 5 years. This builds good faith and manages community shock, but temporarily throttles your AI compute capacity and delays full operational margins.", effects: { fiscal: 5, trust: 15, gateway: 10, legal: 5 } },
+        { name: "Assert Vested Rights", summary: "Aggressively push the legal limits of 1970s industrial zoning. This guarantees rapid $550M deployment and maximizes initial ROI, but it immediately alienates local preservation groups and risks severe reputational damage.", effects: { fiscal: 20, trust: -15, gateway: -10, legal: -10 } },
         { name: "Relocate to Distant Brownfield", summary: "Abandon the prime gateway location for a distant, pre-industrialized zone. This embodies absolute environmental stewardship and wins massive public praise, but involves extreme fiber routing costs and severely delays project launch.", effects: { fiscal: -20, trust: 25, gateway: 20, legal: 15 } }
       ]
     },
@@ -647,9 +678,9 @@
         esg: "The era of the 'black box' data center is dead. Continually stonewalling FOIA requests breeds toxic conspiracy theories. Releasing targeted ESG summaries builds critical trust without compromising core IP."
       },
       options: [
+        { name: "Open Book Transparency", summary: "Declassify project negotiations and invite citizens to review power/water modeling. This fosters incredible community trust and democratic legitimacy, but entirely exposes your deployment playbook to rival tech giants.", effects: { fiscal: -15, trust: 30, gateway: 0, legal: 15 } },
         { name: "Enforce Strict NDAs", summary: "Refuse to release details to protect vital corporate IP and prevent competitor sabotage. This ensures operational speed and protects vendor contracts, but fuels toxic conspiracy theories of 'backdoor deals' among town residents.", effects: { fiscal: 15, trust: -30, gateway: 0, legal: -15 } },
-        { name: "Publish Targeted ESG Summaries", summary: "Release generalized environmental impact reports while keeping server blueprints hidden. This strategic compromise somewhat placates reasonable planners, but transparency advocates will still view it as corporate greenwashing.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 5 } },
-        { name: "Open Book Transparency", summary: "Declassify project negotiations and invite citizens to review power/water modeling. This fosters incredible community trust and democratic legitimacy, but entirely exposes your deployment playbook to rival tech giants.", effects: { fiscal: -15, trust: 30, gateway: 0, legal: 15 } }
+        { name: "Publish Targeted ESG Summaries", summary: "Release generalized environmental impact reports while keeping server blueprints hidden. This strategic compromise somewhat placates reasonable planners, but transparency advocates will still view it as corporate greenwashing.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 5 } }
       ]
     },
     {
@@ -661,9 +692,9 @@
         esg: "Aesthetic hostility breeds regulatory hostility. Investing in comprehensive green buffers and facade treatments is a cheap insurance policy against future anti-data-center zoning bans."
       },
       options: [
-        { name: "Standard Hyperscale Shell", summary: "Deploy your global standard warehouse design. This enables maximum speed-to-market and lowest construction overhead, but creates a towering, noisy eyesore that violates the town's sense of historic aesthetic.", effects: { fiscal: 25, trust: -25, gateway: -30, legal: -5 } },
         { name: "Invest in Hybrid Green Buffers", summary: "Maintain your standard building dimensions but invest millions in advanced living green walls and noise-canceling berms. This mitigates acoustic and visual pollution without requiring a total mechanical redesign inside the plant.", effects: { fiscal: -5, trust: 10, gateway: 15, legal: 5 } },
-        { name: "Adopt Bespoke Historic Compliance", summary: "Fully capitulate to the town: lower the roofline, use genuine brick, and redesign cooling stacks. This beautifully preserves the historic gateway, but drastically increases capital expenditures and completely breaks your deployment schedule.", effects: { fiscal: -25, trust: 20, gateway: 30, legal: 10 } }
+        { name: "Adopt Bespoke Historic Compliance", summary: "Fully capitulate to the town: lower the roofline, use genuine brick, and redesign cooling stacks. This beautifully preserves the historic gateway, but drastically increases capital expenditures and completely breaks your deployment schedule.", effects: { fiscal: -25, trust: 20, gateway: 30, legal: 10 } },
+        { name: "Standard Hyperscale Shell", summary: "Deploy your global standard warehouse design. This enables maximum speed-to-market and lowest construction overhead, but creates a towering, noisy eyesore that violates the town's sense of historic aesthetic.", effects: { fiscal: 25, trust: -25, gateway: -30, legal: -5 } }
       ]
     },
     {
@@ -675,9 +706,9 @@
         esg: "Training models on expanded coal power is a PR nightmare waiting to happen. Co-funding substation upgrades or committing to renewables ensures long-term viability and aligns with integral ecology."
       },
       options: [
+        { name: "Mandate 100% Renewable Matching", summary: "Delay full operations until you can sign power purchase agreements (PPAs) that offset your footprint with regional wind/solar. This champions integral ecology and ESG goals, but severely hinders your ability to scale AI compute immediately.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 5 } },
         { name: "Utilize Default Grid (Fossil-Heavy)", summary: "Plug into the existing local utility, securing immediate power to train vital AI models. While this ensures operational continuity, it may force local coal plants to stay open longer, exposing fence-line communities to toxic emissions.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -10 } },
-        { name: "Co-Fund Substation Upgrades", summary: "Use corporate funds to upgrade the local utility infrastructure so your massive draw doesn't destabilize residential power grids. This prevents local brownouts but requires complex legal agreements and impacts your bottom line.", effects: { fiscal: -5, trust: 15, gateway: 5, legal: 10 } },
-        { name: "Mandate 100% Renewable Matching", summary: "Delay full operations until you can sign power purchase agreements (PPAs) that offset your footprint with regional wind/solar. This champions integral ecology and ESG goals, but severely hinders your ability to scale AI compute immediately.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 5 } }
+        { name: "Co-Fund Substation Upgrades", summary: "Use corporate funds to upgrade the local utility infrastructure so your massive draw doesn't destabilize residential power grids. This prevents local brownouts but requires complex legal agreements and impacts your bottom line.", effects: { fiscal: -5, trust: 15, gateway: 5, legal: 10 } }
       ]
     },
     {
@@ -689,9 +720,9 @@
         esg: "Bypassing schools is political suicide for our brand. A comprehensive CBA integrates us into the community fabric, turning local residents into advocates rather than adversaries."
       },
       options: [
-        { name: "Offer Direct Fee-in-Lieu", summary: "Write a large, direct check to the Town Council in exchange for bypassing standard local taxes. This ensures your costs are fixed and gives the Mayor immediate capital, but enrages citizens because it bypasses the public school system.", effects: { fiscal: 25, trust: -25, gateway: 0, legal: -15 } },
         { name: "Accept Standard Tax Schedule", summary: "Submit to standard industrial real estate and equipment taxes. This is predictable, legally safe, and automatically filters money to local schools, though it lacks the PR impact of a headline-grabbing corporate grant.", effects: { fiscal: 5, trust: 10, gateway: 0, legal: 20 } },
-        { name: "Negotiate Comprehensive CBA", summary: "Fund a complex Community Benefit Agreement, building local STEM centers and a $60M affordable housing trust. This drives unparalleled social flourishing and public goodwill, but commits your division to massive, ongoing civic liabilities.", effects: { fiscal: -15, trust: 35, gateway: 5, legal: 5 } }
+        { name: "Negotiate Comprehensive CBA", summary: "Fund a complex Community Benefit Agreement, building local STEM centers and a $60M affordable housing trust. This drives unparalleled social flourishing and public goodwill, but commits your division to massive, ongoing civic liabilities.", effects: { fiscal: -15, trust: 35, gateway: 5, legal: 5 } },
+        { name: "Offer Direct Fee-in-Lieu", summary: "Write a large, direct check to the Town Council in exchange for bypassing standard local taxes. This ensures your costs are fixed and gives the Mayor immediate capital, but enrages citizens because it bypasses the public school system.", effects: { fiscal: 25, trust: -25, gateway: 0, legal: -15 } }
       ]
     },
     {
@@ -703,9 +734,9 @@
         esg: "Water is the next great climate conflict. Proactive seasonal throttling shows we are responsible stewards of the local aquifer, preserving our operational license during drought years."
       },
       options: [
+        { name: "Mandate Closed-Loop Immersion", summary: "Redesign the facility for advanced closed-loop immersion cooling. This boasts near-zero water waste and perfectly honors environmental stewardship, but it is incredibly expensive, unproven at this scale, and risks major hardware failures.", effects: { fiscal: -25, trust: 25, gateway: 30, legal: 0 } },
         { name: "Deploy Standard Evaporative Cooling", summary: "Use your most cost-effective and energy-efficient cooling technology. This keeps operating margins high and servers cool, but continuously drains millions of gallons from the local watershed, infuriating environmentalists.", effects: { fiscal: 20, trust: -30, gateway: -25, legal: -5 } },
-        { name: "Implement Dynamic Seasonal Throttling", summary: "Agree to throttle AI compute workloads and switch cooling methods during summer droughts. This protects the local water table during vulnerable months, but reduces your system reliability and upsets corporate clients.", effects: { fiscal: -5, trust: 15, gateway: 15, legal: 5 } },
-        { name: "Mandate Closed-Loop Immersion", summary: "Redesign the facility for advanced closed-loop immersion cooling. This boasts near-zero water waste and perfectly honors environmental stewardship, but it is incredibly expensive, unproven at this scale, and risks major hardware failures.", effects: { fiscal: -25, trust: 25, gateway: 30, legal: 0 } }
+        { name: "Implement Dynamic Seasonal Throttling", summary: "Agree to throttle AI compute workloads and switch cooling methods during summer droughts. This protects the local water table during vulnerable months, but reduces your system reliability and upsets corporate clients.", effects: { fiscal: -5, trust: 15, gateway: 15, legal: 5 } }
       ]
     },
     {
@@ -717,9 +748,9 @@
         esg: "Pledging a full upfront bond guarantees we don't leave a stranded asset. It completely neutralizes the most potent environmental argument against us: that we are a boom-and-bust parasite."
       },
       options: [
-        { name: "Assume Standard Real Estate Risk", summary: "Refuse to post any special bonds, treating the site like any other commercial warehouse. This keeps your upfront capital completely free for further expansion, but leaves the town feeling deeply vulnerable to corporate abandonment.", effects: { fiscal: 15, trust: -25, gateway: -10, legal: -15 } },
+        { name: "Provide Full Upfront Bond", summary: "Lock away millions in a full decommissioning bond before breaking ground. This completely guarantees the land will be restored to nature, perfectly honors integral ecology, but heavily restricts your division's immediate cash flow.", effects: { fiscal: -15, trust: 25, gateway: 15, legal: 20 } },
         { name: "Establish Partial Escrow Fund", summary: "Agree to incrementally fund an escrow account over a decade to cover basic demolition costs. This demonstrates moderate corporate responsibility without requiring a massive, punitive upfront cash deposit.", effects: { fiscal: 0, trust: 10, gateway: 5, legal: 10 } },
-        { name: "Provide Full Upfront Bond", summary: "Lock away millions in a full decommissioning bond before breaking ground. This completely guarantees the land will be restored to nature, perfectly honors integral ecology, but heavily restricts your division's immediate cash flow.", effects: { fiscal: -15, trust: 25, gateway: 15, legal: 20 } }
+        { name: "Assume Standard Real Estate Risk", summary: "Refuse to post any special bonds, treating the site like any other commercial warehouse. This keeps your upfront capital completely free for further expansion, but leaves the town feeling deeply vulnerable to corporate abandonment.", effects: { fiscal: 15, trust: -25, gateway: -10, legal: -15 } }
       ]
     },
     {
@@ -731,9 +762,9 @@
         esg: "Endless sprawl triggers statewide legislative moratoriums. Committing to a single flagship site or a regional cap protects the brand, satisfies the locals, and secures this specific high-value asset."
       },
       options: [
-        { name: "Demand Unlimited SUP Pathways", summary: "Lobby heavily to keep the town open for endless future data center applications. This ensures you can indefinitely expand your regional footprint to meet AI demand, but sparks a ferocious 'anti-sprawl' political resistance.", effects: { fiscal: 25, trust: -35, gateway: -20, legal: -15 } },
         { name: "Agree to Regional Megawatt Caps", summary: "Voluntarily agree that AWS will not exceed a specific megawatt footprint in the county. This compromise allows for measured growth while guaranteeing residents the town won't become an endless industrial park.", effects: { fiscal: 5, trust: 15, gateway: 10, legal: 10 } },
-        { name: "Commit to a Single Flagship Site", summary: "Sign a binding agreement that this will be AWS's only data center in Warrenton. This permanently protects the town's rural identity and secures local admiration, but severely kneecaps your ability to scale regional infrastructure.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 15 } }
+        { name: "Commit to a Single Flagship Site", summary: "Sign a binding agreement that this will be AWS's only data center in Warrenton. This permanently protects the town's rural identity and secures local admiration, but severely kneecaps your ability to scale regional infrastructure.", effects: { fiscal: -20, trust: 30, gateway: 25, legal: 15 } },
+        { name: "Demand Unlimited SUP Pathways", summary: "Lobby heavily to keep the town open for endless future data center applications. This ensures you can indefinitely expand your regional footprint to meet AI demand, but sparks a ferocious 'anti-sprawl' political resistance.", effects: { fiscal: 25, trust: -35, gateway: -20, legal: -15 } }
       ]
     }
   ];
@@ -781,7 +812,6 @@
       const list = card.querySelector('.option-list');
       s.options.forEach((op, idx) => {
         const btn = document.createElement('button');
-        // Only apply 'active' if this exact index was selected
         btn.className = 'option-btn' + (selectedOptions[s.id] === idx ? ' active' : '');
         
         let impactHtml = '';
@@ -800,11 +830,18 @@
           </div>
           ${impactHtml}
         `;
+        
+        // Toggle selection logic
         btn.addEventListener('click', () => {
-          selectedOptions[s.id] = idx;
+          if (selectedOptions[s.id] === idx) {
+              delete selectedOptions[s.id]; // deselect if clicked again
+          } else {
+              selectedOptions[s.id] = idx; // select newly
+          }
           renderScenarios();
           updateAll();
         });
+        
         list.appendChild(btn);
       });
       scenarioGrid.appendChild(card);
@@ -816,7 +853,6 @@
   function getAggregate() {
     const total = { fiscal: 0, trust: 0, gateway: 0, legal: 0 };
     scenarios.forEach(s => {
-      // Only add to the total if the user has actually made a selection for this scenario
       if (selectedOptions[s.id] !== undefined) {
           const choice = s.options[selectedOptions[s.id]];
           Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
@@ -860,14 +896,12 @@
     animateValue('legalScore', total.legal);
   }
 
+  // Phase Transition Controls
   document.getElementById('phaseActionBtn')?.addEventListener('click', () => {
     if (currentPhase === 1) {
-      // Validation: Ensure all 8 scenarios have a selection
       const totalSelected = Object.keys(selectedOptions).length;
       if (totalSelected < scenarios.length) {
-          // Alert user using standard confirm/alert replacement logic (just using native alert for simplicity here, 
-          // or we can use a custom modal if preferred, but a simple alert works fine for quick validation)
-          alert(`Please select an option for all ${scenarios.length} strategic domains. You have currently selected ${totalSelected}.`);
+          showMessage("Incomplete Strategy", `Please select an option for all ${scenarios.length} strategic domains. You have currently selected ${totalSelected}.`, "alert-circle", "var(--amber)");
           return;
       }
 
@@ -876,26 +910,26 @@
       btn.innerHTML = '<i data-lucide="check-check" style="stroke-width: 3;"></i> Proceed to Market Stress Test';
       
       renderScenarios();
-      alert("Impact Metrics unlocked! You can now see the exact trade-offs on your Corporate Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.");
+      showMessage("Impact Metrics Unlocked!", "You can now see the exact trade-offs on your Corporate Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.", "unlock", "var(--green)");
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
     } else if (currentPhase === 2) {
       document.getElementById('tabBtnDataset').classList.remove('locked');
       switchTab('dataset');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTabs(); // Navigate and anchor locally
     }
   });
 
   document.getElementById('goToMatrixBtn')?.addEventListener('click', () => {
       document.getElementById('tabBtnDashboard').classList.remove('locked');
       switchTab('dashboard');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTabs(); // Navigate and anchor locally
   });
 
   document.getElementById('goToTownHallBtn')?.addEventListener('click', () => {
       document.getElementById('tabBtnTownhall').classList.remove('locked');
       switchTab('townhall');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTabs(); // Navigate and anchor locally
   });
 
   function generateDataset() {

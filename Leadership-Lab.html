@@ -277,12 +277,12 @@
     .adv-esg strong { color: var(--green); font-size: 1.05rem; font-weight: 900; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; border-bottom: 3px solid var(--ink); padding-bottom: 8px;}
 
     .option-list { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
-    .option-btn { padding: 16px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.1s; display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif;}
-    .option-btn:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); }
-    .option-btn.active { background: var(--blue); border-color: var(--ink); box-shadow: 0px 0px 0px var(--ink); transform: translateY(2px); }
-    .option-text strong { display: block; font-size: 1.05rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; }
-    .option-btn.active .option-text strong { color: white; }
-    .option-text span { font-size: 0.9rem; font-weight: 700; color: var(--muted); display: block; line-height: 1.4; }
+    .option-btn { padding: 16px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif; position: relative; }
+    .option-btn:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); z-index: 5; }
+    .option-btn.active { background: var(--blue); border-color: var(--ink); box-shadow: 8px 8px 0px var(--ink); transform: scale(1.03) translateY(-4px); z-index: 10; border-width: 3px; }
+    .option-text strong { display: block; font-size: 1.05rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; transition: all 0.2s; }
+    .option-btn.active .option-text strong { color: white; font-size: 1.1rem; }
+    .option-text span { font-size: 0.9rem; font-weight: 700; color: var(--muted); display: block; line-height: 1.4; transition: all 0.2s; }
     .option-btn.active .option-text span { color: rgba(255,255,255,0.9); }
     
     .impact-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
@@ -1028,7 +1028,10 @@
 
         btn.innerHTML = `
           <div class="option-text">
-            <strong>${op.name}</strong>
+            <strong style="display:flex; justify-content:space-between; align-items:flex-start; gap: 8px;">
+              ${op.name}
+              ${selectedOptions[s.id] === idx ? '<i data-lucide="check-circle-2" style="width:24px; height:24px; color:white; flex-shrink:0;"></i>' : ''}
+            </strong>
             <span>${op.summary}</span>
           </div>
           ${impactHtml}

@@ -19,8 +19,9 @@
                   },
                   colors: {
                       game: {
-                          dark: '#0f172a',
-                          light: '#f1f5f9',
+                          primary: '#0f766e',
+                          dark: '#1c1917',
+                          light: '#f5f5f4',
                           blue: '#3b82f6',
                           purple: '#8b5cf6',
                           green: '#10b981',
@@ -28,6 +29,11 @@
                           yellow: '#f59e0b',
                           teal: '#0d9488'
                       }
+                  },
+                  boxShadow: {
+                      'game-sm': '2px 2px 0px rgba(28, 25, 23, 1)',
+                      'game': '4px 4px 0px rgba(28, 25, 23, 1)',
+                      'game-lg': '8px 8px 0px rgba(28, 25, 23, 1)',
                   },
                   boxShadow: {
                       'game-sm': '2px 2px 0px rgba(15, 23, 42, 1)',
@@ -49,13 +55,14 @@
 
   <style>
     :root {
-      --bg: #f8fafc;
+      --primary: #0f766e; /* Civic Teal */
+      --primary-hover: #115e59;
+      --bg: #f5f5f4;
       --panel: #ffffff;
-      --ink: #0f172a;
-      --muted: #64748b;
-      --line: #0f172a;
-      --blue: #3b82f6;
-      --blue-hover: #2563eb;
+      --ink: #1c1917; /* Warm Stone */
+      --muted: #78716c;
+      --line: #1c1917;
+      --blue: #3b82f6; 
       --green: #10b981;
       --amber: #f59e0b;
       --red: #ef4444;
@@ -63,9 +70,9 @@
       --teal: #0d9488;
       
       /* Gamified Shadows */
-      --shadow-sm: 2px 2px 0px rgba(15, 23, 42, 1);
-      --shadow: 4px 4px 0px rgba(15, 23, 42, 1);
-      --shadow-lg: 8px 8px 0px rgba(15, 23, 42, 1);
+      --shadow-sm: 2px 2px 0px var(--ink);
+      --shadow: 4px 4px 0px var(--ink);
+      --shadow-lg: 8px 8px 0px var(--ink);
       --radius: 16px;
     }
 
@@ -73,18 +80,18 @@
     
     /* Gamified Scrollbar */
     ::-webkit-scrollbar { width: 12px; height: 12px; }
-    ::-webkit-scrollbar-track { background: #cbd5e1; border-left: 3px solid #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #3b82f6; border: 3px solid #0f172a; border-radius: 6px; }
-    ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+    ::-webkit-scrollbar-track { background: #e7e5e4; border-left: 3px solid var(--ink); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border: 3px solid var(--ink); border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary-hover); }
 
     body {
       margin: 0;
       font-family: 'Nunito', system-ui, -apple-system, sans-serif;
       color: var(--ink);
-      background-color: #cbd5e1;
+      background-color: #e7e5e4;
       background-image: 
-          radial-gradient(#3b82f6 2px, transparent 2px),
-          radial-gradient(#3b82f6 2px, transparent 2px);
+          radial-gradient(var(--primary) 2px, transparent 2px),
+          radial-gradient(var(--primary) 2px, transparent 2px);
       background-size: 30px 30px;
       background-position: 0 0, 15px 15px;
       background-attachment: fixed;
@@ -92,7 +99,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
-      padding-bottom: 70px; /* Give room for fixed ticker at bottom */
+      padding-bottom: 60px; /* Space for fixed ticker */
     }
 
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -118,7 +125,7 @@
     }
     
     .landing-header { 
-      background: var(--blue); 
+      background: var(--primary); 
       color: white; 
       padding: 48px 40px; 
       text-align: center; 
@@ -146,7 +153,7 @@
 
     .step-badge { display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
     .phase-step:nth-child(1) .step-badge { background: var(--amber); color: var(--ink); }
-    .phase-step:nth-child(2) .step-badge { background: var(--blue); color: white; }
+    .phase-step:nth-child(2) .step-badge { background: var(--primary); color: white; }
     .phase-step:nth-child(3) .step-badge { background: var(--green); color: white; }
     .phase-step:nth-child(4) .step-badge { background: var(--purple); color: white; }
 
@@ -155,16 +162,15 @@
 
     .player-entry { display: flex; flex-direction: column; gap: 16px; background: white; padding: 32px; border-radius: 16px; text-align: center; border: 4px solid var(--ink); box-shadow: var(--shadow); }
     
-    .start-btn { background: var(--blue); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
-    .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
+    .start-btn { background: var(--primary); color: white; border: 4px solid var(--ink); padding: 16px 32px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; cursor: pointer; width: 100%; max-width: 400px; margin: 0 auto; transition: all 0.1s; box-shadow: var(--shadow-lg); font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px;}
+    .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px var(--ink); }
 
-    /* Fixed News Ticker */
     .news-ticker-wrap {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      z-index: 1000;
+      z-index: 2000;
       background: var(--ink);
       color: white;
       padding: 10px 24px;
@@ -207,7 +213,7 @@
     
     .hero { background: var(--ink); color: white; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden; justify-content: space-between; border: 4px solid var(--ink);}
     .hero-content-wrap { display: flex; align-items: center; gap: 24px; }
-    .hero-icon { background: var(--blue); border: 3px solid white; box-shadow: var(--shadow-sm); padding: 20px; border-radius: 50%; flex-shrink: 0; animation: pulseSoft 4s infinite; }
+    .hero-icon { background: var(--primary); border: 3px solid white; box-shadow: var(--shadow-sm); padding: 20px; border-radius: 50%; flex-shrink: 0; animation: pulseSoft 4s infinite; }
     .hero h1 { margin: 0 0 12px; font-size: 2.2rem; font-weight: 900; letter-spacing: -0.02em; }
     .hero p { margin: 0; font-size: 1.1rem; color: #cbd5e1; max-width: 800px; font-weight: 700;}
 
@@ -290,11 +296,11 @@
     .option-btn.active .badge-neu { box-shadow: none; }
 
     .tabs-container { margin-top: 32px; background: white; border: 4px solid var(--ink); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
-    .tabs-header { display: flex; background: #cbd5e1; border-bottom: 4px solid var(--ink); overflow-x: auto; gap: 0; }
+    .tabs-header { display: flex; background: #e7e5e4; border-bottom: 4px solid var(--ink); overflow-x: auto; gap: 0; }
     .tab-btn { flex: 1; padding: 16px 12px; background: transparent; border: none; border-right: 4px solid var(--ink); color: var(--ink); font-weight: 900; font-size: 1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; font-family: 'Nunito', sans-serif;}
     .tab-btn:last-child { border-right: none; }
-    .tab-btn:hover:not(.locked):not(.active) { background: #e2e8f0; }
-    .tab-btn.active { color: white; background: var(--blue); }
+    .tab-btn:hover:not(.locked):not(.active) { background: #d6d3d1; }
+    .tab-btn.active { color: white; background: var(--primary); }
     .tab-btn.locked { opacity: 0.5; cursor: not-allowed; pointer-events: none; background: #e2e8f0; color: #94a3b8; }
     .tab-content { display: none; padding: 32px; background: white; }
     .tab-content.active { display: block; animation: fadeUp 0.4s ease-out forwards; }
@@ -302,7 +308,7 @@
     button { cursor: pointer; font-weight: 900; transition: all 0.1s; font-family: 'Nunito', sans-serif; }
     .btn-success { background: var(--green); color: white; border: 3px solid var(--ink); padding: 16px 32px; font-size: 1.1rem; border-radius: 12px; box-shadow: var(--shadow); width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;}
     .btn-success:active { transform: translateY(4px); box-shadow: none; }
-    .btn-primary { background: var(--blue); color: white; border: 3px solid var(--ink); padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
+    .btn-primary { background: var(--primary); color: white; border: 3px solid var(--ink); padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
     .btn-primary:active { transform: translateY(4px); box-shadow: none; }
 
     .achievement-box {
@@ -358,13 +364,13 @@
     .quad-label { position: absolute; font-size: 1rem; font-weight: 900; opacity: 0.8; z-index: 4; text-transform: uppercase; }
     .ql-tr { top: 24px; right: 24px; color: var(--green); text-align: right; }
     .ql-br { bottom: 24px; right: 24px; color: var(--red); text-align: right; }
-    .ql-tl { top: 24px; left: 24px; color: var(--blue); }
+    .ql-tl { top: 24px; left: 24px; color: var(--primary); }
     .ql-bl { bottom: 24px; left: 24px; color: var(--muted); }
 
-    .scatter-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); transform: translate(-50%, -50%); opacity: 0.85; z-index: 10; transition: all 0.2s; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
+    .scatter-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--primary); transform: translate(-50%, -50%); opacity: 0.85; z-index: 10; transition: all 0.2s; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
     .scatter-dot:hover { width: 20px; height: 20px; background: var(--amber); opacity: 1; z-index: 20; cursor: crosshair; }
 
-    .chat-container { display: flex; flex-direction: column; gap: 24px; background: #cbd5e1; border: 4px solid var(--line); border-radius: 16px; padding: 32px; min-height: 400px; max-height: 600px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);}
+    /* --- Town Hall Chat Styles --- */
     .chat-msg { display: flex; gap: 16px; opacity: 0; transform: translateY(15px); animation: fadeUp 0.4s ease-out forwards; max-width: 85%; }
     .chat-msg.right { align-self: flex-end; flex-direction: row-reverse; }
     .chat-avatar { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; border: 3px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); flex-shrink: 0; background: white; }
@@ -396,7 +402,7 @@
 <div id="messageBoxOverlay" class="modal-overlay">
   <div class="modal-content" style="max-width: 500px; text-align: center; padding: 40px;">
     <button class="close-modal" id="closeMessageBox"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
-    <i id="msgBoxIcon" data-lucide="info" style="width: 48px; height: 48px; color: var(--blue); margin: 0 auto 16px;"></i>
+    <i id="msgBoxIcon" data-lucide="info" style="width: 48px; height: 48px; color: var(--primary); margin: 0 auto 16px;"></i>
     <h2 id="messageBoxTitle" style="margin-top: 0; color: var(--ink); font-weight: 900; font-size: 1.8rem; margin-bottom: 16px;">Notice</h2>
     <p id="messageBoxBody" style="font-size: 1.1rem; font-weight: 700; color: var(--muted); margin-bottom: 24px;"></p>
     <button id="messageBoxOkBtn" class="btn-primary" style="margin: 0 auto;"><i data-lucide="check" style="stroke-width: 3;"></i> Acknowledge</button>
@@ -406,16 +412,16 @@
 <div id="scoreModal" class="modal-overlay">
   <div class="modal-content">
     <button class="close-modal" id="closeScoreModal"><i data-lucide="x" style="width:24px; height:24px; stroke-width: 3;"></i></button>
-    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="bar-chart" style="color: var(--blue); width: 32px; height: 32px;"></i> Corporate KPIs</h2>
+    <h2 style="margin-top: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 900; font-size: 2rem; border-bottom: 4px solid var(--ink); padding-bottom: 16px;"><i data-lucide="book-open" style="color: var(--primary); width: 32px; height: 32px;"></i> Decision KPIs</h2>
     
     <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">
-      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; font-weight: 900;"><i data-lucide="info" style="width: 20px; height: 20px; color: var(--blue);"></i> Leading the Expansion</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700; color: var(--muted);">As the AWS AI Division Leader, you must rapidly scale infrastructure while managing complex local resistance. Your decisions balance the pressure for financial returns with corporate ESG (Environmental, Social, and Governance) commitments.</p>
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; font-weight: 900;"><i data-lucide="info" style="width: 20px; height: 20px; color: var(--primary);"></i> Evaluating the Project</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700; color: var(--muted);">As the Town Council, your job is to analyze this hyperscale project based on four distinct axes reflecting the community's primary concerns and the public record. Every decision is a valid trade-off between growth and preservation.</p>
     </div>
 
-    <div style="background: #eff6ff; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--blue); box-shadow: 4px 4px 0px var(--blue);">
-      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--blue); font-weight: 900;"><i data-lucide="zap" style="width: 20px; height: 20px; stroke-width: 3;"></i> Deployment Speed & ROI</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Measures how fast you can build the data center and the operational margins it produces. Standardized builds and utilizing existing fossil-fuel grids maximize this score. Bespoke redesigns and expensive renewables lower it.</p>
+    <div style="background: #f0fdfa; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--primary); box-shadow: 4px 4px 0px var(--primary);">
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 900;"><i data-lucide="dollar-sign" style="width: 20px; height: 20px; stroke-width: 3;"></i> Fiscal Stability</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Tracks the estimated $550M corporate investment, massive tax windfalls, secondary job spillovers, and potential funding for Community Benefit Agreements. High scores indicate a well-funded municipal budget; low scores indicate deficit risk or opportunity costs.</p>
     </div>
 
     <div style="background: #fffbeb; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--amber); box-shadow: 4px 4px 0px var(--amber);">
@@ -488,21 +494,30 @@
       </div>
 
       <div class="player-entry">
-        <button id="startBtn" class="start-btn"><i data-lucide="briefcase" style="width:24px; height:24px; display:inline-block; vertical-align:text-bottom; margin-right:8px; stroke-width: 3;"></i> Initiate Strategy Session</button>
+        <button id="startBtn" class="start-btn"><i data-lucide="gavel" style="width:24px; height:24px; display:inline-block; vertical-align:text-bottom; margin-right:8px; stroke-width: 3;"></i> Call Meeting to Order</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- FIXED BOTTOM TICKER -->
+<!-- NEW: Live Breaking News Ticker -->
 <div class="news-ticker-wrap" id="tickerWrap" style="display:none;">
-  <div class="ticker-label"><i data-lucide="bar-chart-2" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Market Feed</div>
+  <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
   <div class="ticker-content">
-    <div class="ticker-text" id="newsTickerText">Awaiting strategic decisions. Market anticipating AWS infrastructure roadmap for the upcoming quarter...</div>
+    <div class="ticker-text" id="newsTickerText">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
   </div>
 </div>
 
 <div id="appContainer" class="app-container">
+  
+  <!-- NEW: Live Breaking News Ticker -->
+  <div class="news-ticker-wrap stagger-1">
+    <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
+    <div class="ticker-content">
+      <div class="ticker-text" id="newsTickerText">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
+    </div>
+  </div>
+
   <header class="hero stagger-1">
     <div class="hero-content-wrap">
       <div class="hero-icon">
@@ -521,13 +536,13 @@
   <main class="main-workspace stagger-2">
     <aside class="sidebar">
       <div class="panel" style="background: white;">
-        <h2 class="panel-title" style="border-bottom: none; margin-bottom: 24px;"><i data-lucide="pie-chart" style="stroke-width: 3; color: var(--blue);"></i> Corporate Scorecard</h2>
+        <h2 class="panel-title" style="border-bottom: none; margin-bottom: 24px;"><i data-lucide="bar-chart-2" style="stroke-width: 3; color: var(--primary);"></i> Town Scorecard</h2>
         
         <div class="kpi-stack">
           <div class="kpi-card">
-            <div class="kpi-icon bg-blue"><i data-lucide="zap" style="stroke-width: 3;"></i></div>
+            <div class="kpi-icon" style="background: var(--primary);"><i data-lucide="dollar-sign" style="stroke-width: 3;"></i></div>
             <div class="kpi-info">
-              <h4>Deployment Speed & ROI</h4>
+              <h4>Fiscal Stability</h4>
               <div class="value" id="finScore">0</div>
             </div>
           </div>
@@ -562,8 +577,8 @@
 
     <div class="content-area">
       <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
-        <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="compass" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Strategy Docket</h2>
-        <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 strategic domains. <strong>Every choice represents a valid, holistic trade-off between maximizing shareholder value through rapid scale and honoring the principles of integral ecology within the host community.</strong> Consult your advisors for competing perspectives.</p>
+        <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="file-text" style="color: var(--primary); width: 32px; height: 32px; stroke-width: 3;"></i> The Policy Docket</h2>
+        <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 policy domains based on the actual public record. <strong>Every choice represents a valid, balanced trade-off between economic revitalization and preserving local character.</strong></p>
         <div class="scenario-grid" id="scenarioGrid"></div>
       </div>
 
@@ -578,16 +593,16 @@
         <div class="tab-content active" id="overview">
           <div style="display: grid; grid-template-columns: 1fr; gap: 32px;">
             <div style="text-align: center; border-bottom: 3px dashed var(--ink); padding-bottom: 40px; padding-top: 16px;">
-              <p style="margin: 0 0 20px 0; color: var(--ink); font-weight: 900; font-size: 1.4rem;">Ready to finalize the Infrastructure Strategy?</p>
-              <button id="phaseActionBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--blue);"><i data-lucide="lock" style="stroke-width: 3;"></i> Lock Strategy & View Impact</button>
+              <p style="margin: 0 0 20px 0; color: var(--ink); font-weight: 900; font-size: 1.4rem;">Ready to finalize the Special Use Permit?</p>
+              <button id="phaseActionBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--primary); border-color: var(--ink);"><i data-lucide="lock" style="stroke-width: 3;"></i> Lock Council Votes & View Impact</button>
             </div>
           </div>
         </div>
 
         <div class="tab-content" id="dataset">
           <div style="background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; margin-bottom: 32px; box-shadow: var(--shadow);">
-            <strong style="display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 900;"><i data-lucide="cpu" style="width: 28px; height: 28px; color: var(--amber);"></i> Market Volatility Stress Test</strong>
-            <p style="margin: 12px 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--muted);">This engine runs 1,000 simulated days using your finalized strategy. It injects random FOIA lawsuits, supply chain delays, PR crises, and regulatory appeals to see if your project survives.</p>
+            <strong style="display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 900;"><i data-lucide="cpu" style="width: 28px; height: 28px; color: var(--primary);"></i> Durability Stress Test Engine</strong>
+            <p style="margin: 12px 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--muted);">This engine runs 1,000 simulated days using your finalized policies. It injects random FOIA requests, infrastructure appeals, and citizen lawsuits to see if Warrenton's decision survives legally and politically.</p>
           </div>
           
           <div style="display: flex; gap: 16px; margin-bottom: 32px;">
@@ -595,7 +610,7 @@
           </div>
           
           <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 40px; display:none;" id="proceedMatrixWrapper">
-            <button id="goToMatrixBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--blue);"><i data-lucide="arrow-right" style="stroke-width: 3;"></i> View Durability Results</button>
+            <button id="goToMatrixBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--primary); border-color: var(--ink);"><i data-lucide="arrow-right" style="stroke-width: 3;"></i> View Durability Results</button>
           </div>
         </div>
 
@@ -607,8 +622,8 @@
 
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
             <div>
-              <h3 style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900;"><i data-lucide="scatter-chart" style="color: var(--blue); stroke-width: 3;"></i> The Corporate Matrix</h3>
-              <p style="margin: 8px 0 0 0; color: var(--ink); font-size: 1rem; font-weight: 800;">Distribution of 1,000 days: ROI/Speed vs. Stakeholder/Regulatory Trust.</p>
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900;"><i data-lucide="scatter-chart" style="color: var(--primary); stroke-width: 3;"></i> The Failure Matrix</h3>
+              <p style="margin: 8px 0 0 0; color: var(--ink); font-size: 1rem; font-weight: 800;">Distribution of 1,000 days: Daily Tax Yield vs. Legal/Social Stability.</p>
             </div>
           </div>
 
@@ -657,8 +672,8 @@
             </div>
 
           <div class="chat-controls">
-            <button id="nextMsgBtn" class="btn-primary" style="display:flex; align-items:center; gap:8px; font-size: 1.2rem; padding: 16px 32px; background: var(--blue);"><i data-lucide="message-circle" style="stroke-width: 3;"></i> Next Speaker</button>
-            <button id="finishChatBtn" class="btn-success" style="display:none; max-width: 400px; font-size: 1.2rem; padding: 16px 32px; background: var(--green);"><i data-lucide="briefcase" style="stroke-width: 3;"></i> Reveal Corporate Instructions</button>
+            <button id="nextMsgBtn" class="btn-primary" style="display:flex; align-items:center; gap:8px; font-size: 1.2rem; padding: 16px 32px; background: var(--primary);"><i data-lucide="message-circle" style="stroke-width: 3;"></i> Next Speaker</button>
+            <button id="finishChatBtn" class="btn-success" style="display:none; max-width: 400px; font-size: 1.2rem; padding: 16px 32px; background: var(--green);"><i data-lucide="gavel" style="stroke-width: 3;"></i> Reveal Roleplay Instructions</button>
           </div>
 
           <div id="roleplayGuidance" style="display: none; margin-top: 40px; padding: 32px; border: 4px solid var(--purple); border-radius: 16px; background: white; box-shadow: var(--shadow-lg); animation: fadeUp 0.5s ease-out forwards;">
@@ -749,7 +764,7 @@
   renderGlossary();
 
   // Custom Alert Message Box
-  function showMessage(title, text, icon="info", iconColor="var(--blue)") {
+  function showMessage(title, text, icon="info", iconColor="var(--primary)") {
       document.getElementById('messageBoxTitle').textContent = title;
       document.getElementById('messageBoxBody').innerHTML = text;
       
@@ -776,12 +791,13 @@
 
   document.getElementById('startBtn')?.addEventListener('click', () => {
     document.getElementById('landingPage').style.display = 'none';
+    const bgBlobs = document.getElementById('bgBlobs');
+    if (bgBlobs) bgBlobs.style.display = 'none'; 
     document.getElementById('appContainer').style.display = 'flex';
     document.getElementById('tickerWrap').style.display = 'flex'; // Show ticker when app starts
     if (typeof lucide !== 'undefined') lucide.createIcons();
   });
 
-  // Tab & Scroll Navigation Control
   function switchTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1212,10 +1228,10 @@
       evalBox.style.borderColor = 'var(--amber)';
       evalBox.style.background = '#fffbeb';
     } else if (avgF < 0 && avgS >= 0) {
-      evalTitle.innerHTML = '<i data-lucide="info" style="color:var(--blue); stroke-width:3;"></i> Over-Compromised Margin';
-      evalDesc.innerHTML = `The town loves you and your ESG score is stellar (Stability: <strong>+${avgS.toFixed(1)}</strong>). However, the massive burdens, delays, and redesigns you accepted threaten the project's financial viability, angering your shareholders.`;
-      evalBox.style.borderColor = 'var(--blue)';
-      evalBox.style.background = '#eff6ff';
+      evalTitle.innerHTML = '<i data-lucide="info" style="color:var(--primary); stroke-width:3;"></i> Over-Regulated Safety';
+      evalDesc.innerHTML = `The gateway view is perfectly safe and trust is high (Stability: <strong>+${avgS.toFixed(1)}</strong>), but the massive burdens placed on the developer threaten the project's viability, creating municipal opportunity costs.`;
+      evalBox.style.borderColor = 'var(--primary)';
+      evalBox.style.background = '#f0fdfa';
     } else {
       evalTitle.innerHTML = '<i data-lucide="x-circle" style="color:var(--red); stroke-width:3;"></i> Strategic Failure';
       evalDesc.innerHTML = `You compromised operational speed while still triggering regulatory battles and citizen outrage. You have severely damaged AWS's ability to expand in this region.`;

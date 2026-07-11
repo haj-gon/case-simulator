@@ -92,6 +92,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      padding-bottom: 70px; /* Give room for fixed ticker at bottom */
     }
 
     @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -158,13 +159,16 @@
     .start-btn:active { transform: translateY(4px); box-shadow: 0px 0px 0px rgba(15, 23, 42, 1); }
 
     .news-ticker-wrap {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
       background: var(--ink);
       color: white;
       padding: 12px 24px;
-      border-radius: var(--radius);
-      border: 4px solid white;
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 24px;
+      border-top: 4px solid white;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.4);
       display: flex;
       align-items: center;
       gap: 16px;
@@ -248,25 +252,37 @@
     .scenario-card h3 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.3; font-weight: 900; color: var(--ink); }
     .scenario-card p { font-size: 1rem; font-weight: 700; color: var(--muted); margin: 0 0 20px; line-height: 1.5; }
 
-    /* Option Previews */
+    /* Option Previews with Enhanced Active State */
     .option-list { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
-    .option-btn { padding: 16px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.1s; display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif;}
-    .option-btn:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); }
-    .option-btn.active { background: var(--green); border-color: var(--ink); box-shadow: 0px 0px 0px var(--ink); transform: translateY(2px); }
-    .option-text strong { display: block; font-size: 1.05rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; }
+    .option-btn { position: relative; padding: 16px; padding-right: 40px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif;}
+    .option-btn:hover:not(.active) { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); }
+    
+    .option-btn.active { 
+        background: var(--green); 
+        border-color: var(--ink); 
+        box-shadow: 0 0 0 3px white, 0 0 0 6px var(--green), var(--shadow-lg); 
+        transform: scale(1.02) translateY(-2px); 
+        z-index: 10;
+    }
+    
+    .option-text strong { display: block; font-size: 1.05rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; transition: color 0.2s;}
     .option-btn.active .option-text strong { color: white; }
-    .option-text span { font-size: 0.9rem; font-weight: 700; color: var(--muted); display: block; line-height: 1.4; }
+    .option-text span { font-size: 0.9rem; font-weight: 700; color: var(--muted); display: block; line-height: 1.4; transition: color 0.2s;}
     .option-btn.active .option-text span { color: rgba(255,255,255,0.9); }
     
+    /* Active State Checkmark */
+    .active-check { position: absolute; right: 12px; top: 50%; transform: translateY(-50%) scale(0); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: white; }
+    .option-btn.active .active-check { transform: translateY(-50%) scale(1); opacity: 1; }
+
     .impact-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
     .impact-badge { font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; font-weight: 900; padding: 4px 8px; border-radius: 8px; display: inline-flex; align-items: center; gap: 4px; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
     .badge-pos { background: var(--green); color: white; }
     .badge-neg { background: var(--red); color: white; }
     .badge-neu { background: white; color: var(--ink); }
     
-    .option-btn.active .badge-pos { background: white; color: var(--green); box-shadow: none; }
-    .option-btn.active .badge-neg { background: var(--ink); color: white; box-shadow: none; }
-    .option-btn.active .badge-neu { box-shadow: none; }
+    .option-btn.active .badge-pos { background: white; color: var(--green); box-shadow: none; border-color: white; }
+    .option-btn.active .badge-neg { background: var(--ink); color: white; box-shadow: none; border-color: white; }
+    .option-btn.active .badge-neu { box-shadow: none; border-color: white; }
 
     /* Tabs Navigation */
     .tabs-container { margin-top: 32px; background: white; border: 4px solid var(--ink); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
@@ -476,16 +492,16 @@
   </div>
 </div>
 
+<!-- Live Breaking News Ticker (Always Visible via CSS fix) -->
+<div class="news-ticker-wrap">
+  <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
+  <div class="ticker-content">
+    <div class="ticker-text" id="newsTickerText">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
+  </div>
+</div>
+
 <div id="appContainer" class="app-container">
   
-  <!-- NEW: Live Breaking News Ticker -->
-  <div class="news-ticker-wrap stagger-1">
-    <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
-    <div class="ticker-content">
-      <div class="ticker-text" id="newsTickerText">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
-    </div>
-  </div>
-
   <header class="hero stagger-1">
     <div class="hero-content-wrap">
       <div class="hero-icon">
@@ -538,17 +554,28 @@
         </div>
       </div>
 
-      <!-- NEW: Glossary Button added to sidebar -->
       <button id="openGlossaryBtn" class="btn-outline" style="width: 100%; justify-content: center; padding: 16px; font-size: 1.1rem; background: var(--amber); color: var(--ink);">
         <i data-lucide="briefcase" style="stroke-width: 3;"></i> View Policy Glossary
       </button>
-
     </aside>
 
     <div class="content-area">
       <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
         <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="file-text" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Policy Docket</h2>
+        
+        <!-- NEW PEDAGOGICAL FEATURE: Progress Bar -->
+        <div class="mb-6 bg-white p-4 rounded-xl border-3 border-slate-900 shadow-game-sm">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-bold uppercase tracking-wider text-slate-500">Master Plan Progress</span>
+                <span id="progressText" class="text-sm font-black text-blue-600">0/8 Completed</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-3 border border-slate-900 overflow-hidden">
+              <div class="bg-blue-600 h-full transition-all duration-500 w-0" id="decisionProgress"></div>
+            </div>
+        </div>
+
         <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 policy domains based on the actual public record. <strong>Every choice represents a valid, balanced trade-off between economic revitalization and preserving local character.</strong></p>
+        
         <div class="scenario-grid" id="scenarioGrid"></div>
       </div>
 
@@ -618,7 +645,6 @@
             <div id="scatterDots"></div>
           </div>
           
-          <!-- NEW: Achievements Panel -->
           <div id="achievementsPanel" class="achievement-box">
             <h3 style="margin:0; font-size: 1.4rem; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 8px;"><i data-lucide="award" style="color: var(--amber); stroke-width:3;"></i> Mayor's Achievements Unlocked</h3>
             <p style="margin: 8px 0 0 0; color: var(--muted); font-weight: 700; font-size: 0.95rem;">Based on your policy choices, you have earned the following titles during your term in office:</p>
@@ -698,7 +724,7 @@
     if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
   });
 
-  // NEW Glossary Logic
+  // Glossary Logic
   document.getElementById('openGlossaryBtn')?.addEventListener('click', () => {
     document.getElementById('glossaryModal')?.classList.add('active');
   });
@@ -884,7 +910,11 @@
     const tickerEl = document.getElementById('newsTickerText');
     if (!tickerEl) return;
     
-    // Pick a random dramatic headline to make it feel alive, or map based on option effect
+    if (optionIdx === null || optionIdx === undefined) {
+        tickerEl.textContent = "MARKET UPDATE: AWAITING FURTHER STRATEGIC DIRECTIVES FROM THE COUNCIL...";
+        return;
+    }
+
     const effect = scenarios.find(s => s.id === scenarioId).options[optionIdx].effects;
     
     let text = "";
@@ -899,6 +929,35 @@
     tickerEl.offsetHeight; /* trigger reflow */
     tickerEl.style.animation = null; 
     tickerEl.textContent = text;
+  }
+
+  // NEW PEDAGOGICAL FEATURE: Progress Bar updater
+  function updateProgressBar() {
+      // Calculate how many decisions out of 8 have been made
+      const selectedCount = Object.values(selectedOptions).filter(val => val !== null).length;
+      const totalCount = scenarios.length;
+      const percentage = (selectedCount / totalCount) * 100;
+      
+      const bar = document.getElementById('decisionProgress');
+      const text = document.getElementById('progressText');
+      
+      if(bar && text) {
+          bar.style.width = `${percentage}%`;
+          text.textContent = `${selectedCount}/${totalCount} Completed`;
+          
+          if(selectedCount === totalCount) {
+              bar.classList.remove('bg-blue-600');
+              bar.classList.add('bg-green-500');
+              text.classList.remove('text-blue-600');
+              text.classList.add('text-green-600');
+              text.textContent = "Docket Complete!";
+          } else {
+              bar.classList.add('bg-blue-600');
+              bar.classList.remove('bg-green-500');
+              text.classList.add('text-blue-600');
+              text.classList.remove('text-green-600');
+          }
+      }
   }
 
   const scenarioGrid = document.getElementById('scenarioGrid');
@@ -926,8 +985,10 @@
       
       const list = card.querySelector('.option-list');
       s.options.forEach((op, idx) => {
+        const isSelected = selectedOptions[s.id] === idx;
         const btn = document.createElement('button');
-        btn.className = 'option-btn' + (selectedOptions[s.id] === idx ? ' active' : '');
+        // Add active classes cleanly based on state
+        btn.className = 'option-btn' + (isSelected ? ' active' : '');
         
         let impactHtml = '';
         if (currentPhase === 2) {
@@ -944,18 +1005,22 @@
             <span>${op.summary}</span>
           </div>
           ${impactHtml}
+          <i data-lucide="check-circle" class="active-check" style="width: 24px; height: 24px; stroke-width: 3;"></i>
         `;
+
         btn.addEventListener('click', () => {
           // Deselect if already selected, otherwise select new index
           if (selectedOptions[s.id] === idx) {
             selectedOptions[s.id] = null;
+            updateTicker(s.id, null);
           } else {
             selectedOptions[s.id] = idx;
-            // NEW: Call the ticker update
             updateTicker(s.id, idx);
           }
+          // Re-render whole grid to update UI states cleanly
           renderScenarios();
           updateAll();
+          updateProgressBar();
         });
         list.appendChild(btn);
       });
@@ -1066,7 +1131,7 @@
     }
     
     renderDashboard(); 
-    checkAchievements(agg); // NEW: Run achievement logic
+    checkAchievements(agg); 
     
     const btn = document.getElementById('generateBtn');
     if(btn) {
@@ -1077,7 +1142,7 @@
     }
   }
 
-  // NEW: Achievements Logic
+  // Achievements Logic
   function checkAchievements(agg) {
     const panel = document.getElementById('achievementsPanel');
     const grid = document.getElementById('achievementGrid');
@@ -1236,6 +1301,7 @@
   // Init routines
   renderScenarios();
   updateAll();
+  updateProgressBar();
 </script>
 </body>
 </html>

@@ -225,7 +225,6 @@
     .btn-primary { background: var(--blue); color: white; border: 3px solid var(--ink); padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
     .btn-primary:active { transform: translateY(4px); box-shadow: none; }
 
-    /* Visual Dashboard Enhancements (Quadrant / Matrix) */
     .scatter-container { position: relative; width: 100%; height: 450px; background: #f8fafc; border: 4px solid var(--ink); border-radius: 16px; overflow: hidden; box-shadow: inset 0 4px 8px rgba(0,0,0,0.1); }
     .quad-top-right { position: absolute; top:0; left:50%; right:0; bottom:50%; background: rgba(16, 185, 129, 0.08); } 
     .quad-bottom-right { position: absolute; top:50%; left:50%; right:0; bottom:0; background: rgba(239, 68, 68, 0.08); } 
@@ -246,7 +245,6 @@
     .ql-tl { top: 24px; left: 24px; color: var(--blue); }
     .ql-bl { bottom: 24px; left: 24px; color: var(--muted); }
 
-    /* Updated Matrix Dots */
     .matrix-dot { position: absolute; width: 32px; height: 32px; border-radius: 50%; transform: translate(-50%, -50%); z-index: 20; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 4px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; font-size: 0.85rem;}
     .dot-current { background: var(--blue); z-index: 30; }
     .dot-saved { background: var(--amber); color: var(--ink); z-index: 20; }
@@ -262,6 +260,20 @@
     .compare-diff-list { margin: 0; padding-left: 20px; font-size: 0.95rem; color: var(--ink); font-weight: 700; line-height: 1.6;}
     .compare-diff-list li { margin-bottom: 8px; }
     .compare-diff-list li strong { color: var(--blue); }
+
+    /* Faction / Priority Matrix Styles added for Tab 3 Integration */
+    .faction-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 24px; }
+    .faction-card { border: 3px solid var(--ink); border-radius: 12px; padding: 16px; background: white; box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+    .faction-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--blue); }
+    .faction-card.active { background: var(--blue); color: white; box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .faction-card h4 { margin: 0; font-size: 1.1rem; font-weight: 900; }
+    
+    .priority-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; animation: fadeUp 0.4s ease-out; }
+    .priority-row { display: flex; align-items: center; gap: 16px; background: white; padding: 16px; border-radius: 12px; border: 3px solid var(--line); box-shadow: var(--shadow-sm); }
+    .priority-icon-box { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; border: 3px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); }
+    .priority-details h5 { margin: 0 0 4px 0; font-size: 0.85rem; text-transform: uppercase; font-weight: 900; color: var(--muted); }
+    .priority-details p { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--ink); }
+    .badge-label { font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; border: 2px solid var(--ink); font-weight: 900; margin-left: 8px; display: inline-block; }
 
     .chat-container { display: flex; flex-direction: column; gap: 24px; background: #cbd5e1; border: 4px solid var(--line); border-radius: 16px; padding: 32px; min-height: 400px; max-height: 600px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);}
     .chat-msg { display: flex; gap: 16px; opacity: 0; transform: translateY(15px); animation: fadeUp 0.4s ease-out forwards; max-width: 85%; }
@@ -376,13 +388,13 @@
         </div>
         <div class="phase-step">
           <span class="step-badge">Step 3</span>
-          <h4>Benchmark & Compare</h4>
-          <p>Save different scenarios and compare the exact trade-offs side-by-side.</p>
+          <h4>Benchmark & Prepare</h4>
+          <p>Compare trade-offs and assign your roleplay faction for the Priority Matrix.</p>
         </div>
         <div class="phase-step">
           <span class="step-badge">Step 4</span>
           <h4>Town Hall Debate</h4>
-          <p>Enter the live mock negotiation with AWS, advocacy groups, planners, and dissenters.</p>
+          <p>Enter the live mock negotiation using the Flexible Constraints strategy.</p>
         </div>
       </div>
 
@@ -461,7 +473,6 @@
       </button>
     </aside>
 
-    <!-- Main Content Area: Policies and Tabs -->
     <div class="content-area">
       <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
         <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="file-text" style="color: var(--blue); width: 32px; height: 32px; stroke-width: 3;"></i> The Policy Docket</h2>
@@ -486,7 +497,7 @@
         <div class="tabs-header">
           <button class="tab-btn active" data-tab="overview" id="tabBtnOverview"><i data-lucide="check-square" style="stroke-width: 3;"></i> 1. Finalize</button>
           <button class="tab-btn locked" data-tab="dashboard" id="tabBtnDashboard"><i data-lucide="scatter-chart" style="stroke-width: 3;"></i> 2. Result Matrix</button>
-          <button class="tab-btn locked" data-tab="compare" id="tabBtnCompare"><i data-lucide="git-compare" style="stroke-width: 3;"></i> 3. Compare</button>
+          <button class="tab-btn locked" data-tab="compare" id="tabBtnCompare"><i data-lucide="git-compare" style="stroke-width: 3;"></i> 3. Compare & Prep</button>
           <button class="tab-btn locked" data-tab="townhall" id="tabBtnTownhall"><i data-lucide="mic" style="stroke-width: 3;"></i> 4. Town Hall</button>
         </div>
 
@@ -550,12 +561,11 @@
             <p style="font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 8px;">Review your comparisons or face the public.</p>
             <div style="display:flex; justify-content:center; gap: 16px;">
               <button id="goToCompareBtn" class="btn-outline" style="font-size: 1.1rem; padding: 16px 24px;"><i data-lucide="git-compare" style="stroke-width: 3;"></i> Compare Saved Plans</button>
-              <button id="goToTownHallBtn" class="btn-success" style="background:var(--purple); font-size: 1.1rem; padding: 16px 24px;"><i data-lucide="mic" style="stroke-width: 3;"></i> Enter Town Hall</button>
             </div>
           </div>
         </div>
 
-        <!-- Tab 3: Compare -->
+        <!-- Tab 3: Compare & Roleplay Prep -->
         <div class="tab-content" id="compare">
           <div style="margin-bottom: 32px; background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; box-shadow: var(--shadow);">
             <h3 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 12px; font-size: 1.8rem; font-weight: 900;"><i data-lucide="git-compare" style="color: var(--amber); width: 32px; height: 32px; stroke-width: 3;"></i> Pedagogical Breakdown</h3>
@@ -569,6 +579,28 @@
           <div id="noCompareMsg" style="text-align:center; padding: 40px; border: 3px dashed var(--muted); border-radius: 12px; color: var(--muted); font-weight: 800;">
             Save a benchmark plan in the "Result Matrix" tab to unlock side-by-side comparisons here.
           </div>
+
+          <!-- NEW: Priority Matrix Assignment -->
+          <div style="margin-top: 48px; border-top: 4px dashed var(--ink); padding-top: 32px;">
+            <h3 style="font-size: 1.8rem; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <i data-lucide="target" style="color: var(--blue); stroke-width: 3;"></i> Roleplay Preparation: Priority Matrix
+            </h3>
+            <p style="font-size: 1.1rem; font-weight: 700; color: var(--muted); margin-bottom: 24px;">To prepare for the live Town Hall, select your assigned Faction. Instead of rigid "red lines", successful negotiations use a <strong>Flexible Constraints</strong> model. You must secure your Primary goal, but you should explicitly use your Secondary and Tertiary goals as bargaining chips to build a coalition.</p>
+            
+            <div class="faction-grid" id="factionSelector">
+              <!-- Injected by JS -->
+            </div>
+
+            <div id="priorityMatrixDisplay" style="display:none;">
+               <div class="priority-stack" id="priorityCardsContainer">
+                 <!-- Injected by JS -->
+               </div>
+               
+               <div style="margin-top: 32px; text-align: center;">
+                 <button id="goToTownHallBtn" class="btn-success" style="background:var(--purple); font-size: 1.2rem; padding: 16px 32px; max-width: 400px; margin: 0 auto;"><i data-lucide="mic" style="stroke-width: 3;"></i> Enter Town Hall Forum</button>
+               </div>
+            </div>
+          </div>
         </div>
 
         <!-- Tab 4: Town Hall -->
@@ -579,7 +611,8 @@
           </div>
 
           <div class="chat-container" id="chatContainer">
-            </div>
+            <!-- Injected by JS -->
+          </div>
 
           <div class="chat-controls">
             <button id="nextMsgBtn" class="btn-primary" style="display:flex; align-items:center; gap:8px; font-size: 1.2rem; padding: 16px 32px; background: var(--blue);"><i data-lucide="message-circle" style="stroke-width: 3;"></i> Next Speaker</button>
@@ -587,21 +620,14 @@
           </div>
 
           <div id="roleplayGuidance" style="display: none; margin-top: 40px; padding: 32px; border: 4px solid var(--purple); border-radius: 16px; background: white; box-shadow: var(--shadow-lg); animation: fadeUp 0.5s ease-out forwards;">
-            <h3 style="margin-top: 0; color: var(--purple); display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 900;"><i data-lucide="clipboard-list" style="stroke-width: 3; width: 28px; height: 28px;"></i> Live Roleplay Instructions</h3>
-            <p style="font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 24px;">The simulated chat above mirrors the actual public hearings where stakeholders clashed over fiscal windfalls, NDAs, and environmental racism. Now it is your turn to negotiate SUP-22-3.</p>
+            <h3 style="margin-top: 0; color: var(--purple); display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 900;"><i data-lucide="clipboard-list" style="stroke-width: 3; width: 28px; height: 28px;"></i> Live Roleplay Instructions: Flexible Constraints</h3>
+            <p style="font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 24px;">The simulated chat above mirrors actual public hearings. Now it is your turn to negotiate SUP-22-3 utilizing the Priority Matrix you viewed in the previous tab.</p>
             
             <ul style="font-size: 1.05rem; font-weight: 700; color: var(--muted); padding-left: 24px; line-height: 1.8; margin-bottom: 32px;">
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 1: Breakout (10 mins)</strong> - Divide into assigned groups. Identify the metrics you cannot compromise on based on the case record.
-                <ul style="list-style-type: circle; margin-top: 8px; margin-bottom: 16px; color: var(--muted); font-size: 0.95rem;">
-                  <li><em>Town Council Majority:</em> Secure the revenue while mitigating enough harm to survive the next election. Decide if you will accept fee-in-lieu payments or negotiate CBAs.</li>
-                  <li><em>AWS / Data Services:</em> Resist burdensome clean-energy mandates and infrastructure costs. Push for direct fee-in-lieu tax structures and emphasize your role in global decarbonization.</li>
-                  <li><em>Citizens / Preservation Advocates:</em> Demand algorithmic restraint, standard property taxes for schools, and zero fossil-fuel emissions. Use the threat of FOIA litigation.</li>
-                  <li><em>Town Planners / Utilities:</em> Enforce zoning logic and prevent regional grid strain and aquifer depletion.</li>
-                </ul>
-              </li>
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 2: Opening Statements (10 mins)</strong> - Each group gets 2 minutes to present their non-negotiable demands to the room.</li>
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 3: Open Negotiation (25 mins)</strong> - The Council moderates. Debate the core conditions: NDAs, Gas Turbines/Emissions, CBAs vs Fees-in-Lieu, and Water Restrictions.</li>
-              <li><strong class="text-game-dark">Step 4: The Final Vote (10 mins)</strong> - The Town Council formally votes on the finalized SUP conditions. Compare your final result against the Matrix.</li>
+              <li style="margin-bottom: 12px;"><strong style="color: var(--ink);">Step 1: Breakout & Matrix Review (10 mins)</strong> - Break into your assigned Faction groups. Review your specific Primary, Secondary, and Tertiary goals. Ensure everyone understands the absolute "Primary" mandate.</li>
+              <li style="margin-bottom: 12px;"><strong style="color: var(--ink);">Step 2: The Concession Strategy (5 mins)</strong> - Decide internally which Tertiary goal you will explicitly offer to another group early in the negotiation to bring them to the table.</li>
+              <li style="margin-bottom: 12px;"><strong style="color: var(--ink);">Step 3: Open Floor Negotiation (25 mins)</strong> - The Town Council moderates. Factions must build a single coalition proposal covering <em>Design, Power, CBAs, and Water</em>. Any faction whose Primary Goal is violated will vote NO or initiate litigation.</li>
+              <li><strong style="color: var(--ink);">Step 4: The Final Resolution (10 mins)</strong> - The Town Council formally votes on the SUP conditions. Compare the final classroom agreement against the metrics in your Dashboard Matrix.</li>
             </ul>
             
             <div style="text-align: center; font-size: 1.4rem; font-weight: 900; color: var(--ink); border-top: 4px dashed var(--purple); padding-top: 24px;">
@@ -648,6 +674,7 @@
   let currentPhase = 1; // 1: Selecting, 2: Matrix Unlocked
   let savedScenarios = []; // To hold saved benchmarks for comparison
   let chatIndex = 0;
+  let activeFaction = null;
 
   // Dictionary containing all policy definitions and options
   const scenarios = [
@@ -733,6 +760,34 @@
     { term: "Vested Rights", icon: "shield", def: "A legal concept where a developer gains a permanent right to build a project because they have already invested significant money under the existing zoning laws. Towns face massive lawsuits if they try to change rules on a 'vested' project." },
     { term: "Closed-Loop / Evaporative Cooling", icon: "droplets", def: "Evaporative cooling uses vast amounts of local water to chill servers and releases it as vapor. Closed-loop systems recirculate the same water or use air, saving local aquifers but significantly increasing the facility's power draw and physical size." }
   ];
+
+  // Factions for the Priority Matrix Roleplay in Tab 3
+  const factions = {
+    "aws": {
+      id: "aws", name: "Cloud Developer", icon: "server",
+      pri: "Maintain Evaporative Cooling Systems", 
+      sec: "Standard Industrial Design", 
+      ter: "Direct Fee-in-Lieu Payments"
+    },
+    "council": {
+      id: "council", name: "Town Council", icon: "landmark",
+      pri: "Secure Direct Fee-in-Lieu Cash Payments", 
+      sec: "Mitigate Visual & Aesthetic Impact", 
+      ter: "Implement Seasonal Water Limits"
+    },
+    "citizens": {
+      id: "citizens", name: "Preservation Advocates", icon: "leaf",
+      pri: "Mandate 37ft Height Caps & Brick Facades", 
+      sec: "Protect the Aquifer (Closed-Loop)", 
+      ter: "Fund Schools via formal CBA"
+    },
+    "biz": {
+      id: "biz", name: "Local Commerce Coalition", icon: "briefcase",
+      pri: "Fund Local Economy via formal CBA", 
+      sec: "Ensure Rapid Deployment timeline", 
+      ter: "Unrestricted Water Access for facilities"
+    }
+  };
 
   document.getElementById('startBtn')?.addEventListener('click', () => {
     document.getElementById('landingPage').style.display = 'none';
@@ -967,17 +1022,12 @@
   });
 
   function getCoordinate(agg) {
-      // Bounds: Max theoretical is roughly +/- 120 for these. 
-      // X = Fiscal Score
-      // Y = Socio-Legal Stability (Avg of Trust + Legal)
       let xRaw = agg.fiscal;
       let yRaw = (agg.trust + agg.legal) / 2;
       
-      // Normalize to 0-100% (-100 to +100 bounds)
       let xPos = ((xRaw + 100) / 200) * 100;
-      let yPos = 100 - (((yRaw + 100) / 200) * 100); // Inverted Y so positive is up
+      let yPos = 100 - (((yRaw + 100) / 200) * 100);
       
-      // Clamp between 5% and 95% so dots don't fall off edge
       xPos = Math.max(5, Math.min(95, xPos));
       yPos = Math.max(5, Math.min(95, yPos));
       
@@ -1013,9 +1063,8 @@
 
     // Render Dots
     const container = document.getElementById('scatterDotsContainer');
-    container.innerHTML = ''; // Clear
+    container.innerHTML = ''; 
 
-    // 1. Plot Saved Benchmarks
     savedScenarios.forEach((saved, idx) => {
         const savedAgg = getAggregate(saved.options);
         const sCoord = getCoordinate(savedAgg);
@@ -1028,7 +1077,6 @@
         container.appendChild(sDot);
     });
 
-    // 2. Plot Current State
     const dot = document.createElement('div');
     dot.className = 'matrix-dot dot-current';
     dot.style.left = `${coord.x}%`;
@@ -1048,7 +1096,6 @@
       
       const planName = prompt("Enter a name for this Benchmark Plan (e.g., 'Pro-Business' or 'High Preservation'):");
       if(planName && planName.trim().length > 0) {
-          // Deep copy current options
           savedScenarios.push({
               name: planName.trim(),
               options: JSON.parse(JSON.stringify(selectedOptions))
@@ -1073,12 +1120,10 @@
       noMsg.style.display = 'none';
       grid.innerHTML = '';
 
-      // Create Current Card
       const currentAgg = getAggregate(selectedOptions);
       const currentCard = createCompareCard("Current Live Plan", currentAgg, selectedOptions, null, true);
       grid.appendChild(currentCard);
 
-      // Create Saved Cards
       savedScenarios.forEach((saved, idx) => {
           const savedAgg = getAggregate(saved.options);
           const sCard = createCompareCard(`Saved Plan ${idx+1}: ${saved.name}`, savedAgg, saved.options, selectedOptions, false);
@@ -1095,7 +1140,6 @@
       }
 
       let diffHtml = '';
-      // If we have something to compare to (usually Current vs Saved)
       if(compareToOpts) {
           let differences = [];
           scenarios.forEach(s => {
@@ -1135,6 +1179,67 @@
       `;
       return card;
   }
+
+  // --- Rendering the Faction Selection for the Priority Matrix in Tab 3 ---
+  function renderFactionSelector() {
+    const container = document.getElementById('factionSelector');
+    if(!container) return;
+    container.innerHTML = '';
+
+    Object.values(factions).forEach(f => {
+      const card = document.createElement('div');
+      card.className = 'faction-card';
+      card.innerHTML = `
+        <div style="background:var(--ink); color:white; width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom: 8px; border: 2px solid var(--line); box-shadow: 2px 2px 0px var(--ink);">
+          <i data-lucide="${f.icon}" style="width:24px; height:24px; stroke-width:2;"></i>
+        </div>
+        <h4>${f.name}</h4>
+      `;
+      
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.faction-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        activeFaction = f.id;
+        renderPriorityMatrix(f);
+      });
+      container.appendChild(card);
+    });
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function renderPriorityMatrix(faction) {
+    const displayArea = document.getElementById('priorityMatrixDisplay');
+    const container = document.getElementById('priorityCardsContainer');
+    
+    displayArea.style.display = 'block';
+    container.innerHTML = `
+        <div class="priority-row" style="border-color: var(--red);">
+          <div class="priority-icon-box" style="background: var(--red);"><i data-lucide="alert-octagon" style="stroke-width: 3;"></i></div>
+          <div class="priority-details">
+            <h5>Primary Goal <span class="badge-label" style="background: #fef2f2; color: var(--red); border-color: var(--red);">Non-Negotiable</span></h5>
+            <p>${faction.pri}</p>
+          </div>
+        </div>
+        <div class="priority-row" style="border-color: var(--amber);">
+          <div class="priority-icon-box" style="background: var(--amber);"><i data-lucide="shield" style="stroke-width: 3;"></i></div>
+          <div class="priority-details">
+            <h5>Secondary Goal <span class="badge-label" style="background: #fffbeb; color: var(--amber); border-color: var(--amber);">High Value Trade</span></h5>
+            <p>${faction.sec}</p>
+          </div>
+        </div>
+        <div class="priority-row" style="border-color: var(--green);">
+          <div class="priority-icon-box" style="background: var(--green);"><i data-lucide="gift" style="stroke-width: 3;"></i></div>
+          <div class="priority-details">
+            <h5>Tertiary Goal <span class="badge-label" style="background: #ecfdf5; color: var(--green); border-color: var(--green);">Bargaining Chip</span></h5>
+            <p>${faction.ter}</p>
+          </div>
+        </div>
+    `;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  // Initialize the faction cards on load
+  renderFactionSelector();
 
   const chatScript = [
     { type: 'msg-aws', name: 'AWS Executive', role: 'Data Center Rep', img: 'https://i.pravatar.cc/150?img=59', text: "Good evening. We are thrilled to bring $550 million to Warrenton. Look at Hermiston and Umatilla, OR—they announced they were 'open for business' and we minted a new middle class! We foster a regional tech ecosystem, drive business for local contractors, and provide the compute power needed to optimize global climate decarbonization." },

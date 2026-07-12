@@ -227,7 +227,7 @@
     .bg-purple { background: var(--red); } 
 
     /* Modals */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(28, 25, 23, 0.8); backdrop-filter: blur(6px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
     .modal-overlay.active { display: flex; opacity: 1; }
     .modal-content { background: white; border-radius: 20px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 32px; box-shadow: var(--shadow-lg); border: 4px solid var(--ink); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
     .modal-overlay.active .modal-content { transform: scale(1); }
@@ -239,11 +239,11 @@
 
     .glossary-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 24px; }
     .glossary-item { background: #f8fafc; border: 3px solid var(--ink); padding: 16px; border-radius: 12px; }
-    .glossary-item h4 { margin: 0 0 8px 0; color: var(--blue); font-weight: 900; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+    .glossary-item h4 { margin: 0 0 8px 0; color: var(--primary); font-weight: 900; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
     .glossary-item p { margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--ink); line-height: 1.5; }
 
     .main-workspace { display: grid; grid-template-columns: 340px 1fr; gap: 32px; align-items: start; }
-    .sidebar { position: sticky; top: 32px; display: flex; flex-direction: column; gap: 24px; }
+    .sidebar { position: sticky; top: 32px; display: flex; flex-direction: column; gap: 24px; z-index: 10;}
     
     .panel { background: var(--panel); border: 4px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 32px; }
     .panel-title { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 1.4rem; font-weight: 900; color: var(--ink); }
@@ -275,7 +275,7 @@
     .option-list { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
     .option-btn { padding: 16px; border: 3px solid var(--ink); border-radius: 12px; background: #ffffff; text-align: left; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column; gap: 8px; box-shadow: 2px 2px 0px var(--ink); font-family: 'Nunito', sans-serif; position: relative; }
     .option-btn:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 4px 4px 0px var(--ink); z-index: 5; }
-    .option-btn.active { background: var(--blue); border-color: var(--ink); box-shadow: 8px 8px 0px var(--ink); transform: scale(1.03) translateY(-4px); z-index: 10; border-width: 3px; }
+    .option-btn.active { background: var(--primary); border-color: var(--ink); box-shadow: 8px 8px 0px var(--ink); transform: scale(1.03) translateY(-4px); z-index: 10; border-width: 3px; }
     .option-text strong { display: block; font-size: 1.05rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; transition: all 0.2s; }
     .option-btn.active .option-text strong { color: white; font-size: 1.1rem; }
     .option-text span { font-size: 0.9rem; font-weight: 700; color: var(--muted); display: block; line-height: 1.4; transition: all 0.2s; }
@@ -307,42 +307,7 @@
     .btn-primary { background: var(--primary); color: white; border: 3px solid var(--ink); padding: 16px 24px; border-radius: 12px; box-shadow: var(--shadow); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
     .btn-primary:active { transform: translateY(4px); box-shadow: none; }
 
-    .achievement-box {
-      border: 3px solid var(--amber);
-      background: #fffbeb;
-      border-radius: 16px;
-      padding: 24px;
-      margin-top: 24px;
-      box-shadow: var(--shadow);
-      display: none; 
-    }
-    .achievement-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 16px;
-    }
-    .achievement-badge {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: white;
-      border: 3px solid var(--ink);
-      padding: 12px 16px;
-      border-radius: 12px;
-      box-shadow: var(--shadow-sm);
-      animation: fadeUp 0.4s ease-out forwards;
-    }
-    .achievement-badge .icon-wrap {
-      background: var(--amber);
-      color: var(--ink);
-      padding: 8px;
-      border-radius: 50%;
-      border: 2px solid var(--ink);
-    }
-    .achievement-text strong { display: block; font-size: 1rem; color: var(--ink); font-weight: 900; }
-    .achievement-text span { font-size: 0.85rem; color: var(--muted); font-weight: 700; }
-
+    /* Visual Dashboard Enhancements (Matrix) */
     .scatter-container { position: relative; width: 100%; height: 450px; background: #f8fafc; border: 4px solid var(--ink); border-radius: 16px; overflow: hidden; box-shadow: inset 0 4px 8px rgba(0,0,0,0.1); }
     .quad-top-right { position: absolute; top:0; left:50%; right:0; bottom:50%; background: rgba(16, 185, 129, 0.08); } 
     .quad-bottom-right { position: absolute; top:50%; left:50%; right:0; bottom:0; background: rgba(239, 68, 68, 0.08); } 
@@ -354,8 +319,8 @@
     .ax-label { position: absolute; font-size: 0.85rem; font-weight: 900; color: var(--ink); z-index: 6; text-transform: uppercase; letter-spacing: 0.05em; background: white; padding: 2px 8px; border: 2px solid var(--ink); border-radius: 6px;}
     .ax-right { right: 10px; top: calc(50% + 10px); }
     .ax-left { left: 10px; top: calc(50% + 10px); }
-    .ax-top { top: 10px; left: calc(50% + 10px); }
-    .ax-bottom { bottom: 10px; left: calc(50% + 10px); }
+    .ax-top { top: 10px; left: calc(50% + 10px); transform: translateX(-50%); }
+    .ax-bottom { bottom: 10px; left: calc(50% + 10px); transform: translateX(-50%); }
     
     .quad-label { position: absolute; font-size: 1rem; font-weight: 900; opacity: 0.8; z-index: 4; text-transform: uppercase; }
     .ql-tr { top: 24px; right: 24px; color: var(--green); text-align: right; }
@@ -363,15 +328,29 @@
     .ql-tl { top: 24px; left: 24px; color: var(--primary); }
     .ql-bl { bottom: 24px; left: 24px; color: var(--muted); }
 
-    .scatter-dot { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--primary); transform: translate(-50%, -50%); opacity: 0.85; z-index: 10; transition: all 0.2s; border: 2px solid var(--ink); box-shadow: 2px 2px 0px var(--ink);}
-    .scatter-dot:hover { width: 20px; height: 20px; background: var(--amber); opacity: 1; z-index: 20; cursor: crosshair; }
+    .matrix-dot { position: absolute; width: 32px; height: 32px; border-radius: 50%; transform: translate(-50%, -50%); z-index: 20; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 4px solid var(--ink); box-shadow: 4px 4px 0px var(--ink); display: flex; align-items: center; justify-content: center; font-weight: 900; color: white; font-size: 0.85rem;}
+    .dot-current { background: var(--primary); z-index: 30; }
+    .dot-saved { background: var(--amber); color: var(--ink); z-index: 20; }
+    .dot-label { position: absolute; top: -30px; background: var(--ink); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; pointer-events: none;}
+
+    /* Comparison Table Styles */
+    .comparison-grid { display: grid; gap: 16px; margin-top: 24px; }
+    .compare-card { background: white; border: 4px solid var(--ink); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 12px; }
+    .compare-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--muted); padding-bottom: 12px; }
+    .compare-title { font-size: 1.2rem; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 8px;}
+    .compare-stats { display: flex; gap: 12px; }
+    .compare-stat-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 900; padding: 4px 8px; border-radius: 6px; border: 2px solid var(--ink); display: flex; align-items: center; gap: 4px; }
+    .compare-diff-list { margin: 0; padding-left: 20px; font-size: 0.95rem; color: var(--ink); font-weight: 700; line-height: 1.6;}
+    .compare-diff-list li { margin-bottom: 8px; }
+    .compare-diff-list li strong { color: var(--primary); }
 
     /* --- Town Hall Chat Styles --- */
+    .chat-container { display: flex; flex-direction: column; gap: 24px; background: #e7e5e4; border: 4px solid var(--line); border-radius: 16px; padding: 32px; min-height: 400px; max-height: 600px; overflow-y: auto; scroll-behavior: smooth; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);}
     .chat-msg { display: flex; gap: 16px; opacity: 0; transform: translateY(15px); animation: fadeUp 0.4s ease-out forwards; max-width: 85%; }
     .chat-msg.right { align-self: flex-end; flex-direction: row-reverse; }
     .chat-avatar { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; border: 3px solid var(--ink); box-shadow: 2px 2px 0px var(--ink); flex-shrink: 0; background: white; }
     .chat-bubble { background: white; padding: 20px; border-radius: 16px; border: 3px solid var(--line); box-shadow: var(--shadow); position: relative; font-size: 1.05rem; line-height: 1.6; font-weight: 700; color: var(--ink); }
-    .chat-msg.right .chat-bubble { background: #eff6ff; }
+    .chat-msg.right .chat-bubble { background: #f0fdfa; }
     
     .chat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
     .chat-msg.right .chat-header { justify-content: flex-end; flex-direction: row-reverse; }
@@ -382,7 +361,7 @@
     .msg-aws .chat-role { background: var(--amber); color: var(--ink); }
     .msg-ngo .chat-role { background: var(--green); color: white; }
     .msg-util .chat-role { background: var(--red); color: white; }
-    .msg-biz .chat-role { background: var(--blue); color: white; }
+    .msg-biz .chat-role { background: var(--primary); color: white; }
     .msg-staff .chat-role { background: var(--purple); color: white; }
     .msg-council .chat-role { background: var(--ink); color: white; }
     .msg-dissent .chat-role { background: white; color: var(--ink); }
@@ -412,12 +391,12 @@
     
     <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">
       <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; font-weight: 900;"><i data-lucide="info" style="width: 20px; height: 20px; color: var(--primary);"></i> Evaluating the Project</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700; color: var(--muted);">As the Town Council, your job is to analyze this hyperscale project based on four distinct axes reflecting the community's primary concerns and the public record. Every decision is a valid trade-off between growth and preservation.</p>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700; color: var(--muted);">As the Executive Board, your job is to analyze this hyperscale project based on four distinct axes reflecting corporate demands and community concerns. Every decision is a valid trade-off between growth and stewardship.</p>
     </div>
 
     <div style="background: #f0fdfa; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--primary); box-shadow: 4px 4px 0px var(--primary);">
-      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 900;"><i data-lucide="dollar-sign" style="width: 20px; height: 20px; stroke-width: 3;"></i> Fiscal Stability</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Tracks the estimated $550M corporate investment, massive tax windfalls, secondary job spillovers, and potential funding for Community Benefit Agreements. High scores indicate a well-funded municipal budget; low scores indicate deficit risk or opportunity costs.</p>
+      <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 900;"><i data-lucide="dollar-sign" style="width: 20px; height: 20px; stroke-width: 3;"></i> Fiscal Stability (ROI/Speed)</h3>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Tracks the estimated corporate ROI, speed-to-market, and infrastructure capex. High scores indicate rapid, highly profitable deployment; low scores indicate expensive delays or massive opportunity costs.</p>
     </div>
 
     <div style="background: #fffbeb; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--amber); box-shadow: 4px 4px 0px var(--amber);">
@@ -427,7 +406,7 @@
 
     <div style="background: #ecfdf5; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 3px solid var(--green); box-shadow: 4px 4px 0px var(--green);">
       <h3 style="margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; color: var(--green); font-weight: 900;"><i data-lucide="leaf" style="width: 20px; height: 20px; stroke-width: 3;"></i> Env. Stewardship</h3>
-      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Reflects your alignment with integral ecology and corporate ESG goals. Mandating clean energy, implementing closed-loop water systems, and protecting local landscapes drive this score higher. Exploiting local resources drives it down.</p>
+      <p style="font-size: 1rem; margin-bottom: 0; font-weight: 700;">Reflects your alignment with integral ecology and corporate ESG goals. Mandating clean energy, implementing closed-loop water systems, and protecting local landscapes drive this score higher.</p>
     </div>
 
     <div style="background: #fef2f2; padding: 20px; border-radius: 12px; border: 3px solid var(--red); box-shadow: 4px 4px 0px var(--red);">
@@ -461,7 +440,7 @@
     <div class="landing-body">
       <div class="objectives-box">
         <h3><i data-lucide="cpu" style="color: var(--blue); stroke-width: 3;"></i> Disruption, AI, and Care for Our Common Home</h3>
-        <p style="margin-bottom: 12px; font-weight: 700; color: var(--muted);">A low hum emerges from a vast, windowless facility, devouring energy and water with a voracious appetite. Like vampires of folklore, these mechanical behemoths only enter a town if explicitly invited inside. As the leader of AWS’s AI expansion, you are driving explosive global technological growth. You must rapidly scale your hyperscale data centers—now averaging 224 acres per site—to win the generative AI race.</p>
+        <p style="margin-bottom: 12px; font-weight: 700; color: var(--muted);">A low hum emerges from a vast, windowless facility, devouring energy and water with a voracious appetite. As the leader of AWS’s AI expansion, you are driving explosive global technological growth. You must rapidly scale your hyperscale data centers—now averaging 224 acres per site—to win the generative AI race.</p>
         <p style="margin-bottom: 0; font-weight: 800; color: var(--ink);">However, this proliferation places unprecedented strain on local resources. Recalling the principles of <em>Laudato Si’</em>, you face the moral and strategic dilemma of integral ecology. How do you balance the relentless corporate pressure for speed and ROI against profound environmental stewardship and the demands of local communities? Will your leadership model extraction, or a sustainable partnership?</p>
       </div>
 
@@ -469,18 +448,18 @@
       <div class="phase-grid">
         <div class="phase-step">
           <span class="step-badge">Step 1</span>
-          <h4>The Strategic Direction</h4>
+          <h4>Strategic Direction</h4>
           <p>Navigate 8 critical corporate dilemmas regarding design, NDAs, energy sourcing, and community relations.</p>
         </div>
         <div class="phase-step">
           <span class="step-badge">Step 2</span>
-          <h4>Impact Analysis</h4>
-          <p>Review the exact numerical impact of your strategy on Corporate ROI and ESG metrics.</p>
+          <h4>Real-Time Matrix</h4>
+          <p>Instantly see how your policy decisions map onto the corporate "Failure Matrix."</p>
         </div>
         <div class="phase-step">
           <span class="step-badge">Step 3</span>
-          <h4>Market Stress Test</h4>
-          <p>Run a 1,000-day simulation to test the regulatory durability and public resilience of your project.</p>
+          <h4>Benchmark & Compare</h4>
+          <p>Save alternative strategy combinations and compare their exact trade-offs side-by-side.</p>
         </div>
         <div class="phase-step">
           <span class="step-badge">Step 4</span>
@@ -490,7 +469,7 @@
       </div>
 
       <div class="player-entry">
-        <button id="startBtn" class="start-btn"><i data-lucide="gavel" style="width:24px; height:24px; display:inline-block; vertical-align:text-bottom; margin-right:8px; stroke-width: 3;"></i> Call Meeting to Order</button>
+        <button id="startBtn" class="start-btn"><i data-lucide="gavel" style="width:24px; height:24px; display:inline-block; vertical-align:text-bottom; margin-right:8px; stroke-width: 3;"></i> Open the Boardroom</button>
       </div>
     </div>
   </div>
@@ -499,19 +478,12 @@
 <div class="news-ticker-wrap" id="tickerWrap" style="display:none;">
   <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
   <div class="ticker-content">
-    <div class="ticker-text" id="newsTickerText">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
+    <div class="ticker-text" id="newsTickerText">Welcome to the Executive Board Session. Market awaits your strategic directive...</div>
   </div>
 </div>
 
 <div id="appContainer" class="app-container">
   
-  <div class="news-ticker-wrap stagger-1">
-    <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
-    <div class="ticker-content">
-      <div class="ticker-text" id="newsTickerText2">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
-    </div>
-  </div>
-
   <header class="hero stagger-1">
     <div class="hero-content-wrap">
       <div class="hero-icon">
@@ -528,6 +500,7 @@
   </header>
 
   <main class="main-workspace stagger-2">
+    <!-- Sidebar: KPIs and Controls -->
     <aside class="sidebar">
       <div class="panel" style="background: white;">
         <h2 class="panel-title" style="border-bottom: none; margin-bottom: 24px;"><i data-lucide="bar-chart-2" style="stroke-width: 3; color: var(--primary);"></i> Corporate Scorecard</h2>
@@ -536,7 +509,7 @@
           <div class="kpi-card">
             <div class="kpi-icon" style="background: var(--primary);"><i data-lucide="dollar-sign" style="stroke-width: 3;"></i></div>
             <div class="kpi-info">
-              <h4>Fiscal Stability</h4>
+              <h4>Fiscal/Speed (ROI)</h4>
               <div class="value" id="finScore">0</div>
             </div>
           </div>
@@ -557,7 +530,7 @@
           <div class="kpi-card">
             <div class="kpi-icon bg-purple"><i data-lucide="scale" style="stroke-width: 3;"></i></div>
             <div class="kpi-info">
-              <h4>Regulatory Compliance</h4>
+              <h4>Compliance / Legal</h4>
               <div class="value" id="legalScore">0</div>
             </div>
           </div>
@@ -569,46 +542,55 @@
       </button>
     </aside>
 
+    <!-- Main Content Area: Policies and Tabs -->
     <div class="content-area">
       <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
-        <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="file-text" style="color: var(--primary); width: 32px; height: 32px; stroke-width: 3;"></i> The Policy Docket</h2>
-        <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 policy domains based on the actual public record. <strong>Every choice represents a valid, balanced trade-off between economic revitalization and preserving local character.</strong></p>
+        <h2 class="panel-title" style="margin-bottom: 12px; font-size: 2rem; border-bottom: none;"><i data-lucide="file-text" style="color: var(--primary); width: 32px; height: 32px; stroke-width: 3;"></i> Strategic Portfolio</h2>
+        
+        <!-- Progress Bar -->
+        <div class="mb-6 bg-white p-4 rounded-xl border-3 border-stone-900 shadow-game-sm">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-bold uppercase tracking-wider text-stone-500">Board Decisions Progress</span>
+                <span id="progressText" class="text-sm font-black text-teal-700">0/8 Completed</span>
+            </div>
+            <div class="w-full bg-stone-200 rounded-full h-3 border border-stone-900 overflow-hidden">
+              <div class="bg-teal-600 h-full transition-all duration-500 w-0" id="decisionProgress"></div>
+            </div>
+        </div>
+
+        <p style="color: var(--ink); margin-bottom: 32px; font-size: 1.15rem; font-weight: 800; background: white; padding: 16px 24px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: var(--shadow-sm);">Evaluate the following 8 strategic domains based on the actual corporate record. <strong>Every choice represents a valid trade-off between deployment velocity and sustainable partnership.</strong></p>
+        
         <div class="scenario-grid" id="scenarioGrid"></div>
       </div>
 
-      <div class="tabs-container">
+      <div class="tabs-container" id="tabsArea">
         <div class="tabs-header">
-          <button class="tab-btn active" data-tab="overview" id="tabBtnOverview"><i data-lucide="activity" style="stroke-width: 3;"></i> 1. Impact</button>
-          <button class="tab-btn locked" data-tab="dataset" id="tabBtnDataset"><i data-lucide="cloud-lightning" style="stroke-width: 3;"></i> 2. Stress Test</button>
-          <button class="tab-btn locked" data-tab="dashboard" id="tabBtnDashboard"><i data-lucide="scatter-chart" style="stroke-width: 3;"></i> 3. Results</button>
-          <button class="tab-btn locked" data-tab="townhall" id="tabBtnTownhall"><i data-lucide="mic" style="stroke-width: 3;"></i> 4. Stakeholder Summit</button>
+          <button class="tab-btn active" data-tab="overview" id="tabBtnOverview"><i data-lucide="check-square" style="stroke-width: 3;"></i> 1. Finalize</button>
+          <button class="tab-btn locked" data-tab="dashboard" id="tabBtnDashboard"><i data-lucide="scatter-chart" style="stroke-width: 3;"></i> 2. Result Matrix</button>
+          <button class="tab-btn locked" data-tab="compare" id="tabBtnCompare"><i data-lucide="git-compare" style="stroke-width: 3;"></i> 3. Compare</button>
+          <button class="tab-btn locked" data-tab="townhall" id="tabBtnTownhall"><i data-lucide="mic" style="stroke-width: 3;"></i> 4. Summit</button>
         </div>
 
+        <!-- Tab 1: Finalize -->
         <div class="tab-content active" id="overview">
           <div style="display: grid; grid-template-columns: 1fr; gap: 32px;">
             <div style="text-align: center; border-bottom: 3px dashed var(--ink); padding-bottom: 40px; padding-top: 16px;">
-              <p style="margin: 0 0 20px 0; color: var(--ink); font-weight: 900; font-size: 1.4rem;">Ready to finalize the Special Use Permit?</p>
-              <button id="phaseActionBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--primary); border-color: var(--ink);"><i data-lucide="lock" style="stroke-width: 3;"></i> Lock Council Votes & View Impact</button>
+              <p style="margin: 0 0 20px 0; color: var(--ink); font-weight: 900; font-size: 1.4rem;">Ready to finalize the Corporate Strategy?</p>
+              <button id="phaseActionBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--primary); border-color: var(--ink);"><i data-lucide="lock" style="stroke-width: 3;"></i> Lock Board Votes & Reveal Matrix</button>
             </div>
           </div>
         </div>
 
-        <div class="tab-content" id="dataset">
-          <div style="background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; margin-bottom: 32px; box-shadow: var(--shadow);">
-            <strong style="display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 900;"><i data-lucide="cpu" style="width: 28px; height: 28px; color: var(--primary);"></i> Durability Stress Test Engine</strong>
-            <p style="margin: 12px 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--muted);">This engine runs 1,000 simulated days using your finalized policies. It injects random FOIA requests, infrastructure appeals, and citizen lawsuits to see if Warrenton's decision survives legally and politically.</p>
-          </div>
-          
-          <div style="display: flex; gap: 16px; margin-bottom: 32px;">
-            <button class="btn-primary" id="generateBtn" style="flex: 2; padding: 20px; font-size: 1.2rem; background: var(--amber); color: var(--ink); border-color: var(--ink);"><i data-lucide="refresh-cw" style="stroke-width: 3;"></i> Run 1,000 Simulated Days</button>
-          </div>
-          
-          <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 40px; display:none;" id="proceedMatrixWrapper">
-            <button id="goToMatrixBtn" class="btn-success" style="max-width: 400px; margin: 0 auto; background: var(--primary); border-color: var(--ink);"><i data-lucide="arrow-right" style="stroke-width: 3;"></i> View Durability Results</button>
-          </div>
-        </div>
-
+        <!-- Tab 2: Dashboard Matrix -->
         <div class="tab-content" id="dashboard">
+          
+          <div style="background: #f0fdfa; border: 3px solid var(--primary); padding: 16px 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: var(--shadow-sm);">
+            <p style="margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="unlock" style="stroke-width: 3;"></i> 
+              <strong>Real-Time Matrix Unlocked:</strong> Change your policies above and watch your position shift instantly. Save plans to benchmark them.
+            </p>
+          </div>
+
           <div id="scatterEvalBox" style="margin-bottom: 32px; padding: 24px; border-radius: 16px; border: 4px solid var(--ink); background: white; box-shadow: var(--shadow);">
              <h4 id="scatterEvalTitle" style="margin: 0 0 12px 0; font-size: 1.4rem; font-weight: 900; display: flex; align-items: center; gap: 12px;">Analyzing Corporate Integrity...</h4>
              <p id="scatterEvalDesc" style="margin: 0; font-size: 1.1rem; line-height: 1.5; font-weight: 700; color: var(--muted);"></p>
@@ -617,8 +599,9 @@
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
             <div>
               <h3 style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900;"><i data-lucide="scatter-chart" style="color: var(--primary); stroke-width: 3;"></i> The Failure Matrix</h3>
-              <p style="margin: 8px 0 0 0; color: var(--ink); font-size: 1rem; font-weight: 800;">Distribution of 1,000 days: Daily Tax Yield vs. Legal/Social Stability.</p>
+              <p style="margin: 8px 0 0 0; color: var(--ink); font-size: 1rem; font-weight: 800;">Distribution mapping of ROI/Speed vs. Brand Trust & Compliance.</p>
             </div>
+            <button id="savePlanBtn" class="btn-primary" style="background: var(--amber); color: var(--ink); border-color: var(--ink);"><i data-lucide="bookmark" style="stroke-width:3;"></i> Save as Benchmark</button>
           </div>
 
           <div class="scatter-container" id="scatterPlot">
@@ -639,22 +622,37 @@
             <div class="quad-label ql-tl">Over-Compromised Margin<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">Beloved by town, but highly unprofitable</span></div>
             <div class="quad-label ql-bl">Strategic Failure<br><span style="font-size:0.75rem; font-weight:800; font-family: 'Nunito', sans-serif;">No ROI and blocked by regulators</span></div>
             
-            <div id="scatterDots"></div>
+            <div id="scatterDotsContainer">
+              <!-- Current and saved dots injected here -->
+            </div>
           </div>
           
-          <div id="achievementsPanel" class="achievement-box">
-            <h3 style="margin:0; font-size: 1.4rem; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 8px;"><i data-lucide="award" style="color: var(--amber); stroke-width:3;"></i> Executive Performance Review</h3>
-            <p style="margin: 8px 0 0 0; color: var(--muted); font-weight: 700; font-size: 0.95rem;">Based on your strategic portfolio, the Board has awarded you the following honors:</p>
-            <div id="achievementGrid" class="achievement-grid"></div>
-          </div>
-
           <div style="margin-top: 40px; text-align: center; border-top: 4px solid var(--ink); padding-top: 32px;">
-            <p style="font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 8px;">Prepare to Face the Public.</p>
-            <p style="color: var(--muted); font-weight: 800; margin-bottom: 24px; font-size: 1.1rem;">The strategic outcome is clear. Now you must present your plan to the community leaders whose home you are entering.</p>
-            <button id="goToTownHallBtn" class="btn-success" style="background:var(--purple); margin: 0 auto; max-width: 400px; font-size: 1.2rem;"><i data-lucide="users" style="stroke-width: 3;"></i> Enter Stakeholder Summit</button>
+            <p style="font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 8px;">Review your comparisons or face the public.</p>
+            <div style="display:flex; justify-content:center; gap: 16px;">
+              <button id="goToCompareBtn" class="btn-outline" style="font-size: 1.1rem; padding: 16px 24px;"><i data-lucide="git-compare" style="stroke-width: 3;"></i> Compare Saved Plans</button>
+              <button id="goToTownHallBtn" class="btn-success" style="background:var(--purple); font-size: 1.1rem; padding: 16px 24px;"><i data-lucide="mic" style="stroke-width: 3;"></i> Enter Stakeholder Summit</button>
+            </div>
           </div>
         </div>
 
+        <!-- Tab 3: Compare -->
+        <div class="tab-content" id="compare">
+          <div style="margin-bottom: 32px; background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; box-shadow: var(--shadow);">
+            <h3 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 12px; font-size: 1.8rem; font-weight: 900;"><i data-lucide="git-compare" style="color: var(--amber); width: 32px; height: 32px; stroke-width: 3;"></i> Pedagogical Breakdown</h3>
+            <p style="color: var(--muted); font-size: 1.1rem; margin: 0; font-weight: 800;">Analyze the exact trade-offs between your current Corporate Strategy and any benchmark plans you saved from the Matrix.</p>
+          </div>
+
+          <div id="comparisonGrid" class="comparison-grid">
+             <!-- Comparison cards injected by JS -->
+          </div>
+          
+          <div id="noCompareMsg" style="text-align:center; padding: 40px; border: 3px dashed var(--muted); border-radius: 12px; color: var(--muted); font-weight: 800;">
+            Save a benchmark plan in the "Result Matrix" tab to unlock side-by-side comparisons here.
+          </div>
+        </div>
+
+        <!-- Tab 4: Town Hall / Summit -->
         <div class="tab-content" id="townhall">
           <div style="margin-bottom: 32px; background: white; border: 4px solid var(--ink); padding: 24px; border-radius: 16px; box-shadow: var(--shadow);">
             <h3 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 12px; font-size: 1.8rem; font-weight: 900;"><i data-lucide="users" style="color: var(--purple); width: 32px; height: 32px; stroke-width: 3;"></i> Live Town Hall Forum</h3>
@@ -701,36 +699,14 @@
 <script>
   if (typeof lucide !== 'undefined') lucide.createIcons();
 
-  function mulberry32(a) {
-    return function() {
-      let t = a += 0x6D2B79F5;
-      t = Math.imul(t ^ t >>> 15, t | 1);
-      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    }
-  }
-
   // Modals & Notifications
-  document.getElementById('openScoreModalBtn')?.addEventListener('click', () => {
-    document.getElementById('scoreModal')?.classList.add('active');
-  });
-  document.getElementById('closeScoreModal')?.addEventListener('click', () => {
-    document.getElementById('scoreModal')?.classList.remove('active');
-  });
-  document.getElementById('scoreModal')?.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active');
-  });
+  document.getElementById('openScoreModalBtn')?.addEventListener('click', () => { document.getElementById('scoreModal')?.classList.add('active'); });
+  document.getElementById('closeScoreModal')?.addEventListener('click', () => { document.getElementById('scoreModal')?.classList.remove('active'); });
+  document.getElementById('scoreModal')?.addEventListener('click', (e) => { if (e.target === document.getElementById('scoreModal')) document.getElementById('scoreModal').classList.remove('active'); });
 
-  // Glossary Logic
-  document.getElementById('openGlossaryBtn')?.addEventListener('click', () => {
-    document.getElementById('glossaryModal')?.classList.add('active');
-  });
-  document.getElementById('closeGlossaryModal')?.addEventListener('click', () => {
-    document.getElementById('glossaryModal')?.classList.remove('active');
-  });
-  document.getElementById('glossaryModal')?.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('glossaryModal')) document.getElementById('glossaryModal').classList.remove('active');
-  });
+  document.getElementById('openGlossaryBtn')?.addEventListener('click', () => { document.getElementById('glossaryModal')?.classList.add('active'); });
+  document.getElementById('closeGlossaryModal')?.addEventListener('click', () => { document.getElementById('glossaryModal')?.classList.remove('active'); });
+  document.getElementById('glossaryModal')?.addEventListener('click', (e) => { if (e.target === document.getElementById('glossaryModal')) document.getElementById('glossaryModal').classList.remove('active'); });
 
   const glossaryData = [
     { term: "PPA (Power Purchase Agreement)", icon: "zap", def: "A long-term contract to buy renewable energy. Tech giants use PPAs to offset their massive data center energy draw and meet corporate ESG (Environmental, Social, Governance) pledges." },
@@ -756,7 +732,6 @@
   }
   renderGlossary();
 
-  // Custom Alert Message Box
   function showMessage(title, text, icon="info", iconColor="var(--primary)") {
       document.getElementById('messageBoxTitle').textContent = title;
       document.getElementById('messageBoxBody').innerHTML = text;
@@ -769,25 +744,20 @@
       document.getElementById('messageBoxOverlay').classList.add('active');
   }
 
-  function hideMessage() {
-      document.getElementById('messageBoxOverlay').classList.remove('active');
-  }
-
+  function hideMessage() { document.getElementById('messageBoxOverlay').classList.remove('active'); }
   document.getElementById('closeMessageBox')?.addEventListener('click', hideMessage);
   document.getElementById('messageBoxOkBtn')?.addEventListener('click', hideMessage);
 
-  // State
-  let selectedOptions = {}; 
-  let currentPhase = 1;
-  let generatedRows = [];
+  // Application State
+  let selectedOptions = { s1: null, s2: null, s3: null, s4: null, s5: null, s6: null, s7: null, s8: null }; 
+  let currentPhase = 1; // 1: Selecting, 2: Matrix Unlocked
+  let savedScenarios = []; // Benchmarks
   let chatIndex = 0;
 
   document.getElementById('startBtn')?.addEventListener('click', () => {
     document.getElementById('landingPage').style.display = 'none';
-    const bgBlobs = document.getElementById('bgBlobs');
-    if (bgBlobs) bgBlobs.style.display = 'none'; 
     document.getElementById('appContainer').style.display = 'flex';
-    document.getElementById('tickerWrap').style.display = 'flex'; // Show ticker when app starts
+    document.getElementById('tickerWrap').style.display = 'flex'; 
     if (typeof lucide !== 'undefined') lucide.createIcons();
   });
 
@@ -799,7 +769,7 @@
   }
 
   function scrollToTabs() {
-    document.querySelector('.tabs-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('tabsArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -810,14 +780,14 @@
     });
   });
 
-  function toggleAdvisor(scenarioId) {
+  document.getElementById('goToCompareBtn')?.addEventListener('click', () => { switchTab('compare'); scrollToTabs(); });
+  document.getElementById('goToTownHallBtn')?.addEventListener('click', () => { switchTab('townhall'); scrollToTabs(); });
+
+  window.toggleAdvisor = function(scenarioId) {
     const panel = document.getElementById(`advisor-${scenarioId}`);
-    if (panel.classList.contains('active')) {
-      panel.classList.remove('active');
-    } else {
-      panel.classList.add('active');
-    }
-  }
+    if (panel.classList.contains('active')) panel.classList.remove('active');
+    else panel.classList.add('active');
+  };
 
   const scenarios = [
     {
@@ -948,6 +918,11 @@
   function updateTicker(scenarioId, optionIdx) {
     const tickerEls = [document.getElementById('newsTickerText'), document.getElementById('newsTickerText2')];
     
+    if (optionIdx === null || optionIdx === undefined) {
+        tickerEls.forEach(t => { if(t) t.textContent = "MARKET UPDATE: AWAITING FURTHER STRATEGIC DIRECTIVES FROM THE BOARD..."; });
+        return;
+    }
+    
     const effect = scenarios.find(s => s.id === scenarioId).options[optionIdx].effects;
     
     let text = "";
@@ -959,15 +934,35 @@
 
     tickerEls.forEach(tickerEl => {
         if(!tickerEl) return;
-        // Reset CSS animation
         tickerEl.style.animation = 'none';
-        tickerEl.offsetHeight; /* trigger reflow */
+        tickerEl.offsetHeight; 
         tickerEl.style.animation = null; 
         tickerEl.textContent = text;
     });
   }
 
-  const scenarioGrid = document.getElementById('scenarioGrid');
+  function updateProgressBar() {
+      const selectedCount = Object.values(selectedOptions).filter(val => val !== null).length;
+      const totalCount = scenarios.length;
+      const percentage = (selectedCount / totalCount) * 100;
+      
+      const bar = document.getElementById('decisionProgress');
+      const text = document.getElementById('progressText');
+      
+      if(bar && text) {
+          bar.style.width = `${percentage}%`;
+          text.textContent = `${selectedCount}/${totalCount} Completed`;
+          
+          if(selectedCount === totalCount) {
+              bar.classList.remove('bg-teal-600'); bar.classList.add('bg-green-500');
+              text.classList.remove('text-teal-700'); text.classList.add('text-green-700');
+              text.textContent = "Strategy Complete! Ready to Finalize.";
+          } else {
+              bar.classList.add('bg-teal-600'); bar.classList.remove('bg-green-500');
+              text.classList.add('text-teal-700'); text.classList.remove('text-green-700');
+          }
+      }
+  }
 
   function getBadgeClass(val) {
     if(val > 0) return 'badge-pos';
@@ -976,6 +971,7 @@
   }
 
   function renderScenarios() {
+    const scenarioGrid = document.getElementById('scenarioGrid');
     if (!scenarioGrid) return;
     scenarioGrid.innerHTML = '';
 
@@ -1003,14 +999,14 @@
             ${s.advisors.esg}
           </div>
         </div>
-
         <div class="option-list"></div>
       `;
       
       const list = card.querySelector('.option-list');
       s.options.forEach((op, idx) => {
+        const isSelected = selectedOptions[s.id] === idx;
         const btn = document.createElement('button');
-        btn.className = 'option-btn' + (selectedOptions[s.id] === idx ? ' active' : '');
+        btn.className = 'option-btn' + (isSelected ? ' active' : '');
         
         let impactHtml = '';
         if (currentPhase === 2) {
@@ -1025,23 +1021,29 @@
           <div class="option-text">
             <strong style="display:flex; justify-content:space-between; align-items:flex-start; gap: 8px;">
               ${op.name}
-              ${selectedOptions[s.id] === idx ? '<i data-lucide="check-circle-2" style="width:24px; height:24px; color:white; flex-shrink:0;"></i>' : ''}
+              ${isSelected ? '<i data-lucide="check-circle-2" style="width:24px; height:24px; color:white; flex-shrink:0;"></i>' : ''}
             </strong>
             <span>${op.summary}</span>
           </div>
           ${impactHtml}
         `;
         
-        // Toggle selection logic
         btn.addEventListener('click', () => {
           if (selectedOptions[s.id] === idx) {
-              delete selectedOptions[s.id]; // deselect if clicked again
+              selectedOptions[s.id] = null; 
+              updateTicker(s.id, null);
           } else {
-              selectedOptions[s.id] = idx; // select newly
+              selectedOptions[s.id] = idx; 
               updateTicker(s.id, idx);
           }
           renderScenarios();
           updateAll();
+          updateProgressBar();
+          
+          if(currentPhase === 2) {
+              renderMatrix();
+              renderComparison();
+          }
         });
         
         list.appendChild(btn);
@@ -1052,11 +1054,11 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
-  function getAggregate() {
+  function getAggregate(optionSet = selectedOptions) {
     const total = { fiscal: 0, trust: 0, gateway: 0, legal: 0 };
     scenarios.forEach(s => {
-      if (selectedOptions[s.id] !== undefined) {
-          const choice = s.options[selectedOptions[s.id]];
+      if (optionSet[s.id] !== null && optionSet[s.id] !== undefined) {
+          const choice = s.options[optionSet[s.id]];
           Object.keys(total).forEach(k => total[k] += choice.effects[k] || 0);
       }
     });
@@ -1100,172 +1102,183 @@
 
   // Phase Transition Controls
   document.getElementById('phaseActionBtn')?.addEventListener('click', () => {
-    if (currentPhase === 1) {
-      const totalSelected = Object.keys(selectedOptions).length;
-      if (totalSelected < scenarios.length) {
-          showMessage("Incomplete Strategy", `Please select an option for all ${scenarios.length} strategic domains. You have currently selected ${totalSelected}.`, "alert-circle", "var(--amber)");
+      const allSelected = Object.values(selectedOptions).every(val => val !== null);
+      if (!allSelected) {
+          showMessage("Incomplete Strategy", `Please select an option for all 8 strategic domains before finalizing the playbook.`, "alert-circle", "var(--amber)");
           return;
       }
 
       currentPhase = 2;
-      const btn = document.getElementById('phaseActionBtn');
-      btn.innerHTML = '<i data-lucide="check-check" style="stroke-width: 3;"></i> Proceed to Market Stress Test';
-      
-      renderScenarios();
-      showMessage("Impact Metrics Unlocked!", "You can now see the exact trade-offs on your Corporate Scorecard. Adjust your choices if you wish, then proceed to the Stress Test.", "unlock", "var(--green)");
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    } else if (currentPhase === 2) {
-      document.getElementById('tabBtnDataset').classList.remove('locked');
-      switchTab('dataset');
-      scrollToTabs(); // Navigate and anchor locally
-    }
-  });
-
-  document.getElementById('goToMatrixBtn')?.addEventListener('click', () => {
       document.getElementById('tabBtnDashboard').classList.remove('locked');
-      switchTab('dashboard');
-      scrollToTabs(); // Navigate and anchor locally
-  });
-
-  document.getElementById('goToTownHallBtn')?.addEventListener('click', () => {
+      document.getElementById('tabBtnCompare').classList.remove('locked');
       document.getElementById('tabBtnTownhall').classList.remove('locked');
-      switchTab('townhall');
-      scrollToTabs(); // Navigate and anchor locally
+      
+      renderScenarios(); 
+      renderMatrix();    
+      switchTab('dashboard');
+      scrollToTabs();
   });
 
-  function generateDataset() {
-    const size = 1000; 
+  function getCoordinate(agg) {
+      // Bounds: Max theoretical is roughly +/- 120 for these. 
+      // X = Fiscal/ROI
+      // Y = Brand Trust & Compliance (Avg of trust and legal)
+      let xRaw = agg.fiscal;
+      let yRaw = (agg.trust + agg.legal) / 2;
+      
+      let xPos = ((xRaw + 100) / 200) * 100;
+      let yPos = 100 - (((yRaw + 100) / 200) * 100); 
+      
+      xPos = Math.max(5, Math.min(95, xPos));
+      yPos = Math.max(5, Math.min(95, yPos));
+      
+      return { x: xPos, y: yPos, fiscal: xRaw, stability: yRaw };
+  }
+
+  function renderMatrix() {
     const agg = getAggregate();
-    const rand = mulberry32(size + 11);
-    const randNormal = () => (rand() + rand() + rand() + rand() + rand() + rand() - 3) / 3;
-
-    generatedRows = [];
-
-    for (let i = 1; i <= size; i++) {
-      const volatility = randNormal() * 20; 
-      const dailyFiscal = Math.round(agg.fiscal + (randNormal() * 15));
-      const regulatoryStability = Math.round((agg.legal + agg.trust) / 2 + (volatility * (agg.legal < 0 ? -1.5 : 0.5)));
-
-      generatedRows.push({ day: i, fiscal: dailyFiscal, stability: regulatoryStability });
-    }
-    
-    renderDashboard(); 
-    checkAchievements(agg); // Run achievement checks
-    
-    const btn = document.getElementById('generateBtn');
-    if(btn) {
-        btn.innerHTML = '<i data-lucide="check" style="stroke-width: 3;"></i> 1,000 Days Simulated!';
-        btn.style.background = 'var(--green)';
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-        setTimeout(() => { document.getElementById('proceedMatrixWrapper').style.display = 'block'; }, 1000);
-    }
-  }
-
-  function checkAchievements(agg) {
-    const panel = document.getElementById('achievementsPanel');
-    const grid = document.getElementById('achievementGrid');
-    if(!panel || !grid) return;
-    
-    grid.innerHTML = '';
-    let hasAchievements = false;
-
-    // Mapping: fiscal = Speed/ROI, trust = Trust, gateway = ESG, legal = Compliance
-    const badges = [
-      { condition: agg.fiscal >= 40, title: "Market Dominator", desc: "Achieved unprecedented speed-to-market and profit margins.", icon: "zap" },
-      { condition: agg.trust >= 40, title: "The Diplomat", desc: "Secured absolute public trust and social license to operate.", icon: "shield-check" },
-      { condition: agg.gateway >= 40, title: "The Green Pioneer", desc: "Built a flagship model for corporate integral ecology and ESG.", icon: "leaf" },
-      { condition: agg.legal >= 30, title: "Bulletproof Compliance", desc: "Navigated zoning law flawlessly, avoiding all injunctions.", icon: "scale" },
-      { condition: agg.trust <= -30, title: "Public Enemy No. 1", desc: "Sparked massive boycotts due to toxic community relations.", icon: "alert-triangle" },
-      { condition: agg.fiscal <= -20, title: "Shareholder Disappointment", desc: "Over-compromised margins, threatening project financial viability.", icon: "trending-down" }
-    ];
-
-    badges.forEach(b => {
-      if(b.condition) {
-        hasAchievements = true;
-        grid.innerHTML += `
-          <div class="achievement-badge">
-            <div class="icon-wrap"><i data-lucide="${b.icon}" style="width:24px; height:24px; stroke-width:3;"></i></div>
-            <div class="achievement-text">
-              <strong>${b.title}</strong>
-              <span>${b.desc}</span>
-            </div>
-          </div>
-        `;
-      }
-    });
-
-    if (hasAchievements) {
-      panel.style.display = 'block';
-    } else {
-      panel.style.display = 'none';
-    }
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-  }
-
-  function renderDashboard() {
-    let data = generatedRows;
-    if (data.length === 0) return;
-
-    let avgF = 0, avgS = 0;
-    data.forEach(r => { avgF += r.fiscal; avgS += r.stability; });
-    avgF /= data.length; avgS /= data.length;
+    const coord = getCoordinate(agg);
 
     const evalTitle = document.getElementById('scatterEvalTitle');
     const evalDesc = document.getElementById('scatterEvalDesc');
     const evalBox = document.getElementById('scatterEvalBox');
 
-    if (avgF >= 0 && avgS >= 0) {
+    if (coord.fiscal >= 0 && coord.stability >= 0) {
       evalTitle.innerHTML = '<i data-lucide="check-circle" style="color:var(--green); stroke-width:3;"></i> Sustainable Market Leadership';
-      evalDesc.innerHTML = `Your strategy successfully deployed infrastructure rapidly while maintaining enough ESG alignment and procedural legitimacy to avoid debilitating FOIA lawsuits and brand damage.`;
-      evalBox.style.borderColor = 'var(--green)';
-      evalBox.style.background = '#ecfdf5';
-    } else if (avgF >= 0 && avgS < 0) {
+      evalDesc.innerHTML = `Your strategy deployed infrastructure rapidly (<strong style="color:var(--green)">+${coord.fiscal.toFixed(1)}</strong>) while maintaining enough ESG alignment and procedural legitimacy (<strong style="color:var(--green)">+${coord.stability.toFixed(1)}</strong>) to avoid debilitating FOIA lawsuits and brand damage.`;
+      evalBox.style.borderColor = 'var(--green)'; evalBox.style.background = '#ecfdf5';
+    } else if (coord.fiscal >= 0 && coord.stability < 0) {
       evalTitle.innerHTML = '<i data-lucide="alert-triangle" style="color:var(--amber); stroke-width:3;"></i> Reputational Crisis';
-      evalDesc.innerHTML = `You secured fast ROI (Avg Speed/Margin <strong style="color:var(--green)">+${avgF.toFixed(1)}</strong>), but by ignoring ESG goals and transparency, you triggered a massive PR crisis, local boycotts, and a regulatory injunction that may halt construction.`;
-      evalBox.style.borderColor = 'var(--amber)';
-      evalBox.style.background = '#fffbeb';
-    } else if (avgF < 0 && avgS >= 0) {
+      evalDesc.innerHTML = `You secured fast ROI (<strong style="color:var(--green)">+${coord.fiscal.toFixed(1)}</strong>), but by ignoring ESG goals and transparency, you triggered a massive PR crisis and a regulatory injunction (<strong style="color:var(--red)">${coord.stability.toFixed(1)}</strong>) that may halt construction.`;
+      evalBox.style.borderColor = 'var(--amber)'; evalBox.style.background = '#fffbeb';
+    } else if (coord.fiscal < 0 && coord.stability >= 0) {
       evalTitle.innerHTML = '<i data-lucide="info" style="color:var(--primary); stroke-width:3;"></i> Over-Regulated Safety';
-      evalDesc.innerHTML = `The gateway view is perfectly safe and trust is high (Stability: <strong>+${avgS.toFixed(1)}</strong>), but the massive burdens placed on the developer threaten the project's viability, creating municipal opportunity costs.`;
-      evalBox.style.borderColor = 'var(--primary)';
-      evalBox.style.background = '#f0fdfa';
+      evalDesc.innerHTML = `Brand safety is exceptionally high (<strong style="color:var(--primary)">+${coord.stability.toFixed(1)}</strong>), but the massive compromises placed on operations destroy the project's financial viability (<strong style="color:var(--red)">${coord.fiscal.toFixed(1)}</strong>).`;
+      evalBox.style.borderColor = 'var(--primary)'; evalBox.style.background = '#f0fdfa';
     } else {
       evalTitle.innerHTML = '<i data-lucide="x-circle" style="color:var(--red); stroke-width:3;"></i> Strategic Failure';
       evalDesc.innerHTML = `You compromised operational speed while still triggering regulatory battles and citizen outrage. You have severely damaged AWS's ability to expand in this region.`;
-      evalBox.style.borderColor = 'var(--red)';
-      evalBox.style.background = '#fef2f2';
+      evalBox.style.borderColor = 'var(--red)'; evalBox.style.background = '#fef2f2';
     }
+
+    // Render Dots
+    const container = document.getElementById('scatterDotsContainer');
+    container.innerHTML = ''; 
+
+    savedScenarios.forEach((saved, idx) => {
+        const savedAgg = getAggregate(saved.options);
+        const sCoord = getCoordinate(savedAgg);
+        
+        const sDot = document.createElement('div');
+        sDot.className = 'matrix-dot dot-saved';
+        sDot.style.left = `${sCoord.x}%`;
+        sDot.style.top = `${sCoord.y}%`;
+        sDot.innerHTML = `S${idx+1} <div class="dot-label">${saved.name}</div>`;
+        container.appendChild(sDot);
+    });
+
+    const dot = document.createElement('div');
+    dot.className = 'matrix-dot dot-current';
+    dot.style.left = `${coord.x}%`;
+    dot.style.top = `${coord.y}%`;
+    dot.innerHTML = `<i data-lucide="crosshair" style="width:16px;height:16px;stroke-width:3;"></i> <div class="dot-label">Current Strategy</div>`;
+    container.appendChild(dot);
+
     if (typeof lucide !== 'undefined') lucide.createIcons();
-
-    const scatterDots = document.getElementById('scatterDots');
-    if (scatterDots) {
-      scatterDots.innerHTML = '';
-      const sampleSize = 350;
-      const step = Math.max(1, Math.floor(data.length / sampleSize));
-      
-      for(let i=0; i<data.length; i+=step) {
-        let r = data[i];
-        if(!r) break;
-
-        let xPos = ((r.fiscal + 100) / 200) * 100;
-        xPos = Math.max(2, Math.min(98, xPos)); 
-        
-        let yPos = 100 - (((r.stability + 100) / 200) * 100);
-        yPos = Math.max(2, Math.min(98, yPos));
-
-        const dot = document.createElement('div');
-        dot.className = 'scatter-dot';
-        dot.style.left = `${xPos}%`;
-        dot.style.top = `${yPos}%`;
-        dot.title = `Day ${r.day} | ROI Impact: ${r.fiscal} | Trust/Regulatory Stability: ${r.stability}`;
-        
-        scatterDots.appendChild(dot);
-      }
-    }
   }
 
-  document.getElementById('generateBtn')?.addEventListener('click', generateDataset);
+  document.getElementById('savePlanBtn')?.addEventListener('click', () => {
+      const allSelected = Object.values(selectedOptions).every(val => val !== null);
+      if (!allSelected) {
+          showMessage("Cannot Save", "Please ensure all 8 strategic decisions are made before saving a benchmark plan.", "alert-circle", "var(--amber)");
+          return;
+      }
+      
+      const planName = prompt("Enter a name for this Corporate Benchmark (e.g., 'High Risk / Fast Deploy' or 'ESG Focus'):");
+      if(planName && planName.trim().length > 0) {
+          savedScenarios.push({
+              name: planName.trim(),
+              options: JSON.parse(JSON.stringify(selectedOptions))
+          });
+          showMessage("Benchmark Saved", `Plan '${planName}' saved successfully. You can now adjust your policies to test alternatives.`, "bookmark", "var(--green)");
+          renderMatrix();
+          renderComparison();
+      }
+  });
+
+  function renderComparison() {
+      const grid = document.getElementById('comparisonGrid');
+      const noMsg = document.getElementById('noCompareMsg');
+      if(!grid || !noMsg) return;
+
+      if(savedScenarios.length === 0) {
+          grid.innerHTML = '';
+          noMsg.style.display = 'block';
+          return;
+      }
+      
+      noMsg.style.display = 'none';
+      grid.innerHTML = '';
+
+      const currentAgg = getAggregate(selectedOptions);
+      const currentCard = createCompareCard("Current Live Strategy", currentAgg, selectedOptions, null, true);
+      grid.appendChild(currentCard);
+
+      savedScenarios.forEach((saved, idx) => {
+          const savedAgg = getAggregate(saved.options);
+          const sCard = createCompareCard(`Saved Benchmark ${idx+1}: ${saved.name}`, savedAgg, saved.options, selectedOptions, false);
+          grid.appendChild(sCard);
+      });
+  }
+
+  function createCompareCard(title, agg, opts, compareToOpts, isCurrent) {
+      const card = document.createElement('div');
+      card.className = 'compare-card';
+      if(isCurrent) {
+          card.style.borderColor = 'var(--primary)';
+          card.style.boxShadow = 'var(--shadow-lg)';
+      }
+
+      let diffHtml = '';
+      if(compareToOpts) {
+          let differences = [];
+          scenarios.forEach(s => {
+              const oVal1 = compareToOpts[s.id]; 
+              const oVal2 = opts[s.id];          
+              if(oVal1 !== oVal2 && oVal1 !== null && oVal2 !== null) {
+                  differences.push(`<li><strong>${s.tag}:</strong> You chose '${s.options[oVal2].name}' instead of Current's '${s.options[oVal1].name}'.</li>`);
+              }
+          });
+          
+          if(differences.length > 0) {
+              diffHtml = `<div style="margin-top: 12px; border-top: 2px dashed #cbd5e1; padding-top: 12px;">
+                            <span style="display:block; font-size:0.85rem; font-weight:900; color:var(--muted); text-transform:uppercase; margin-bottom:8px;">Strategic Shifts vs Current:</span>
+                            <ul class="compare-diff-list">${differences.join('')}</ul>
+                          </div>`;
+          } else {
+              diffHtml = `<div style="margin-top: 12px; font-size:0.9rem; font-weight:700; color:var(--muted); font-style:italic;">Identical to Current Strategy.</div>`;
+          }
+      } else {
+          diffHtml = `<div style="margin-top: 12px; font-size:0.9rem; font-weight:700; color:var(--muted); font-style:italic;">Modify your policies on the left to review the shift below.</div>`;
+      }
+
+      card.innerHTML = `
+          <div class="compare-header">
+              <div class="compare-title">
+                  <i data-lucide="${isCurrent ? 'crosshair' : 'bookmark'}" style="color: ${isCurrent ? 'var(--primary)' : 'var(--amber)'}; stroke-width:3;"></i> 
+                  ${title}
+              </div>
+          </div>
+          <div class="compare-stats">
+              <span class="compare-stat-badge" style="color:${agg.fiscal>=0?'var(--green)':'var(--red)'}; border-color:${agg.fiscal>=0?'var(--green)':'var(--red)'}"><i data-lucide="zap" style="width:16px;"></i> ${agg.fiscal>0?'+':''}${agg.fiscal} ROI</span>
+              <span class="compare-stat-badge" style="color:${agg.trust>=0?'var(--green)':'var(--red)'}; border-color:${agg.trust>=0?'var(--green)':'var(--red)'}"><i data-lucide="shield-check" style="width:16px;"></i> ${agg.trust>0?'+':''}${agg.trust} Trust</span>
+              <span class="compare-stat-badge" style="color:${agg.gateway>=0?'var(--green)':'var(--red)'}; border-color:${agg.gateway>=0?'var(--green)':'var(--red)'}"><i data-lucide="leaf" style="width:16px;"></i> ${agg.gateway>0?'+':''}${agg.gateway} ESG</span>
+              <span class="compare-stat-badge" style="color:${agg.legal>=0?'var(--green)':'var(--red)'}; border-color:${agg.legal>=0?'var(--green)':'var(--red)'}"><i data-lucide="scale" style="width:16px;"></i> ${agg.legal>0?'+':''}${agg.legal} Legal</span>
+          </div>
+          ${diffHtml}
+      `;
+      return card;
+  }
 
   const chatScript = [
     { type: 'msg-aws', name: 'AWS VP of Infrastructure', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=14', isRight: true, text: "Team, we need to break ground in Warrenton by Q3 to hit our AI capacity targets. Mayor, what's it going to take to finalize this permit tonight?" },
@@ -1319,6 +1332,7 @@
   // Init routines
   renderScenarios();
   updateAll();
+  updateProgressBar();
 </script>
 </body>
 </html>

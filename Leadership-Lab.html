@@ -670,25 +670,25 @@
           </div>
 
           <div id="roleplayGuidance" style="display: none; margin-top: 40px; padding: 32px; border: 4px solid var(--purple); border-radius: 16px; background: white; box-shadow: var(--shadow-lg); animation: fadeUp 0.5s ease-out forwards;">
-            <h3 style="margin-top: 0; color: var(--purple); display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 900;"><i data-lucide="clipboard-list" style="stroke-width: 3; width: 28px; height: 28px;"></i> Executive Roleplay Instructions</h3>
-            <p style="font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 24px;">The simulated chat mirrors the intense public resistance data centers face regarding environmental racism, opacity, and resource drain. You must now negotiate your Special Use Permit (SUP).</p>
+            <h3 style="margin-top: 0; color: var(--purple); display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 900;"><i data-lucide="clipboard-list" style="stroke-width: 3; width: 28px; height: 28px;"></i> Executive Strategy & Negotiation Roleplay</h3>
+            <p style="font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 24px;">The simulated chat above demonstrates the intense internal and external pressures facing AWS. As the corporate leadership team, you must now forge a unified strategy and negotiate a final Special Use Permit (SUP) with town officials.</p>
             
             <ul style="font-size: 1.05rem; font-weight: 700; color: var(--muted); padding-left: 24px; line-height: 1.8; margin-bottom: 32px;">
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 1: Executive Huddle (10 mins)</strong> - Divide into assigned stakeholder groups. As the AWS Leadership Team, you must identify which margins you can compress to win public approval.
+              <li style="margin-bottom: 12px;"><strong style="color:var(--ink);">Step 1: The War Room (10 mins)</strong> - Divide the room into internal AWS factions and external stakeholders.
                 <ul style="list-style-type: circle; margin-top: 8px; margin-bottom: 16px; color: var(--muted); font-size: 0.95rem;">
-                  <li><em>AWS / Data Services (You):</em> Fight for standard industrial designs and immediate grid access. Try to offer direct fee-in-lieu payments to bypass complex school funding. Emphasize your role in global decarbonization modeling.</li>
-                  <li><em>Town Council Majority:</em> Demanding a massive revenue win but need political cover. They want a robust Community Benefit Agreement.</li>
-                  <li><em>Citizens / Preservation Advocates:</em> Demanding algorithmic restraint and zero fossil-fuel emissions to prevent fence-line pollution. They will threaten FOIA litigation if NDAs remain.</li>
-                  <li><em>Town Planners / Utilities:</em> Focused strictly on preventing regional grid strain, enforcing zoning aesthetics, and preventing aquifer depletion.</li>
+                  <li><em>AWS VP of Infrastructure:</em> Your goals are speed-to-market and keeping capex low. Push for standard builds and direct fee-in-lieu payments to bypass bureaucracy.</li>
+                  <li><em>AWS Global ESG & Legal:</em> You must protect the brand and prevent FOIA lawsuits. Push for sustainable cooling, renewable energy matching, and community trust-building.</li>
+                  <li><em>Warrenton Mayor & Council:</em> You want the massive tax revenue, but you need political cover. Demand robust Community Benefit Agreements (CBAs) and strict aesthetic limits.</li>
+                  <li><em>Local Resistance & Planners:</em> You are the wildcards. Demand zero NDAs, full environmental transparency, and grid upgrades, threatening litigation if ignored.</li>
                 </ul>
               </li>
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 2: Opening Statements (10 mins)</strong> - Each group gets 2 minutes. As AWS, set the tone: Are you aggressive disrupters or collaborative partners?</li>
-              <li style="margin-bottom: 12px;"><strong class="text-game-dark">Step 3: Open Negotiation (25 mins)</strong> - Debate the core conditions: NDAs, Gas Turbines/Emissions, Architectural Caps, and Water Usage.</li>
-              <li><strong class="text-game-dark">Step 4: The Final Vote (10 mins)</strong> - The Town Council votes. Will your project be approved, or have you failed to secure your social license to operate?</li>
+              <li style="margin-bottom: 12px;"><strong style="color:var(--ink);">Step 2: Internal Alignment (5 mins)</strong> - The AWS factions (Infrastructure vs. ESG/Legal) must quietly agree on a unified term sheet. What margins will you compress to win local approval?</li>
+              <li style="margin-bottom: 12px;"><strong style="color:var(--ink);">Step 3: The Executive Summit (20 mins)</strong> - AWS presents its final offer to the Mayor and community leaders. Open debate on NDAs, emissions, architectural caps, and water usage.</li>
+              <li><strong style="color:var(--ink);">Step 4: The Final Deal (10 mins)</strong> - The Town Council votes on the final conditions. Does AWS get its permit, or is the project derailed?</li>
             </ul>
             
             <div style="text-align: center; font-size: 1.4rem; font-weight: 900; color: var(--ink); border-top: 4px dashed var(--purple); padding-top: 24px;">
-              Close your laptops. The boardroom is now open!
+              Close your laptops. The executive boardroom is now open!
             </div>
           </div>
         </div>
@@ -1268,14 +1268,13 @@
   document.getElementById('generateBtn')?.addEventListener('click', generateDataset);
 
   const chatScript = [
-    { type: 'msg-council', name: 'Town Council Chair', role: 'Moderator', img: 'https://i.pravatar.cc/150?img=68', isRight: true, text: "Let's call this session to order. We are reviewing Special Use Permit 22-3. We have heard from the applicant, and now we will open the floor for public comment. Please keep your remarks to two minutes." },
-    { type: 'msg-ngo', name: 'Piedmont Environmental Council', role: 'Conservationist', img: 'https://i.pravatar.cc/150?img=44', text: "This 'Gateway' site sits directly over our fractured rock aquifer. Approving a facility that guzzles a million gallons of water a day during peak summer heat isn't economic development—it's an ecological death sentence for our farms." },
-    { type: 'msg-aws', name: 'Lead Developer', role: 'Tech Infrastructure', img: 'https://i.pravatar.cc/150?img=59', text: "I want to reassure the community: our newer evaporative designs are 40% more efficient than last generation's. Plus, the $550 million capital investment will generate enough tax revenue to completely overhaul the town's aging water treatment plant." },
-    { type: 'msg-biz', name: 'Warrenton Tech Alliance', role: 'Economic Proponent', img: 'https://i.pravatar.cc/150?img=11', text: "Exactly! We are staring at a structural deficit in our school system. The property taxes from this single site equal the revenue of a thousand new homes, but without adding a single student to our crowded classrooms. It's a fiscal no-brainer." },
-    { type: 'msg-staff', name: 'Director of Historic Trust', role: 'Heritage Guardian', img: 'https://i.pravatar.cc/150?img=32', text: "But at what cultural cost? You are proposing a 70-foot tall concrete bunker at the historic entrance to our town. No amount of 'green berms' or fake brick cladding will hide a 200,000 square foot industrial eyesore." },
-    { type: 'msg-util', name: 'Regional Energy Rep', role: 'Grid Operations', img: 'https://i.pravatar.cc/150?img=41', text: "From a transmission standpoint, accommodating this hyperscale load requires running new high-voltage lines straight through residential neighborhoods. Without a massive co-investment from the developer, ratepayers will carry the burden of these grid upgrades." },
-    { type: 'msg-dissent', name: 'Local Resident', role: 'Community Voice', img: 'https://i.pravatar.cc/150?img=12', isRight: true, text: "Why are we even debating this when the developer hides behind Non-Disclosure Agreements? They won't share their acoustic studies or their exact power draw! If it's such a great deal for Warrenton, why all the secrecy?" },
-    { type: 'msg-aws', name: 'Lead Developer', role: 'Tech Infrastructure', img: 'https://i.pravatar.cc/150?img=59', text: "The NDAs protect our proprietary cooling designs from global competitors, not from you. We are willing to offer a $5 million upfront fee-in-lieu to the town's discretionary fund to prove our commitment to Warrenton." }
+    { type: 'msg-aws', name: 'AWS VP of Infrastructure', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=14', isRight: true, text: "Team, we need to break ground in Warrenton by Q3 to hit our AI capacity targets. Mayor, what's it going to take to finalize this permit tonight?" },
+    { type: 'msg-council', name: 'Warrenton Mayor', role: 'Town Council', img: 'https://i.pravatar.cc/150?img=68', text: "My constituents are furious about the massive water draw and the height of these facilities. We need a binding Community Benefits Agreement (CBA) to fund our schools, not just verbal promises." },
+    { type: 'msg-ngo', name: 'AWS Head of Global ESG', role: 'Corporate Ethics', img: 'https://i.pravatar.cc/150?img=32', isRight: true, text: "I agree with the Mayor. If we force a standard industrial build and drain their aquifer, we destroy our social license to operate here. We should voluntarily fund closed-loop cooling and local STEM initiatives." },
+    { type: 'msg-biz', name: 'AWS Lead Counsel', role: 'Legal & Compliance', img: 'https://i.pravatar.cc/150?img=11', isRight: true, text: "Careful. If we formally agree to a massive CBA here, we set an expensive precedent for every future data center in the state. Furthermore, our NDAs with energy vendors absolutely cannot be compromised by local FOIA requests." },
+    { type: 'msg-util', name: 'Regional Utility Director', role: 'Grid Operations', img: 'https://i.pravatar.cc/150?img=41', text: "Well, you can't build anything if the grid collapses. We need AWS to co-fund the new high-voltage substation upfront, or we simply cannot guarantee the megawatts you're demanding." },
+    { type: 'msg-dissent', name: 'Community Opposition', role: 'Citizen Coalition', img: 'https://i.pravatar.cc/150?img=44', text: "You're all negotiating over the price of our town's soul! If AWS won't publish their environmental impact reports and drop the NDAs, we will tie this project up in zoning appeals for years!" },
+    { type: 'msg-aws', name: 'AWS VP of Infrastructure', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=14', isRight: true, text: "Look, we technically have vested rights on this industrial land. But litigation slows us down. Let's huddle internally. Where can AWS compromise on design without breaking our global budget?" }
   ];
 
   const chatContainer = document.getElementById('chatContainer');

@@ -31,11 +31,6 @@
                       }
                   },
                   boxShadow: {
-                      'game-sm': '2px 2px 0px rgba(28, 25, 23, 1)',
-                      'game': '4px 4px 0px rgba(28, 25, 23, 1)',
-                      'game-lg': '8px 8px 0px rgba(28, 25, 23, 1)',
-                  },
-                  boxShadow: {
                       'game-sm': '2px 2px 0px rgba(15, 23, 42, 1)',
                       'game': '4px 4px 0px rgba(15, 23, 42, 1)',
                       'game-lg': '8px 8px 0px rgba(15, 23, 42, 1)',
@@ -182,6 +177,7 @@
       overflow: hidden;
       white-space: nowrap;
     }
+    
     .ticker-label {
       background: var(--red);
       color: white;
@@ -500,7 +496,6 @@
   </div>
 </div>
 
-<!-- NEW: Live Breaking News Ticker -->
 <div class="news-ticker-wrap" id="tickerWrap" style="display:none;">
   <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
   <div class="ticker-content">
@@ -510,11 +505,10 @@
 
 <div id="appContainer" class="app-container">
   
-  <!-- NEW: Live Breaking News Ticker -->
   <div class="news-ticker-wrap stagger-1">
     <div class="ticker-label"><i data-lucide="radio" style="width:16px; height:16px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Live Updates</div>
     <div class="ticker-content">
-      <div class="ticker-text" id="newsTickerText">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
+      <div class="ticker-text" id="newsTickerText2">Welcome to the Town Council Session. The public awaits your first policy decision on SUP-22-3...</div>
     </div>
   </div>
 
@@ -648,7 +642,6 @@
             <div id="scatterDots"></div>
           </div>
           
-          <!-- NEW: Achievements Panel -->
           <div id="achievementsPanel" class="achievement-box">
             <h3 style="margin:0; font-size: 1.4rem; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 8px;"><i data-lucide="award" style="color: var(--amber); stroke-width:3;"></i> Executive Performance Review</h3>
             <p style="margin: 8px 0 0 0; color: var(--muted); font-weight: 700; font-size: 0.95rem;">Based on your strategic portfolio, the Board has awarded you the following honors:</p>
@@ -953,8 +946,7 @@
   ];
 
   function updateTicker(scenarioId, optionIdx) {
-    const tickerEl = document.getElementById('newsTickerText');
-    if (!tickerEl) return;
+    const tickerEls = [document.getElementById('newsTickerText'), document.getElementById('newsTickerText2')];
     
     const effect = scenarios.find(s => s.id === scenarioId).options[optionIdx].effects;
     
@@ -965,11 +957,14 @@
     else if (effect.legal < -15) text = "LEGAL WARNING: Corporate counsel anticipates severe zoning appeals following recent hardline stance...";
     else text = "MARKET UPDATE: " + tickerResponses[Math.floor(Math.random() * tickerResponses.length)];
 
-    // Reset CSS animation
-    tickerEl.style.animation = 'none';
-    tickerEl.offsetHeight; /* trigger reflow */
-    tickerEl.style.animation = null; 
-    tickerEl.textContent = text;
+    tickerEls.forEach(tickerEl => {
+        if(!tickerEl) return;
+        // Reset CSS animation
+        tickerEl.style.animation = 'none';
+        tickerEl.offsetHeight; /* trigger reflow */
+        tickerEl.style.animation = null; 
+        tickerEl.textContent = text;
+    });
   }
 
   const scenarioGrid = document.getElementById('scenarioGrid');
@@ -1272,15 +1267,16 @@
 
   document.getElementById('generateBtn')?.addEventListener('click', generateDataset);
 
+  // NEW SCRIPT for the Town Hall Discussion
   const chatScript = [
-    { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "Good evening. AWS is thrilled to bring $550 million to Warrenton. If we can execute this build quickly, we will mint a new middle class here! We provide the compute power needed to optimize global climate decarbonization. We want to be partners in that growth." },
-    { type: 'msg-ngo', name: 'Citizens for Fauquier', role: 'Preservation Advocate', img: 'https://i.pravatar.cc/150?img=44', text: "Global decarbonization? What about the unpermitted gas turbines used in other AI sites? We will not let you bring environmental racism and toxic emissions to our fence-line communities just so you can maximize shareholder value!" },
-    { type: 'msg-staff', name: 'Town Planner', role: 'Zoning Administrator', img: 'https://i.pravatar.cc/150?img=32', text: "To clarify for the record, the Planning Commission still needs assurances on the 'giant soda straw' depletion of our local aquifer if you use standard evaporative cooling." },
-    { type: 'msg-biz', name: 'Local Business Owner', role: 'Tax Base Advocate', img: 'https://i.pravatar.cc/150?img=11', text: "Listen, our town desperately needs this revenue. In Oregon, tech employee gatherings alone pay local rent. And look at New Albany—they successfully used data center CBAs to fund STEM centers. We need AWS here, but they need to pay their fair share." },
-    { type: 'msg-util', name: 'Utility Rep', role: 'Regional Infrastructure', img: 'https://i.pravatar.cc/150?img=41', text: "If AWS doesn't agree to fund regional grid upgrades or offset their load, we will have to keep the regional coal plant open. Residential utility bills will rise for everyone to subsidize their AI energy demand." },
-    { type: 'msg-council', name: 'Mayor', role: 'Town Council Majority', img: 'https://i.pravatar.cc/150?img=68', text: "We hear everyone tonight. AWS, you have to agree to strict visual caps, and we need a concrete Community Benefits Agreement to fund local schools, or we simply can't pass this politically without being voted out." },
-    { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "We respect the town's vision, but imposing unviable infrastructure costs or severe architectural delays threatens the project entirely. We have a timeline to meet global AI demand. If Warrenton isn't open for business, another county will be." },
-    { type: 'msg-dissent', name: 'Council Dissenter', role: 'Town Council Minority', img: 'https://i.pravatar.cc/150?img=12', text: "I say let them leave! It's an extractive boom-and-bust cycle. You're demanding access to our water and land while hiding your blueprints behind NDAs. That is not 'integral ecology'—it's corporate bullying." }
+    { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "Thank you, Mayor and Council. AWS isn't just bringing servers; we're bringing a foundation for the future economy. We've reviewed the site plans, we're maximizing the tree buffers, and we want to be long-term, collaborative partners here in Warrenton." },
+    { type: 'msg-ngo', name: 'Citizens for Fauquier', role: 'Preservation Advocate', img: 'https://i.pravatar.cc/150?img=44', text: "A 'partner' doesn't hide behind NDAs and ignore questions about the low-frequency hum these massive cooling fans will generate 24/7. You are turning our historic gateway into a loud, windowless industrial park!" },
+    { type: 'msg-biz', name: 'Chamber of Commerce', role: 'Tax Base Advocate', img: 'https://i.pravatar.cc/150?img=11', text: "With all due respect to the historical society, our main street is struggling. We can't fix the school district's budget deficit with 'historic charm.' Project Gateway means high-paying tech jobs, construction contracts, and a massive commercial tax injection." },
+    { type: 'msg-staff', name: 'Environmental Planner', role: 'Zoning Administrator', img: 'https://i.pravatar.cc/150?img=32', text: "From a municipal planning perspective, the immediate concern is the evaporative cooling load. If we experience a summer drought, the facility's water draw will severely impact municipal reserves unless strict seasonal throttling is legally bound in the permit." },
+    { type: 'msg-util', name: 'Grid Operator', role: 'Regional Infrastructure', img: 'https://i.pravatar.cc/150?img=41', text: "And on the energy side: our local substations are near capacity. If AWS scales to 150 megawatts without co-funding the new transmission lines, everyday residential customers are going to bear the cost of grid instability and rate hikes." },
+    { type: 'msg-council', name: 'Mayor', role: 'Town Council Majority', img: 'https://i.pravatar.cc/150?img=68', text: "AWS, you see the tension in this room. I want the economic revitalization, but I cannot sign a blank check. To get my vote, I need a hard commitment: Will you guarantee a robust Community Benefit Agreement and agree to stricter water caps?" },
+    { type: 'msg-aws', name: 'You (AWS AI Leader)', role: 'Corporate Leadership', img: 'https://i.pravatar.cc/150?img=59', isRight: true, text: "Mayor, mandating unproven cooling tech at this scale threatens the entire facility's viability. However, we are willing to offer a substantial direct fee-in-lieu to help the town independently upgrade its water infrastructure. We need regulatory flexibility." },
+    { type: 'msg-dissent', name: 'Council Dissenter', role: 'Town Council Minority', img: 'https://i.pravatar.cc/150?img=12', text: "A 'fee-in-lieu' is just a payout to let you drain our aquifer and bypass our schools! If you won't build sustainably and transparently, you shouldn't build here at all. I urge the Council to reject this application." }
   ];
 
   const chatContainer = document.getElementById('chatContainer');
